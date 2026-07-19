@@ -47,7 +47,7 @@ export default async function AkunPage() {
             </div>
             <div className="flex justify-between gap-4 rounded-[22px] bg-surface-lavender p-4">
               <dt className="text-text-secondary">Mode akun</dt>
-              <dd className="font-extrabold text-text-primary">Demo mock</dd>
+              <dd className="font-extrabold text-text-primary">Ruang Tumbuh</dd>
             </div>
           </dl>
         </VisualPanel>
@@ -86,8 +86,8 @@ export default async function AkunPage() {
         <div className="flex items-start gap-3">
           <Bell aria-hidden="true" className="mt-1 h-5 w-5 text-brand-primary" />
           <p className="text-base leading-7 text-text-secondary">
-            Notifikasi dan pengingat pada demo masih berupa preferensi mock.
-            Tidak ada WhatsApp atau email sungguhan yang dikirim.
+            Pengiriman notifikasi WhatsApp dan email belum tersedia. Preferensi
+            waktu pengingat tetap dapat disimpan.
           </p>
         </div>
       </VisualPanel>

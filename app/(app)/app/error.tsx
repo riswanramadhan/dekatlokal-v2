@@ -12,7 +12,7 @@ export default function Error({
   return (
     <div className="space-y-4">
       <StateBlock
-        description="Ada bagian yang belum dapat dimuat. Coba ulang tanpa kehilangan progres mock."
+        description="Ada bagian yang belum dapat dimuat. Coba ulang tanpa kehilangan progres yang sudah tersimpan."
         kind="error"
         title="Ruang Tumbuh belum siap"
       />

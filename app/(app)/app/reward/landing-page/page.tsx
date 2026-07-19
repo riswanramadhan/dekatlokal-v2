@@ -69,7 +69,7 @@ export default async function LandingPageRewardPage({
       ) : null}
       {status === "diajukan" ? (
         <div className="rounded-[24px] bg-success-soft p-4 font-bold text-success">
-          Klaim reward sudah masuk ke antrean mock.
+          Preferensi klaim reward sudah tersimpan.
         </div>
       ) : null}
 
@@ -140,8 +140,8 @@ export default async function LandingPageRewardPage({
                     Pilih gaya landing page
                   </h2>
                   <p className="mt-1 text-base leading-7 text-text-secondary">
-                    Ini hanya pengajuan mock. Tidak ada pembayaran dan belum ada
-                    produksi website sungguhan.
+                    Pengajuan akan disimpan sebagai preferensi. Produksi website
+                    dan peninjauan tim belum tersedia.
                   </p>
                 </div>
               </div>
@@ -180,7 +180,8 @@ export default async function LandingPageRewardPage({
                   />
                   <span className="text-sm leading-6 text-text-secondary">
                     Saya memahami reward bergantung pada kelengkapan data,
-                    kapasitas program, dan review mock DekatLokal.
+                    kapasitas program, dan peninjauan DekatLokal yang belum
+                    tersedia pada versi ini.
                   </span>
                 </label>
                 <Button className="w-full" type="submit">

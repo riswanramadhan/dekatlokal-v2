@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Button, ButtonLink, Card, CardContent, FieldLabel, Input } from "@/components/ui";
+import { AlertCircle, ArrowRight, MessageCircle } from "lucide-react";
+import { AuthConnectivityNotice, AuthPendingButton } from "@/components/auth";
+import { FieldLabel, Input } from "@/components/ui";
 import { startSignup } from "@/features/auth/actions";
 
 export const metadata: Metadata = {
-  title: "Daftar",
+  title: "Buat Akun Ruang Tumbuh",
 };
 
 type DaftarPageProps = {
@@ -18,57 +21,78 @@ export default async function DaftarPage({ searchParams }: DaftarPageProps) {
   }
 
   return (
-    <Card>
-      <CardContent className="space-y-6 p-5 md:p-7">
-        <div>
-          <p className="text-sm font-semibold text-brand-primary">Daftar</p>
-          <h2 className="mt-2 text-2xl font-bold text-text-primary">
-            Buat akun Ruang Tumbuh
-          </h2>
-          <p className="mt-2 text-base leading-7 text-text-secondary">
-            Simpan hasil Digital Checkup, tiga fokus usaha, dan progres
-            belajarmu dalam satu akun Ruang Tumbuh.
-          </p>
+    <article className="auth-card">
+      <header>
+        <p className="auth-heading-kicker">Mulai perjalananmu</p>
+        <h2>Buat akun Ruang Tumbuh</h2>
+        <p className="auth-heading-copy">
+          Simpan hasil Digital Checkup, tiga fokus usaha, dan progres belajar
+          dalam satu tempat.
+        </p>
+      </header>
+
+      <AuthConnectivityNotice />
+
+      {status === "invalid" ? (
+        <div className="auth-alert auth-alert-danger" role="alert">
+          <AlertCircle aria-hidden="true" />
+          <span>Lengkapi nama pemilik, nama usaha, dan nomor WhatsApp.</span>
         </div>
-        {status === "invalid" ? (
-          <p className="rounded-2xl bg-danger-soft p-3 text-sm leading-6 text-danger">
-            Lengkapi nama pemilik, nama usaha, dan nomor WhatsApp.
-          </p>
-        ) : null}
-        <form action={startSignup} className="grid gap-4">
-          <div className="space-y-2">
-            <FieldLabel htmlFor="name">Nama pemilik</FieldLabel>
-            <Input id="name" name="ownerName" placeholder="Contoh: Bu Rina" />
-          </div>
-          <div className="space-y-2">
-            <FieldLabel htmlFor="business">Nama usaha</FieldLabel>
-            <Input
-              id="business"
-              name="businessName"
-              placeholder="Contoh: Warung Rina"
-            />
-          </div>
-          <div className="space-y-2">
-            <FieldLabel htmlFor="phone">Nomor WhatsApp</FieldLabel>
-            <Input
-              id="phone"
-              inputMode="tel"
-              name="phone"
-              placeholder="0812 3456 7890"
-            />
-          </div>
-          <Button className="w-full" type="submit">
-            Lanjut ke verifikasi mock
-          </Button>
-        </form>
-        <ButtonLink
-          className="w-full"
-          href="/masuk"
-          variant="secondary"
+      ) : null}
+
+      <form action={startSignup} className="auth-form-stack">
+        <div className="auth-field">
+          <FieldLabel htmlFor="name">Nama pemilik</FieldLabel>
+          <Input
+            autoComplete="name"
+            autoFocus
+            className="auth-input"
+            id="name"
+            name="ownerName"
+            placeholder="Contoh: Bu Rina"
+            required
+          />
+        </div>
+        <div className="auth-field">
+          <FieldLabel htmlFor="business">Nama usaha</FieldLabel>
+          <Input
+            autoComplete="organization"
+            className="auth-input"
+            id="business"
+            name="businessName"
+            placeholder="Contoh: Warung Rina"
+            required
+          />
+        </div>
+        <div className="auth-field">
+          <FieldLabel htmlFor="phone">Nomor WhatsApp</FieldLabel>
+          <Input
+            autoComplete="tel"
+            className="auth-input"
+            id="phone"
+            inputMode="tel"
+            name="phone"
+            placeholder="0812 3456 7890"
+            required
+          />
+        </div>
+        <p className="auth-privacy-note">
+          Informasi ini digunakan untuk menghubungkan progres dengan usaha yang
+          tepat.
+        </p>
+        <AuthPendingButton
+          className="auth-submit-button"
+          pendingLabel="Menyiapkan verifikasi..."
         >
-          Sudah punya akun
-        </ButtonLink>
-      </CardContent>
-    </Card>
+          <MessageCircle aria-hidden="true" />
+          Lanjut ke verifikasi
+          <ArrowRight aria-hidden="true" />
+        </AuthPendingButton>
+      </form>
+
+      <p className="auth-card-footer">
+        Sudah punya akun? <Link href="/masuk">Masuk sekarang</Link>
+      </p>
+    </article>
   );
 }

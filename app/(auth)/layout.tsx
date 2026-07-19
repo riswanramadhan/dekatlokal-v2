@@ -1,34 +1,89 @@
-import type { ReactNode } from "react";
 import Image from "next/image";
-import { BrandLogo } from "@/components/app-shell";
+import Link from "next/link";
+import { BookOpenCheck, ChartNoAxesColumnIncreasing, ClipboardCheck, ShieldCheck } from "lucide-react";
+import type { ReactNode } from "react";
+import "./auth.css";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <main className="v3-shell v3-decor min-h-screen px-4 py-6 md:grid md:place-items-center md:px-8">
-      <div className="relative z-10 mx-auto w-full max-w-[520px]">
-        <header className="mb-5 flex items-center justify-between">
-          <BrandLogo href="/" />
-          <span className="rounded-full bg-white px-3 py-1 text-sm font-extrabold text-text-muted shadow-[var(--shadow-soft)]">
-            Mock auth
-          </span>
-        </header>
-        <div className="mb-5 flex items-start gap-3">
-          <Image
-            alt=""
-            className="mt-1 h-10 w-10 rounded-2xl"
-            height={48}
-            priority
-            src="/brand/dekat-lokal-icon.png"
-            width={48}
-          />
-          <div className="helper-bubble px-4 py-3">
-            <p className="text-base leading-7 text-text-primary">
-              Buat akun setelah melihat nilai jalur, agar hasil dan progres tidak hilang.
+    <main className="auth-shell">
+      <a className="auth-skip-link" href="#auth-content">
+        Lewati ke formulir
+      </a>
+
+      <aside className="auth-brand-panel" aria-label="Perjalanan Ruang Tumbuh">
+        <div className="auth-brand-inner">
+          <Link className="auth-brand-link" href="/" aria-label="Kembali ke DekatLokal">
+            <Image
+              alt="DekatLokal"
+              className="auth-brand-logo"
+              height={48}
+              priority
+              src="/brand/dekat-lokal.png"
+              width={165}
+            />
+          </Link>
+
+          <div className="auth-brand-copy">
+            <p className="auth-brand-eyebrow">Ruang Tumbuh untuk UMKM</p>
+            <h1>
+              Lanjutkan hasil <span>Checkup</span> menjadi langkah nyata.
+            </h1>
+            <p>
+              Masuk untuk melihat fokus usaha, mengikuti course yang relevan,
+              dan menyimpan setiap aksi yang sudah diterapkan.
             </p>
           </div>
+
+          <ol className="auth-journey" aria-label="Tahap perjalanan usaha">
+            <li>
+              <span className="auth-journey-icon">
+                <ClipboardCheck aria-hidden="true" />
+              </span>
+              <div>
+                <strong>Checkup</strong>
+                <small>Kenali kondisi dan prioritas usahamu.</small>
+              </div>
+            </li>
+            <li>
+              <span className="auth-journey-icon">
+                <ChartNoAxesColumnIncreasing aria-hidden="true" />
+              </span>
+              <div>
+                <strong>Jalur Naik Kelas</strong>
+                <small>Dapatkan langkah yang disusun sesuai kebutuhan.</small>
+              </div>
+            </li>
+            <li>
+              <span className="auth-journey-icon">
+                <BookOpenCheck aria-hidden="true" />
+              </span>
+              <div>
+                <strong>Course &amp; Aksi Usaha</strong>
+                <small>Belajar singkat, terapkan, lalu lihat perkembangannya.</small>
+              </div>
+            </li>
+          </ol>
+
+          <div className="auth-trust-note">
+            <ShieldCheck aria-hidden="true" />
+            <span>Data hasil Checkup tetap terhubung secara aman ke akunmu.</span>
+          </div>
         </div>
-        {children}
-      </div>
+      </aside>
+
+      <section className="auth-form-panel" aria-label="Akses akun Ruang Tumbuh">
+        <div className="auth-form-shell" id="auth-content" tabIndex={-1}>
+          <div className="auth-context-pill">
+            <span aria-hidden="true" />
+            DekatLokal · Ruang Tumbuh
+          </div>
+          {children}
+          <p className="auth-support-copy">
+            Butuh bantuan? <a href="mailto:hello@dekatlokal.com">Hubungi tim DekatLokal</a>
+          </p>
+        </div>
+      </section>
     </main>
   );
 }

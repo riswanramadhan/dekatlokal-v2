@@ -34,11 +34,7 @@ test("keyboard focus and reduced motion remain supported", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/masuk", { waitUntil: "domcontentloaded" });
   await page.keyboard.press("Tab");
-
-  const activeElementName = await page.evaluate(
-    () => document.activeElement?.getAttribute("aria-label") ?? "",
-  );
-  expect(activeElementName).toContain("Ke Ruang Tumbuh DekatLokal");
+  await expect(page.getByRole("link", { name: "Lewati ke formulir" })).toBeFocused();
 });
 
 for (const width of mobileWidths) {

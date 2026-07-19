@@ -19,7 +19,7 @@ import {
   getAppView,
   getRepositoriesForRequest,
 } from "@/domain/services/app-service";
-import { startGoogleMock } from "@/features/auth/actions";
+import { startGoogleLogin } from "@/features/auth/actions";
 import {
   beginRecall,
   openSignupWall,
@@ -217,7 +217,7 @@ export default async function MulaiPage({ searchParams }: MulaiPageProps) {
                 Daftar dengan WhatsApp
                 <ArrowRight aria-hidden="true" className="h-5 w-5" />
               </ButtonLink>
-              <form action={startGoogleMock}>
+              <form action={startGoogleLogin}>
                 <Button className="w-full" type="submit" variant="secondary">
                   <Search aria-hidden="true" className="h-5 w-5" />
                   Lanjutkan dengan Google

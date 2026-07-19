@@ -1,0 +1,297 @@
+[
+  {
+    "name": "landing-1600x900",
+    "metrics": {
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "document": {
+        "width": 1600,
+        "height": 6057
+      },
+      "sections": {
+        "hero": null,
+        "akses-belajar": {
+          "width": 1600,
+          "height": 900
+        },
+        "pengalaman": {
+          "width": 1600,
+          "height": 927.390625
+        },
+        "course": {
+          "width": 1600,
+          "height": 970.5
+        },
+        "paket": {
+          "width": 1600,
+          "height": 1034
+        },
+        "mulai": {
+          "width": 1600,
+          "height": 900
+        }
+      },
+      "brokenVisibleImages": [],
+      "customerCopyHits": []
+    },
+    "errors": {
+      "console": [],
+      "page": [],
+      "requests": []
+    }
+  },
+  {
+    "name": "landing-1440x900",
+    "metrics": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "document": {
+        "width": 1440,
+        "height": 5988
+      },
+      "sections": {
+        "hero": null,
+        "akses-belajar": {
+          "width": 1440,
+          "height": 900
+        },
+        "pengalaman": {
+          "width": 1440,
+          "height": 906.5625
+        },
+        "course": {
+          "width": 1440,
+          "height": 936.5
+        },
+        "paket": {
+          "width": 1440,
+          "height": 1019.875
+        },
+        "mulai": {
+          "width": 1440,
+          "height": 900
+        }
+      },
+      "brokenVisibleImages": [],
+      "customerCopyHits": []
+    },
+    "errors": {
+      "console": [],
+      "page": [],
+      "requests": []
+    }
+  },
+  {
+    "name": "landing-390x844",
+    "metrics": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 8247
+      },
+      "sections": {
+        "hero": null,
+        "akses-belajar": {
+          "width": 390,
+          "height": 865.265625
+        },
+        "pengalaman": {
+          "width": 390,
+          "height": 976.328125
+        },
+        "course": {
+          "width": 390,
+          "height": 1287.359375
+        },
+        "paket": {
+          "width": 390,
+          "height": 2291.578125
+        },
+        "mulai": {
+          "width": 390,
+          "height": 996.6875
+        }
+      },
+      "brokenVisibleImages": [],
+      "customerCopyHits": []
+    },
+    "errors": {
+      "console": [],
+      "page": [],
+      "requests": []
+    }
+  },
+  {
+    "name": "landing-360x800",
+    "metrics": {
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "document": {
+        "width": 360,
+        "height": 8624
+      },
+      "sections": {
+        "hero": null,
+        "akses-belajar": {
+          "width": 360,
+          "height": 863.09375
+        },
+        "pengalaman": {
+          "width": 360,
+          "height": 950.375
+        },
+        "course": {
+          "width": 360,
+          "height": 1291.953125
+        },
+        "paket": {
+          "width": 360,
+          "height": 2498.5625
+        },
+        "mulai": {
+          "width": 360,
+          "height": 983.75
+        }
+      },
+      "brokenVisibleImages": [],
+      "customerCopyHits": []
+    },
+    "errors": {
+      "console": [],
+      "page": [],
+      "requests": []
+    }
+  },
+  {
+    "name": "masuk-1600x900",
+    "metrics": {
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "document": {
+        "width": 1600,
+        "height": 904
+      },
+      "customerCopyHits": [],
+      "copyFonts": [
+        {
+          "cls": "text-sm font-semibold text-text-primary",
+          "size": 16,
+          "text": "Nomor WhatsApp"
+        },
+        {
+          "cls": "auth-field-hint",
+          "size": 16,
+          "text": "Gunakan nomor yang terhubung dengan hasi"
+        },
+        {
+          "cls": "text-sm font-semibold text-text-primary",
+          "size": 16,
+          "text": "Email"
+        },
+        {
+          "cls": "auth-support-copy",
+          "size": 16,
+          "text": "Butuh bantuan? Hubungi tim DekatLokal"
+        }
+      ]
+    },
+    "errors": {
+      "console": [],
+      "page": [],
+      "requests": []
+    }
+  },
+  {
+    "name": "masuk-390x844",
+    "metrics": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1082
+      },
+      "customerCopyHits": [],
+      "copyFonts": [
+        {
+          "cls": "text-sm font-semibold text-text-primary",
+          "size": 16,
+          "text": "Nomor WhatsApp"
+        },
+        {
+          "cls": "auth-field-hint",
+          "size": 16,
+          "text": "Gunakan nomor yang terhubung dengan hasi"
+        },
+        {
+          "cls": "text-sm font-semibold text-text-primary",
+          "size": 16,
+          "text": "Email"
+        },
+        {
+          "cls": "auth-support-copy",
+          "size": 16,
+          "text": "Butuh bantuan? Hubungi tim DekatLokal"
+        }
+      ]
+    },
+    "errors": {
+      "console": [],
+      "page": [],
+      "requests": []
+    }
+  },
+  {
+    "name": "masuk-360x800",
+    "metrics": {
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "document": {
+        "width": 360,
+        "height": 1076
+      },
+      "customerCopyHits": [],
+      "copyFonts": [
+        {
+          "cls": "text-sm font-semibold text-text-primary",
+          "size": 16,
+          "text": "Nomor WhatsApp"
+        },
+        {
+          "cls": "auth-field-hint",
+          "size": 16,
+          "text": "Gunakan nomor yang terhubung dengan hasi"
+        },
+        {
+          "cls": "text-sm font-semibold text-text-primary",
+          "size": 16,
+          "text": "Email"
+        },
+        {
+          "cls": "auth-support-copy",
+          "size": 16,
+          "text": "Butuh bantuan? Hubungi tim DekatLokal"
+        }
+      ]
+    },
+    "errors": {
+      "console": [],
+      "page": [],
+      "requests": []
+    }
+  }
+]

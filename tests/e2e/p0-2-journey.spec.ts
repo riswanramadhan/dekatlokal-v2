@@ -35,7 +35,7 @@ test("value-first recall continues through signup, association, and exactly thre
   await page.getByLabel("Nama pemilik").fill("Bu Rina");
   await page.getByLabel("Nama usaha").fill("Warung Rina");
   await page.getByLabel("Nomor WhatsApp").fill("081234567890");
-  await page.getByRole("button", { name: "Lanjut ke verifikasi mock" }).click();
+  await page.getByRole("button", { name: /Lanjut ke verifikasi/ }).click();
   await page.getByLabel("Kode verifikasi").fill("123456");
   await page.getByRole("button", { name: "Verifikasi dan lanjutkan" }).click();
 
@@ -83,7 +83,7 @@ test("partial recall persists, reveals help after two attempts, and supports exi
   await page.getByRole("link", { name: "Saya sudah punya akun" }).click();
 
   await page.getByLabel("Nomor WhatsApp").fill("081234567890");
-  await page.getByRole("button", { name: "Kirim kode mock" }).click();
+  await page.getByRole("button", { name: "Kirim kode verifikasi" }).click();
   await page.getByLabel("Kode verifikasi").fill("123456");
   await page.getByRole("button", { name: "Verifikasi dan lanjutkan" }).click();
   await page.waitForURL("**/app/beranda", { timeout: 180_000 });
@@ -123,13 +123,13 @@ test("OTP invalid, expired, and resend states are visible", async ({ page }) => 
 
   await page.getByLabel("Kode verifikasi").fill("000000");
   await page.getByRole("button", { name: "Verifikasi dan lanjutkan" }).click();
-  await expect(page.getByText(/Kode mock tidak cocok/)).toBeVisible();
+  await expect(page.getByText(/Kode verifikasi tidak cocok/)).toBeVisible();
 
   await page.getByLabel("Kode verifikasi").fill("999999");
   await page.getByRole("button", { name: "Verifikasi dan lanjutkan" }).click();
-  await expect(page.getByText(/Kode mock sudah kedaluwarsa/)).toBeVisible();
+  await expect(page.getByText(/Kode verifikasi sudah kedaluwarsa/)).toBeVisible();
 
-  await page.getByRole("button", { name: "Kirim ulang kode mock" }).click();
+  await page.getByRole("button", { name: "Kirim ulang kode" }).click();
   await page.waitForURL("**/verifikasi?status=resend");
-  await expect(page.getByText(/Kode baru sudah dikirim/)).toBeVisible();
+  await expect(page.getByText(/Permintaan kode baru telah diterima/)).toBeVisible();
 });
