@@ -4,6 +4,7 @@
 
 Build `app.dekatlokal.com`, a mobile-first personalized UMKM learning-and-intervention platform that is visually connected to `dekatlokal.com`.
 
+
 ## Read first
 
 Before planning or editing, read:
@@ -14,6 +15,7 @@ Before planning or editing, read:
 4. `docs/IMPLEMENTATION_PLAN.md` when it exists
 5. `docs/DECISIONS.md` when it exists
 6. Existing code and project conventions
+7. documentation include codex, with 'React in Incluyde'
 
 ## Product rules
 
