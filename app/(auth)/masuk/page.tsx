@@ -37,8 +37,7 @@ export default async function MasukPage({ searchParams }: MasukPageProps) {
         <p className="auth-heading-kicker">Selamat datang kembali</p>
         <h2>Masuk ke Ruang Tumbuh</h2>
         <p className="auth-heading-copy">
-          Lanjutkan Jalur Naik Kelas dan aksi usaha berdasarkan hasil Digital
-          Checkup milikmu.
+          Lanjutkan Jalur Naik Kelas dari hasil Checkup milikmu.
         </p>
       </header>
 
@@ -67,7 +66,7 @@ export default async function MasukPage({ searchParams }: MasukPageProps) {
             required
           />
           <p className="auth-field-hint" id="phone-help">
-            Gunakan nomor yang terhubung dengan hasil Digital Checkup.
+            Gunakan nomor yang terhubung dengan hasil Checkup.
           </p>
         </div>
         <AuthPendingButton

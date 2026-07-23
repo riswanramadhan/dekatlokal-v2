@@ -26,8 +26,7 @@ export default async function DaftarPage({ searchParams }: DaftarPageProps) {
         <p className="auth-heading-kicker">Mulai perjalananmu</p>
         <h2>Buat akun Ruang Tumbuh</h2>
         <p className="auth-heading-copy">
-          Simpan hasil Digital Checkup, tiga fokus usaha, dan progres belajar
-          dalam satu tempat.
+          Simpan hasil Checkup, fokus usaha, dan progres belajar.
         </p>
       </header>
 
@@ -77,8 +76,7 @@ export default async function DaftarPage({ searchParams }: DaftarPageProps) {
           />
         </div>
         <p className="auth-privacy-note">
-          Informasi ini digunakan untuk menghubungkan progres dengan usaha yang
-          tepat.
+          Data ini menghubungkan progres dengan usaha yang tepat.
         </p>
         <AuthPendingButton
           className="auth-submit-button"
