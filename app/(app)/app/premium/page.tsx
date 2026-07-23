@@ -24,7 +24,7 @@ export default async function PremiumPage() {
   return (
     <div className="space-y-6">
       <HeroBanner
-        description="Premium di DekatLokal bukan marketplace umum. Rekomendasi muncul berdasarkan hasil usaha, prasyarat, dan nilai bisnis yang diharapkan. Tidak ada pembayaran nyata pada demo ini."
+        description="Premium di DekatLokal bukan marketplace umum. Rekomendasi muncul berdasarkan hasil usaha, prasyarat, dan nilai bisnis yang diharapkan. Pembayaran course belum tersedia."
         eyebrow="Rekomendasi lanjutan"
         imageSrc="/illustrations/reward-hero.png"
         meta={<StatusPill tone={foundationComplete ? "success" : "warning"}>{foundationComplete ? "Relevan dibuka" : "Fondasi dulu"}</StatusPill>}

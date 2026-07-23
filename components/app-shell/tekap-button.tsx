@@ -14,8 +14,8 @@ export function TekapButton() {
             <div>
               <p className="font-semibold text-text-primary">Tekap</p>
               <p className="mt-1 text-sm leading-6 text-text-secondary">
-                Saya siap membantu membaca langkah berikutnya. Untuk P0.1,
-                bantuan ini masih berupa pintu masuk mock.
+                Saya siap membantu membaca langkah berikutnya. Percakapan dengan
+                pendamping belum tersedia.
               </p>
             </div>
             <button

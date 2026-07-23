@@ -54,12 +54,12 @@ export default function DesignSystemPage() {
           <CardContent className="space-y-4">
             <h2 className="text-xl font-bold">Form</h2>
             <div className="space-y-2">
-              <FieldLabel htmlFor="demo-input">Nama usaha</FieldLabel>
-              <Input id="demo-input" placeholder="Warung Rina" />
+              <FieldLabel htmlFor="sample-input">Nama usaha</FieldLabel>
+              <Input id="sample-input" placeholder="Warung Rina" />
             </div>
             <div className="space-y-2">
-              <FieldLabel htmlFor="demo-select">Mode belajar</FieldLabel>
-              <Select id="demo-select">
+              <FieldLabel htmlFor="sample-select">Mode belajar</FieldLabel>
+              <Select id="sample-select">
                 <option>Guided</option>
                 <option>Standard</option>
                 <option>Fast</option>
@@ -73,7 +73,7 @@ export default function DesignSystemPage() {
         <h2 className="text-xl font-bold">State</h2>
         <StateGrid>
           <StateBlock
-            description="Konten sedang disiapkan dari repository mock."
+            description="Konten sedang disiapkan dari data pengembangan."
             kind="loading"
             title="Loading"
           />

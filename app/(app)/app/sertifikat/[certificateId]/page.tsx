@@ -94,7 +94,7 @@ export default async function CertificatePage({
 
           <div className="grid gap-3 border-t border-border-default pt-5 md:grid-cols-2">
             <Info label="Tanggal terbit" value={certificate.issueDate} />
-            <Info label="Mock certificate ID" value={certificate.mockCertificateId} />
+            <Info label="ID sertifikat" value={certificate.mockCertificateId} />
           </div>
 
           <div className="flex items-start gap-3 rounded-2xl bg-warning-soft p-4">

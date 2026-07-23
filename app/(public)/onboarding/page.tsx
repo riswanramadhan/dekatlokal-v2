@@ -314,11 +314,11 @@ export default async function OnboardingPage({
                   />
                   <span>
                     <span className="block font-semibold text-text-primary">
-                      Aktifkan pengingat mock
+                      Simpan preferensi pengingat
                     </span>
                     <span className="mt-1 block text-sm leading-6 text-text-secondary">
-                      Tidak ada notifikasi sungguhan pada demo. State ini hanya
-                      membantu menyiapkan preferensi.
+                      Pengiriman notifikasi otomatis belum tersedia. Pilihan ini
+                      tetap disimpan sebagai preferensi waktu pengingat Anda.
                     </span>
                   </span>
                 </label>

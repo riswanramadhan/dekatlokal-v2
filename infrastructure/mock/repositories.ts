@@ -599,7 +599,7 @@ export function createMockRepositories(
             status: "submitted",
             syncState: "synced",
             reviewerFeedback:
-              "Tugas sudah dikirim dan menunggu review mock. Draft tetap aman.",
+              "Tugas sudah dikirim. Peninjauan pendamping belum tersedia dan draft tetap aman.",
             updatedAt: new Date().toISOString(),
           }),
         );
@@ -610,7 +610,7 @@ export function createMockRepositories(
         status: "auto_approved",
         syncState: "synced",
         reviewerFeedback:
-          "Bukti demo memenuhi kelengkapan dasar dan disetujui otomatis.",
+          "Bukti memenuhi kelengkapan dasar dan disetujui otomatis.",
         updatedAt: new Date().toISOString(),
       });
       const asset = createAssetFromTask({
