@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Mail, MessageCircle, Search } from "lucide-react";
-import { Button, ButtonLink, Card, CardContent, FieldLabel, Input } from "@/components/ui";
+import { AlertCircle, ChevronDown, Mail, MessageCircle } from "lucide-react";
+import { AuthConnectivityNotice, AuthPendingButton } from "@/components/auth";
+import { FieldLabel, Input } from "@/components/ui";
 import {
   startEmailFallback,
-  startGoogleMock,
+  startGoogleLogin,
   startWhatsappLogin,
 } from "@/features/auth/actions";
 
 export const metadata: Metadata = {
-  title: "Masuk",
+  title: "Masuk ke Ruang Tumbuh",
 };
 
 type MasukPageProps = {
@@ -17,8 +19,8 @@ type MasukPageProps = {
 };
 
 const statusCopy: Record<string, string> = {
-  invalid: "Nomor WhatsApp belum valid. Periksa kembali sebelum lanjut.",
-  "email-invalid": "Email belum valid. Gunakan email aktif untuk demo.",
+  invalid: "Nomor WhatsApp belum valid. Periksa kembali sebelum melanjutkan.",
+  "email-invalid": "Alamat email belum valid. Periksa kembali sebelum melanjutkan.",
 };
 
 export default async function MasukPage({ searchParams }: MasukPageProps) {
@@ -27,70 +29,105 @@ export default async function MasukPage({ searchParams }: MasukPageProps) {
     redirect(`/mulai?claim=${encodeURIComponent(claim)}`);
   }
 
+  const errorMessage = status ? statusCopy[status] : undefined;
+
   return (
-    <Card>
-      <CardContent className="space-y-6 p-5 md:p-7">
-        <div>
-          <p className="text-sm font-semibold text-brand-primary">Masuk</p>
-          <h2 className="mt-2 text-2xl font-bold text-text-primary">
-            Lanjutkan Ruang Tumbuh
-          </h2>
-          <p className="mt-2 text-base leading-7 text-text-secondary">
-            Masuk untuk menyimpan Jalur Naik Kelas atau melanjutkan progres
-            yang sudah ada. Verifikasi pada demo tetap menggunakan kode mock.
+    <article className="auth-card">
+      <header>
+        <p className="auth-heading-kicker">Selamat datang kembali</p>
+        <h2>Masuk ke Ruang Tumbuh</h2>
+        <p className="auth-heading-copy">
+          Lanjutkan Jalur Naik Kelas dari hasil Checkup milikmu.
+        </p>
+      </header>
+
+      <AuthConnectivityNotice />
+
+      {errorMessage ? (
+        <div className="auth-alert auth-alert-danger" role="alert">
+          <AlertCircle aria-hidden="true" />
+          <span>{errorMessage}</span>
+        </div>
+      ) : null}
+
+      <form action={startWhatsappLogin} className="auth-form-stack">
+        <div className="auth-field">
+          <FieldLabel htmlFor="phone">Nomor WhatsApp</FieldLabel>
+          <Input
+            aria-describedby="phone-help"
+            aria-invalid={status === "invalid"}
+            autoComplete="tel"
+            autoFocus
+            className="auth-input"
+            id="phone"
+            inputMode="tel"
+            name="phone"
+            placeholder="Contoh: 0812 3456 7890"
+            required
+          />
+          <p className="auth-field-hint" id="phone-help">
+            Gunakan nomor yang terhubung dengan hasil Checkup.
           </p>
         </div>
-        {status && statusCopy[status] ? (
-          <p className="rounded-2xl bg-danger-soft p-3 text-sm leading-6 text-danger">
-            {statusCopy[status]}
-          </p>
-        ) : null}
-        <form action={startWhatsappLogin} className="space-y-4">
-          <div className="space-y-2">
-            <FieldLabel htmlFor="phone">Nomor WhatsApp</FieldLabel>
-            <Input
-              autoComplete="tel"
-              id="phone"
-              inputMode="tel"
-              name="phone"
-              placeholder="Contoh: 0812 3456 7890"
-            />
-          </div>
-          <Button className="w-full" type="submit">
-            <MessageCircle aria-hidden="true" className="h-5 w-5" />
-            Kirim kode mock
-          </Button>
-        </form>
-        <form action={startGoogleMock}>
-          <Button className="w-full" type="submit" variant="secondary">
-            <Search aria-hidden="true" className="h-5 w-5" />
-            Lanjut dengan Google mock
-          </Button>
-        </form>
-        <form action={startEmailFallback} className="space-y-3">
-          <div className="space-y-2">
-            <FieldLabel htmlFor="email">Email cadangan</FieldLabel>
-            <Input
-              autoComplete="email"
-              id="email"
-              name="email"
-              placeholder="nama@email.com"
-              type="email"
-            />
-          </div>
-          <Button className="w-full" type="submit" variant="ghost">
-            <Mail aria-hidden="true" className="h-5 w-5" />
-            Kirim tautan verifikasi mock
-          </Button>
-        </form>
-        <ButtonLink
-          className="w-full"
-          href="/daftar"
+        <AuthPendingButton
+          className="auth-submit-button"
+          pendingLabel="Menyiapkan verifikasi..."
+        >
+          <MessageCircle aria-hidden="true" />
+          Kirim kode verifikasi
+        </AuthPendingButton>
+      </form>
+
+      <div className="auth-divider">atau</div>
+
+      <form action={startGoogleLogin}>
+        <AuthPendingButton
+          className="auth-secondary-button"
+          pendingLabel="Menghubungkan Google..."
           variant="secondary"
         >
-          Buat akun baru
-        </ButtonLink>
-      </CardContent>
-    </Card>
+          <span aria-hidden="true" className="auth-google-mark">G</span>
+          Lanjut dengan Google
+        </AuthPendingButton>
+      </form>
+
+      <details className="auth-details" open={status === "email-invalid"}>
+        <summary>
+          <span>
+            <Mail aria-hidden="true" />
+            Masuk dengan email
+          </span>
+          <ChevronDown aria-hidden="true" />
+        </summary>
+        <div className="auth-details-body">
+          <form action={startEmailFallback} className="auth-form-stack">
+            <div className="auth-field">
+              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <Input
+                aria-invalid={status === "email-invalid"}
+                autoComplete="email"
+                className="auth-input"
+                id="email"
+                name="email"
+                placeholder="nama@email.com"
+                required
+                type="email"
+              />
+            </div>
+            <AuthPendingButton
+              className="auth-secondary-button"
+              pendingLabel="Menyiapkan verifikasi..."
+              variant="secondary"
+            >
+              Lanjut dengan email
+            </AuthPendingButton>
+          </form>
+        </div>
+      </details>
+
+      <p className="auth-card-footer">
+        Belum punya akun? <Link href="/daftar">Buat akun baru</Link>
+      </p>
+    </article>
   );
 }

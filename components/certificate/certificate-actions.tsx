@@ -7,8 +7,8 @@ import { useHydrated } from "@/lib/hooks/use-hydrated";
 
 export function CertificateActions() {
   const hydrated = useHydrated();
-  const [shareState, setShareState] = useState("Siap dibagikan");
-  const [downloadState, setDownloadState] = useState("PDF mock siap");
+  const [shareState, setShareState] = useState("Fitur berbagi belum tersedia");
+  const [downloadState, setDownloadState] = useState("PDF belum tersedia");
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
@@ -16,7 +16,7 @@ export function CertificateActions() {
         <Button
           className="w-full"
           disabled={!hydrated}
-          onClick={() => setShareState("Tautan berbagi mock sudah disiapkan")}
+          onClick={() => setShareState("Fitur berbagi belum tersedia")}
           variant="secondary"
         >
           <Share2 aria-hidden="true" className="h-5 w-5" />
@@ -28,7 +28,7 @@ export function CertificateActions() {
         <Button
           className="w-full"
           disabled={!hydrated}
-          onClick={() => setDownloadState("Unduhan demo dicatat. PDF produksi menyusul.")}
+          onClick={() => setDownloadState("Unduhan PDF belum tersedia")}
           variant="secondary"
         >
           <Download aria-hidden="true" className="h-5 w-5" />

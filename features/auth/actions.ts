@@ -94,11 +94,10 @@ export async function startEmailFallback(formData: FormData) {
   redirect("/verifikasi?status=email-sent");
 }
 
-export async function startGoogleMock(formData: FormData) {
+export async function startGoogleLogin(formData: FormData) {
   const claimToken = await claimFromForm(formData);
   await setAuthSession({
     mode: "login",
-    email: "akun-google-mock@dekatlokal.test",
     claimToken,
     verified: false,
   });

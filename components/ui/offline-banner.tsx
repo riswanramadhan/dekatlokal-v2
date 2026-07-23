@@ -29,7 +29,7 @@ export function OfflineBanner({ forceOffline = false }: { forceOffline?: boolean
       />
       <p>
         Koneksi sedang tidak stabil. Draft dan status penting tetap ditampilkan
-        dalam mode mock.
+        dari data terakhir yang tersimpan.
       </p>
     </div>
   );

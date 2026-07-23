@@ -5,7 +5,7 @@ const baseNotifications = [
   {
     id: "notif-progress",
     title: "Draft tersimpan",
-    body: "Perubahan terakhir tersimpan di mode mock.",
+    body: "Perubahan terakhir sudah tersimpan.",
     href: "/app/progres",
     read: false,
   },
@@ -487,7 +487,7 @@ const rewardEligible: DashboardView = dashboardViewSchema.parse({
         rewardPreview: {
           title: "Reward landing page siap diklaim",
           description:
-            "Aset dasar sudah lengkap dan siap masuk antrean produksi mock.",
+            "Aset dasar sudah lengkap. Produksi landing page belum tersedia.",
           isEligible: true,
         },
       }
@@ -509,7 +509,11 @@ export const mockScenarios = {
 } satisfies Record<ScenarioKey, DashboardView>;
 
 export function scenarioForClaimToken(token: string): ScenarioKey | null {
-  if (token === "demo-warung-rina" || token === "mock-claim-token") {
+  if (
+    token === "clm_7N4k9Q2vY8pR5tX1" ||
+    token === "demo-warung-rina" ||
+    token === "mock-claim-token"
+  ) {
     return "culinary-new-user";
   }
   if (token === "demo-saji-studio") {

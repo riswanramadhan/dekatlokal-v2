@@ -112,7 +112,7 @@ export function buildRewardEligibility(input: {
       id: "profile",
       label: "Profil usaha cukup lengkap",
       complete: profileComplete,
-      detail: `${input.business.profileCompleteness}% lengkap. Minimal demo: 80%.`,
+      detail: `${input.business.profileCompleteness}% lengkap. Minimum kelengkapan: 80%.`,
       actionHref: "/app/akun",
     },
     {
@@ -120,7 +120,7 @@ export function buildRewardEligibility(input: {
       label: "Syarat program disetujui",
       complete: input.termsAccepted,
       detail: input.termsAccepted
-        ? "Syarat mock program sudah diterima."
+        ? "Syarat program sudah diterima."
         : "Baca dan setujui syarat program sebelum klaim.",
     },
     {
@@ -129,7 +129,7 @@ export function buildRewardEligibility(input: {
       complete: capacityAvailable,
       detail:
         input.programCapacity === "available"
-          ? "Kuota mock tersedia."
+          ? "Kuota program tersedia."
           : "Program sedang antre atau penuh.",
     },
   ];

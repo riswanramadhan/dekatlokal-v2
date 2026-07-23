@@ -156,7 +156,7 @@ export default async function RecheckupPage() {
         </div>
         <form action={completeMockRecheckup} className="mt-5">
           <Button className="w-full" type="submit">
-            Selesaikan Checkup ulang mock
+            Selesaikan Checkup ulang
           </Button>
         </form>
       </VisualPanel>

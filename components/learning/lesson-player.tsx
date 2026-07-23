@@ -254,8 +254,8 @@ function ScreenContent({
         ) : (
           <div className="flex aspect-video flex-col items-center justify-center gap-3 p-5 text-center">
             <Video aria-hidden="true" className="h-9 w-9" />
-            <p className="font-semibold">Video demo {screen.mediaDuration}</p>
-            <p className="text-sm text-white/75">Media produksi belum diaktifkan</p>
+            <p className="font-semibold">Video pembelajaran {screen.mediaDuration}</p>
+            <p className="text-sm text-white/75">Video pembelajaran belum tersedia</p>
           </div>
         )}
         <Transcript text={screen.transcript} />
@@ -367,7 +367,7 @@ function MockAudio({ screen, lowBandwidth }: { screen: LessonScreen; lowBandwidt
       ) : (
         <div className="flex items-center gap-4">
           <button
-            aria-label={playing ? "Jeda audio demo" : "Putar audio demo"}
+            aria-label={playing ? "Jeda audio pembelajaran" : "Putar audio pembelajaran"}
             className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary text-white"
             onClick={() => setPlaying((current) => !current)}
             type="button"
@@ -376,7 +376,9 @@ function MockAudio({ screen, lowBandwidth }: { screen: LessonScreen; lowBandwidt
           </button>
           <Headphones aria-hidden="true" className="h-5 w-5 text-brand-primary" />
           <div>
-            <p className="font-semibold text-text-primary">Audio demo</p>
+            <p className="font-semibold text-text-primary">
+              Audio pembelajaran belum tersedia
+            </p>
             <p className="text-sm text-text-secondary">{screen.mediaDuration}</p>
           </div>
         </div>

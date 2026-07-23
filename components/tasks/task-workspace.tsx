@@ -200,7 +200,8 @@ export function TaskWorkspace({
                 Bukti gambar
               </span>
               <span className="text-sm leading-6 text-text-secondary">
-                {draft.imageName || "Pilih foto atau tangkapan layar. Demo hanya menyimpan nama file."}
+                {draft.imageName ||
+                  "Pilih foto atau tangkapan layar. Unggah gambar belum tersedia; nama file akan disimpan."}
               </span>
               <input
                 accept="image/*"
@@ -283,7 +284,9 @@ export function TaskWorkspace({
           <div className="flex items-start gap-3 rounded-[24px] bg-white/82 p-4 shadow-[var(--shadow-soft)]">
             <LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-primary" />
             <p className="text-sm leading-6 text-text-secondary">
-              Bukti hanya dipakai untuk progres, review mock, dan Aset Usaha {businessName}. Bukti tidak dipublikasikan tanpa persetujuan Anda.
+              Bukti hanya dipakai untuk progres dan Aset Usaha {businessName}.
+              Peninjauan oleh pendamping belum tersedia. Bukti tidak
+              dipublikasikan tanpa persetujuan Anda.
             </p>
           </div>
         </div>

@@ -22,7 +22,7 @@ export default async function HasilCheckupPage() {
     return (
       <StateBlock
         action={{
-          href: "/hubungkan-checkup?token=demo-warung-rina",
+          href: "/hubungkan-checkup?token=clm_7N4k9Q2vY8pR5tX1",
           label: "Hubungkan hasil checkup",
         }}
         description="Hasil Digital Checkup diperlukan agar rekomendasi bisa dijelaskan dengan tepat."

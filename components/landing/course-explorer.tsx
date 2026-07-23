@@ -1,28 +1,14 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import {
-  Bookmark,
-  BookOpen,
-  Clock3,
-  LockKeyhole,
-  Search,
-} from "lucide-react";
+import { ArrowRight, BadgePercent, BookOpen, Clock3, LockKeyhole } from "lucide-react";
 
 export type LandingCourse = {
   slug: string;
   title: string;
   outcome: string;
   image: string;
-  category:
-    | "Branding"
-    | "Digitalisasi"
-    | "Legalitas"
-    | "Operasional"
-    | "Pengembangan"
-    | "Penjualan";
+  imageAlt: string;
+  category: "Branding" | "Digitalisasi" | "Legalitas" | "Operasional" | "Pengembangan" | "Penjualan";
   access: "Gratis" | "Premium";
   duration: string;
   recommended?: boolean;
@@ -30,169 +16,55 @@ export type LandingCourse = {
   prerequisite?: string;
 };
 
-const courseFilters = [
-  "Semua Course",
-  "Gratis",
-  "Digitalisasi",
-  "Branding",
-  "Penjualan",
-  "Operasional",
-  "Legalitas",
-  "Pengembangan",
-  "Premium",
-] as const;
-
-type CourseFilter = (typeof courseFilters)[number];
+const conciseReasonBySlug: Record<string, string> = {
+  "digitalisasi-umkm": "Fondasi digital",
+  "branding-umkm": "Brand konsisten",
+  "produk-dan-kemasan": "Info produk jelas",
+  "konsistensi-promosi": "Promosi rutin",
+  "marketplace-dan-kanal-penjualan": "Kanal jual",
+  "operasional-dan-keuangan-dasar": "Catatan usaha",
+  "legalitas-usaha": "Dokumen usaha",
+  "komitmen-dan-growth-mindset": "Target tumbuh",
+};
 
 export function CourseExplorer({ courses }: { courses: LandingCourse[] }) {
-  const [activeFilter, setActiveFilter] = useState<CourseFilter>("Semua Course");
-  const [query, setQuery] = useState("");
-  const [savedCourses, setSavedCourses] = useState<Set<string>>(() => new Set());
-
-  const visibleCourses = useMemo(() => {
-    const normalizedQuery = query.trim().toLocaleLowerCase("id-ID");
-
-    return courses.filter((course) => {
-      const matchesFilter =
-        activeFilter === "Semua Course" ||
-        course.access === activeFilter ||
-        course.category === activeFilter;
-      const matchesQuery =
-        normalizedQuery.length === 0 ||
-        `${course.title} ${course.outcome} ${course.category}`
-          .toLocaleLowerCase("id-ID")
-          .includes(normalizedQuery);
-
-      return matchesFilter && matchesQuery;
-    });
-  }, [activeFilter, courses, query]);
-
-  const toggleSaved = (slug: string) => {
-    setSavedCourses((current) => {
-      const next = new Set(current);
-      if (next.has(slug)) next.delete(slug);
-      else next.add(slug);
-      return next;
-    });
-  };
-
   return (
-    <section aria-labelledby="course-title" className="dl-course-shell" id="course">
+    <section aria-labelledby="course-title" className="dl-course-shell dl-viewport-section" id="course">
       <div className="dl-course-section">
-      <div className="dl-course-heading">
-        <h2 id="course-title">
-          Course Pilihan untuk <span className="dl-title-pill is-coral">Naik Kelas.</span>
-        </h2>
-        <p>
-          Mulai dari fondasi gratis yang menghasilkan Aset Usaha. Course premium baru
-          direkomendasikan setelah fokus dasar selesai, lengkap dengan alasan dan prasyarat.
-        </p>
-      </div>
-
-      <div aria-label="Filter course" className="dl-course-toolbar">
-        <div className="dl-course-filters">
-          {courseFilters.map((filter) => (
-            <button
-              aria-pressed={activeFilter === filter}
-              className={activeFilter === filter ? "is-active" : undefined}
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              type="button"
-            >
-              {filter}
-            </button>
-          ))}
+        <div className="dl-course-heading">
+          <div>
+            <p className="dl-section-kicker">Belajar sesuai prioritas usahamu</p>
+            <h2 id="course-title">Course yang berakhir pada <span className="dl-title-pill">aksi nyata.</span></h2>
+          </div>
+          <p>Mulai dari fondasi gratis yang menghasilkan Aset Usaha. Course lanjutan terbuka setelah prasyarat selesai, lengkap dengan alasan rekomendasinya.</p>
         </div>
-        <label className="dl-course-search">
-          <span className="sr-only">Cari course</span>
-          <input
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Cari course"
-            type="search"
-            value={query}
-          />
-          <Search aria-hidden="true" size={19} />
-        </label>
-      </div>
 
-      {visibleCourses.length > 0 ? (
         <div className="dl-course-grid">
-          {visibleCourses.map((course) => {
-            const isSaved = savedCourses.has(course.slug);
-
+          {courses.map((course) => {
+            const price = course.access === "Gratis" ? "Rp0" : "Rp99.000";
+            const originalPrice = course.access === "Gratis" ? "Rp199.000" : "Rp149.000";
             return (
               <article className="dl-course-card" key={course.slug}>
                 <div className="dl-course-image">
-                  <Image
-                    alt=""
-                    fill
-                    sizes="(max-width: 680px) 92vw, (max-width: 1120px) 45vw, 310px"
-                    src={course.image}
-                  />
-                  {course.recommended ? (
-                    <span className="dl-recommended-badge">Direkomendasikan</span>
-                  ) : null}
-                  <button
-                    aria-label={`${isSaved ? "Hapus" : "Simpan"} ${course.title}`}
-                    aria-pressed={isSaved}
-                    className="dl-bookmark-button"
-                    onClick={() => toggleSaved(course.slug)}
-                    type="button"
-                  >
-                    <Bookmark aria-hidden="true" fill={isSaved ? "currentColor" : "none"} size={17} />
-                  </button>
+                  <Image alt={course.imageAlt} fill sizes="(max-width: 699px) 84vw, (max-width: 1099px) 42vw, 23vw" src={course.image} unoptimized />
+                  {course.recommended ? <span className="dl-recommended-badge">Prioritas awal</span> : null}
                 </div>
-
                 <div className="dl-course-body">
-                  <div className="dl-course-access-row">
-                    <span className={`dl-access-badge is-${course.access.toLocaleLowerCase("id-ID")}`}>
-                      {course.access}
-                    </span>
-                    <span>{course.category}</span>
-                  </div>
+                  <div className="dl-course-access-row"><span className={`dl-access-badge is-${course.access.toLocaleLowerCase("id-ID")}`}>{course.access}</span><span>{course.category}</span></div>
                   <h3>{course.title}</h3>
                   <p>{course.outcome}</p>
                   <div className="dl-course-meta">
-                    {course.reason ? (
-                      <span className="dl-course-reason"><BookOpen aria-hidden="true" size={16} /> <strong>Alasan:</strong> {course.reason}</span>
-                    ) : null}
-                    {course.prerequisite ? (
-                      <span className="dl-course-prerequisite"><LockKeyhole aria-hidden="true" size={16} /> <strong>Prasyarat:</strong> {course.prerequisite}</span>
-                    ) : null}
-                    <span><Clock3 aria-hidden="true" size={16} /> {course.duration}</span>
+                    <span><BookOpen aria-hidden="true" size={16} /><span>{conciseReasonBySlug[course.slug] ?? course.reason ?? "Praktik usaha"}</span></span>
+                    <span><Clock3 aria-hidden="true" size={16} /><span>{course.duration}</span></span>
+                    <span className={course.prerequisite ? "dl-course-prerequisite" : "dl-course-prerequisite is-open"}>{course.prerequisite ? <LockKeyhole aria-hidden="true" size={16} /> : <BadgePercent aria-hidden="true" size={16} />}<span>{course.prerequisite ?? "akses setelah Checkup"}</span></span>
                   </div>
-                  <div className="dl-course-price-row">
-                    <div>
-                      {course.access === "Premium" ? <del>Rp149.000</del> : null}
-                      <strong>{course.access === "Gratis" ? "Rp0" : "Rp99.000"}</strong>
-                    </div>
-                    {course.access === "Gratis" ? <span>Gratis</span> : <span>Berbayar</span>}
-                  </div>
-                  <Link className="dl-course-preview" href={`/app/modul/${course.slug}`}>
-                    Lihat Preview
-                    {course.access === "Premium" ? <LockKeyhole aria-hidden="true" size={15} /> : null}
-                  </Link>
+                  <div className="dl-course-price-row"><div><del>{originalPrice}</del><strong>{price}</strong></div><span>{course.access === "Gratis" ? "Fondasi" : "Preview"}</span></div>
+                  <Link className="dl-course-preview" href={`/app/modul/${course.slug}`}>Lihat Preview <ArrowRight aria-hidden="true" size={16} /></Link>
                 </div>
               </article>
             );
           })}
         </div>
-      ) : (
-        <div className="dl-course-empty" role="status">
-          <Search aria-hidden="true" size={24} />
-          <strong>Course belum ditemukan</strong>
-          <p>Coba kata kunci atau kategori lain.</p>
-          <button
-            onClick={() => {
-              setActiveFilter("Semua Course");
-              setQuery("");
-            }}
-            type="button"
-          >
-            Tampilkan semua course
-          </button>
-        </div>
-      )}
       </div>
     </section>
   );

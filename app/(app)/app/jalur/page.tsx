@@ -27,8 +27,8 @@ export default async function JalurPage() {
     return (
       <StateBlock
         action={{
-          href: "/mulai?claim=demo-warung-rina",
-          label: "Coba demo claim",
+          href: "/mulai?claim=clm_7N4k9Q2vY8pR5tX1",
+          label: "Hubungkan hasil Digital Checkup",
         }}
         description="Jalur Naik Kelas dibuat setelah hasil Digital Checkup terhubung."
         kind="empty"
