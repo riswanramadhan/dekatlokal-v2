@@ -25,13 +25,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://app.dekatlokal.com"),
   title: {
-    default: "Ruang Tumbuh | DekatLokal",
+    default: "Digital Checkup UMKM | DekatLokal",
     template: "%s | DekatLokal",
   },
   description:
     "Ruang Tumbuh DekatLokal membantu UMKM menemukan langkah belajar dan aksi usaha yang paling relevan.",
   openGraph: {
-    title: "Ruang Tumbuh DekatLokal",
+    title: "Digital Checkup UMKM | DekatLokal",
     description:
       "Platform pendampingan UMKM yang personal, praktis, dan terukur.",
     locale: "id_ID",
@@ -44,6 +44,8 @@ export const metadata: Metadata = {
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/favicon.ico",
   },
 };
 

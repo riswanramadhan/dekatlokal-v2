@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AlertCircle, ChevronDown, Mail, MessageCircle } from "lucide-react";
-import { AuthConnectivityNotice, AuthPendingButton } from "@/components/auth";
-import { FieldLabel, Input } from "@/components/ui";
 import {
-  startEmailFallback,
-  startGoogleLogin,
-  startWhatsappLogin,
-} from "@/features/auth/actions";
+  Clock3,
+  Info,
+  LockKeyhole,
+  Mail,
+  MessageCircle,
+  ShieldCheck,
+} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Masuk ke Ruang Tumbuh",
@@ -18,115 +17,70 @@ type MasukPageProps = {
   searchParams: Promise<{ claim?: string; status?: string }>;
 };
 
-const statusCopy: Record<string, string> = {
-  invalid: "Nomor WhatsApp belum valid. Periksa kembali sebelum melanjutkan.",
-  "email-invalid": "Alamat email belum valid. Periksa kembali sebelum melanjutkan.",
-};
-
 export default async function MasukPage({ searchParams }: MasukPageProps) {
-  const { claim, status } = await searchParams;
+  const { claim } = await searchParams;
   if (claim) {
     redirect(`/mulai?claim=${encodeURIComponent(claim)}`);
   }
 
-  const errorMessage = status ? statusCopy[status] : undefined;
-
   return (
-    <article className="auth-card">
+    <article className="auth-card auth-maintenance-card">
       <header>
-        <p className="auth-heading-kicker">Selamat datang kembali</p>
-        <h2>Masuk ke Ruang Tumbuh</h2>
+        <p className="auth-heading-kicker">Maintenance Sistem</p>
+        <h2>Ruang Tumbuh sedang dirapikan</h2>
         <p className="auth-heading-copy">
-          Lanjutkan Jalur Naik Kelas dari hasil Checkup milikmu.
+          Akses masuk sementara dinonaktifkan karena kami sedang memperbarui
+          alur login, sinkronisasi hasil Checkup, dan keamanan akun.
         </p>
       </header>
 
-      <AuthConnectivityNotice />
-
-      {errorMessage ? (
-        <div className="auth-alert auth-alert-danger" role="alert">
-          <AlertCircle aria-hidden="true" />
-          <span>{errorMessage}</span>
-        </div>
-      ) : null}
-
-      <form action={startWhatsappLogin} className="auth-form-stack">
-        <div className="auth-field">
-          <FieldLabel htmlFor="phone">Nomor WhatsApp</FieldLabel>
-          <Input
-            aria-describedby="phone-help"
-            aria-invalid={status === "invalid"}
-            autoComplete="tel"
-            autoFocus
-            className="auth-input"
-            id="phone"
-            inputMode="tel"
-            name="phone"
-            placeholder="Contoh: 0812 3456 7890"
-            required
-          />
-          <p className="auth-field-hint" id="phone-help">
-            Gunakan nomor yang terhubung dengan hasil Checkup.
+      <div className="auth-maintenance-status" role="status">
+        <span>
+          <Clock3 aria-hidden="true" />
+        </span>
+        <div>
+          <strong>Dalam proses maintenance</strong>
+          <p>
+            Kamu belum perlu mencoba login berulang kali. Hasil Checkup dan
+            progres yang sudah tersimpan tetap kami jaga.
           </p>
         </div>
-        <AuthPendingButton
-          className="auth-submit-button"
-          pendingLabel="Menyiapkan verifikasi..."
-        >
+      </div>
+
+      <div className="auth-maintenance-actions" aria-describedby="maintenance-disabled-note">
+        <button className="auth-submit-button" disabled type="button">
           <MessageCircle aria-hidden="true" />
-          Kirim kode verifikasi
-        </AuthPendingButton>
-      </form>
-
-      <div className="auth-divider">atau</div>
-
-      <form action={startGoogleLogin}>
-        <AuthPendingButton
-          className="auth-secondary-button"
-          pendingLabel="Menghubungkan Google..."
-          variant="secondary"
-        >
+          Masuk dengan WhatsApp
+        </button>
+        <button className="auth-secondary-button" disabled type="button">
           <span aria-hidden="true" className="auth-google-mark">G</span>
           Lanjut dengan Google
-        </AuthPendingButton>
-      </form>
+        </button>
+        <button className="auth-secondary-button" disabled type="button">
+          <Mail aria-hidden="true" />
+          Masuk dengan email
+        </button>
+      </div>
 
-      <details className="auth-details" open={status === "email-invalid"}>
-        <summary>
-          <span>
-            <Mail aria-hidden="true" />
-            Masuk dengan email
-          </span>
-          <ChevronDown aria-hidden="true" />
-        </summary>
-        <div className="auth-details-body">
-          <form action={startEmailFallback} className="auth-form-stack">
-            <div className="auth-field">
-              <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input
-                aria-invalid={status === "email-invalid"}
-                autoComplete="email"
-                className="auth-input"
-                id="email"
-                name="email"
-                placeholder="nama@email.com"
-                required
-                type="email"
-              />
-            </div>
-            <AuthPendingButton
-              className="auth-secondary-button"
-              pendingLabel="Menyiapkan verifikasi..."
-              variant="secondary"
-            >
-              Lanjut dengan email
-            </AuthPendingButton>
-          </form>
+      <p className="auth-maintenance-note" id="maintenance-disabled-note">
+        <LockKeyhole aria-hidden="true" />
+        Semua tombol masuk sementara dinonaktifkan sampai proses maintenance
+        selesai.
+      </p>
+
+      <div className="auth-maintenance-list" aria-label="Informasi maintenance">
+        <div>
+          <Info aria-hidden="true" />
+          <span>Tim sedang merapikan pengalaman masuk agar lebih stabil.</span>
         </div>
-      </details>
+        <div>
+          <ShieldCheck aria-hidden="true" />
+          <span>Keamanan akun dan data Checkup tetap menjadi prioritas.</span>
+        </div>
+      </div>
 
       <p className="auth-card-footer">
-        Belum punya akun? <Link href="/daftar">Buat akun baru</Link>
+        Butuh bantuan sekarang? <a href="mailto:hello@dekatlokal.com">Hubungi tim DekatLokal</a>
       </p>
     </article>
   );
