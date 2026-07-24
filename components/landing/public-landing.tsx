@@ -211,10 +211,12 @@ function FaqSection() {
     <section aria-labelledby="faq-title" className="dl-faq-section dl-viewport-section" id="faq">
       <div className="dl-faq-copy">
         <p className="dl-section-kicker">FAQ</p>
-        <h2 id="faq-title">Yang Perlu Kamu Tahu Tentang Digital Checkup.</h2>
-        <span aria-hidden="true" className="dl-faq-logo">
-          <Image alt="" height={38} src="/brand/dekat-lokal-icon.png" unoptimized width={38} />
-        </span>
+        <div className="dl-faq-title-row">
+          <span aria-hidden="true" className="dl-faq-logo">
+            <Image alt="" height={38} src="/brand/dekat-lokal-icon.png" unoptimized width={38} />
+          </span>
+          <h2 id="faq-title">Yang Perlu Kamu Tahu Tentang Digital Checkup.</h2>
+        </div>
       </div>
       <div className="dl-faq-list">
         {faqItems.map((item, index) => (
@@ -223,7 +225,7 @@ function FaqSection() {
               <span>{item.question}</span>
               <i aria-hidden="true" />
             </summary>
-            <p>{item.answer}</p>
+            <p className="dl-faq-answer">{item.answer}</p>
           </details>
         ))}
       </div>
