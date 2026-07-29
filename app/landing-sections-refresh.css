@@ -1,0 +1,842 @@
+@layer landing-final {
+  /* Section labels keep one compact leading marker without a trailing rule. */
+  body .dl-landing.dl-landing .dl-section-kicker::after {
+    display: none !important;
+    width: 0 !important;
+    content: none !important;
+  }
+
+  /* Access — compact introduction with one unified four-step workflow. */
+  body .dl-landing.dl-landing .dl-access-section.dl-viewport-section {
+    display: block !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: clamp(4.25rem, 6vw, 5.5rem) var(--dl-content-gutter, clamp(1.25rem, 5vw, 5.5rem)) !important;
+    background: #ffffff !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-board {
+    display: grid !important;
+    width: min(100%, 74rem) !important;
+    max-width: 74rem !important;
+    min-height: 29rem !important;
+    grid-template-columns: minmax(19rem, 0.78fr) minmax(0, 1.22fr) !important;
+    margin: 0 auto !important;
+    overflow: hidden !important;
+    border: 1px solid #dce5f2 !important;
+    border-radius: clamp(1.35rem, 2.4vw, 2rem) !important;
+    background: #ffffff !important;
+    box-shadow: 0 1.35rem 3.5rem rgba(1, 34, 98, 0.08) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-lead {
+    position: relative !important;
+    display: flex !important;
+    min-width: 0 !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    padding: clamp(2rem, 3.4vw, 3.15rem) !important;
+    overflow: hidden !important;
+    color: #ffffff !important;
+    background:
+      radial-gradient(circle at 88% 10%, rgba(255, 255, 255, 0.18), transparent 30%),
+      radial-gradient(circle at 5% 105%, rgba(96, 165, 250, 0.35), transparent 33%),
+      linear-gradient(145deg, #075fff 0%, #0143c8 58%, #002c8e 100%) !important;
+    isolation: isolate !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-lead::before {
+    position: absolute !important;
+    z-index: -1 !important;
+    right: -7rem !important;
+    bottom: -8rem !important;
+    width: 20rem !important;
+    height: 20rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.17) !important;
+    border-radius: 50% !important;
+    box-shadow:
+      0 0 0 3rem rgba(255, 255, 255, 0.04),
+      0 0 0 6rem rgba(255, 255, 255, 0.025) !important;
+    content: "" !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-lead-heading {
+    max-width: 29rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-lead .dl-section-kicker {
+    margin-bottom: 0.85rem !important;
+    color: rgba(255, 255, 255, 0.82) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-lead .dl-section-kicker::before {
+    background: #ffffff !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-lead h2 {
+    max-width: 28rem !important;
+    margin: 0 !important;
+    color: #ffffff !important;
+    font-size: clamp(2rem, 3.35vw, 3rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.045em !important;
+    line-height: 1.06 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-lead .dl-title-pill {
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 0.11em 0.035em !important;
+    border: 1px solid rgba(255, 255, 255, 0.78) !important;
+    border-radius: 0.12em 0.42em 0.12em 0.42em !important;
+    background: #ffffff !important;
+    color: var(--dl-blue-deep) !important;
+    box-shadow: none !important;
+    box-decoration-break: clone !important;
+    -webkit-box-decoration-break: clone !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-lead-heading > p:last-child {
+    max-width: 27rem !important;
+    margin: 1rem 0 0 !important;
+    color: rgba(255, 255, 255, 0.76) !important;
+    font-size: 0.9rem !important;
+    line-height: 1.65 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row-list {
+    display: grid !important;
+    min-width: 0 !important;
+    grid-template-rows: repeat(4, minmax(0, 1fr)) !important;
+    background: #ffffff !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row {
+    display: grid !important;
+    min-width: 0 !important;
+    grid-template-columns: 3rem minmax(0, 1fr) 5rem !important;
+    align-items: center !important;
+    gap: clamp(0.75rem, 1.6vw, 1.1rem) !important;
+    padding: clamp(0.78rem, 1.45vw, 1.08rem) clamp(0.95rem, 1.8vw, 1.35rem) !important;
+    border-bottom: 1px solid #e4eaf3 !important;
+    background: #ffffff !important;
+    transition: background-color 220ms ease, transform 220ms ease !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row:last-child {
+    border-bottom: 0 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row:hover {
+    background: #f6f9ff !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row-icon {
+    display: grid !important;
+    width: 3rem !important;
+    height: 3rem !important;
+    place-items: center !important;
+    border: 1px solid #d6e2f5 !important;
+    border-radius: 0.85rem !important;
+    background: #eef4ff !important;
+    color: var(--dl-blue) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row-copy {
+    min-width: 0 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row-copy > span {
+    display: block !important;
+    margin-bottom: 0.22rem !important;
+    color: var(--dl-blue) !important;
+    font-size: 0.63rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row-copy h3 {
+    margin: 0 !important;
+    color: var(--dl-ink) !important;
+    font-size: clamp(0.98rem, 1.35vw, 1.18rem) !important;
+    letter-spacing: -0.025em !important;
+    line-height: 1.22 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row-copy p {
+    margin: 0.3rem 0 0 !important;
+    color: var(--dl-muted) !important;
+    font-size: 0.76rem !important;
+    line-height: 1.48 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row-media {
+    position: relative !important;
+    width: 100% !important;
+    height: 4.4rem !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    border-radius: 0.8rem !important;
+    background: #eaf1fb !important;
+  }
+
+  body .dl-landing.dl-landing .dl-access-row-media img {
+    object-fit: cover !important;
+  }
+
+  /* Pricing — the selected row controls one stable detail surface. */
+  body .dl-landing.dl-landing .dl-pricing-section.dl-viewport-section {
+    display: block !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: clamp(4.75rem, 7vw, 6.5rem) var(--dl-content-gutter, clamp(1.25rem, 5vw, 5.5rem)) !important;
+    background: #f7f9fd !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-layout {
+    display: grid !important;
+    width: min(100%, 78rem) !important;
+    max-width: 78rem !important;
+    grid-template-columns: minmax(0, 0.96fr) minmax(25rem, 0.84fr) !important;
+    align-items: start !important;
+    gap: clamp(3rem, 7vw, 6.5rem) !important;
+    margin: 0 auto !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-choice {
+    min-width: 0 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-copy {
+    max-width: 37rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-copy h2 {
+    margin: 0 !important;
+    color: var(--dl-ink) !important;
+    font-size: clamp(2.35rem, 4.5vw, 4.15rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.052em !important;
+    line-height: 1.03 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-copy > p:last-child {
+    max-width: 34rem !important;
+    margin: 1.3rem 0 0 !important;
+    color: var(--dl-muted) !important;
+    font-size: 0.96rem !important;
+    line-height: 1.7 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-options {
+    display: grid !important;
+    gap: 0.65rem !important;
+    margin-top: clamp(2.2rem, 5vw, 4rem) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-option {
+    display: grid !important;
+    width: 100% !important;
+    min-height: 5.3rem !important;
+    grid-template-columns: 1.35rem minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 0.95rem !important;
+    padding: 1rem 1.15rem !important;
+    border: 1px solid #dfe5ee !important;
+    border-radius: 0.95rem !important;
+    color: var(--dl-ink) !important;
+    background: rgba(255, 255, 255, 0.72) !important;
+    box-shadow: none !important;
+    font: inherit !important;
+    text-align: left !important;
+    cursor: pointer !important;
+    transition:
+      border-color 200ms ease,
+      background-color 200ms ease,
+      box-shadow 200ms ease,
+      transform 200ms ease !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-option:hover {
+    border-color: #b8cdf2 !important;
+    background: #ffffff !important;
+    transform: translateY(-0.1rem) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-option:focus-visible {
+    outline: 3px solid rgba(2, 85, 245, 0.23) !important;
+    outline-offset: 2px !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-option.is-selected {
+    border-color: rgba(2, 85, 245, 0.24) !important;
+    background: #eaf1ff !important;
+    box-shadow: inset 0 0 0 1px rgba(2, 85, 245, 0.08) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-radio {
+    position: relative !important;
+    display: block !important;
+    width: 1.15rem !important;
+    height: 1.15rem !important;
+    border: 1.5px solid #aeb9c9 !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-radio::after {
+    position: absolute !important;
+    inset: 0.22rem !important;
+    border-radius: 50% !important;
+    background: var(--dl-blue) !important;
+    content: "" !important;
+    opacity: 0 !important;
+    transform: scale(0.45) !important;
+    transition: opacity 180ms ease, transform 180ms ease !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-option.is-selected .dl-pricing-radio {
+    border-color: var(--dl-blue) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-option.is-selected .dl-pricing-radio::after {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-option-copy {
+    display: block !important;
+    min-width: 0 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-option-copy strong {
+    display: block !important;
+    color: var(--dl-ink) !important;
+    font-size: 0.96rem !important;
+    line-height: 1.3 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-option-copy small {
+    display: block !important;
+    margin-top: 0.28rem !important;
+    color: var(--dl-muted) !important;
+    font-size: 0.76rem !important;
+    line-height: 1.45 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-option-price {
+    color: var(--dl-blue-deep) !important;
+    font-size: 0.8rem !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-detail {
+    position: relative !important;
+    display: flex !important;
+    min-width: 0 !important;
+    min-height: 36rem !important;
+    flex-direction: column !important;
+    padding: clamp(1.65rem, 3.5vw, 2.5rem) !important;
+    overflow: hidden !important;
+    border: 1px solid #dce5f2 !important;
+    border-radius: 1.7rem !important;
+    background:
+      radial-gradient(circle at 100% 0, rgba(2, 85, 245, 0.08), transparent 30%),
+      #ffffff !important;
+    box-shadow: 0 1.4rem 4rem rgba(1, 34, 98, 0.1) !important;
+    animation: dl-pricing-detail-in 300ms cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-detail-head {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-detail-head > div > span {
+    color: var(--dl-blue) !important;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-detail h3 {
+    margin: 0.35rem 0 0 !important;
+    color: var(--dl-ink) !important;
+    font-size: clamp(1.55rem, 2.8vw, 2.15rem) !important;
+    letter-spacing: -0.035em !important;
+    line-height: 1.12 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-popular {
+    flex: 0 0 auto !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 999px !important;
+    color: #ffffff !important;
+    background: var(--dl-blue) !important;
+    font-size: 0.66rem !important;
+    font-weight: 800 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-detail-price {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 0.65rem !important;
+    margin-top: 1.3rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-detail-price strong {
+    color: var(--dl-ink) !important;
+    font-size: clamp(2.35rem, 4vw, 3.5rem) !important;
+    letter-spacing: -0.055em !important;
+    line-height: 1 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-detail-price span {
+    color: var(--dl-muted) !important;
+    font-size: 0.78rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-detail-cta {
+    display: flex !important;
+    min-height: 3.25rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.55rem !important;
+    margin-top: 1.35rem !important;
+    border: 1px solid var(--dl-blue) !important;
+    border-radius: 999px !important;
+    color: #ffffff !important;
+    background: var(--dl-blue) !important;
+    box-shadow: 0 0.8rem 1.8rem rgba(2, 85, 245, 0.18) !important;
+    font-size: 0.84rem !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    transition: background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-detail-cta:hover {
+    background: var(--dl-blue-deep) !important;
+    box-shadow: 0 1rem 2.2rem rgba(2, 85, 245, 0.24) !important;
+    transform: translateY(-0.1rem) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-detail-description {
+    margin: 1.35rem 0 0 !important;
+    padding-bottom: 1.3rem !important;
+    border-bottom: 1px solid #e5eaf2 !important;
+    color: var(--dl-muted) !important;
+    font-size: 0.84rem !important;
+    line-height: 1.65 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-features {
+    margin-top: 1.35rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-features h4 {
+    margin: 0 !important;
+    color: var(--dl-ink) !important;
+    font-size: 0.95rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-features ul {
+    display: grid !important;
+    gap: 0.8rem !important;
+    margin: 1rem 0 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-features li {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 0.7rem !important;
+    color: #344258 !important;
+    font-size: 0.81rem !important;
+    line-height: 1.5 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-features li > span {
+    display: grid !important;
+    width: 1.35rem !important;
+    height: 1.35rem !important;
+    flex: 0 0 auto !important;
+    place-items: center !important;
+    border-radius: 50% !important;
+    color: var(--dl-blue) !important;
+    background: #eaf1ff !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-status {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 0.7rem !important;
+    margin-top: auto !important;
+    padding-top: 1.35rem !important;
+    color: var(--dl-muted) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-status > span {
+    width: 0.55rem !important;
+    height: 0.55rem !important;
+    flex: 0 0 auto !important;
+    margin-top: 0.24rem !important;
+    border: 2px solid #ffffff !important;
+    border-radius: 50% !important;
+    background: #22a559 !important;
+    box-shadow: 0 0 0 2px rgba(34, 165, 89, 0.18) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-status p {
+    margin: 0 !important;
+    font-size: 0.72rem !important;
+    line-height: 1.5 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-status strong {
+    display: block !important;
+    margin-bottom: 0.12rem !important;
+    color: var(--dl-ink) !important;
+    font-size: 0.74rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-pricing-note {
+    width: min(100%, 55rem) !important;
+    margin: 2rem auto 0 !important;
+    color: var(--dl-muted) !important;
+    font-size: 0.76rem !important;
+    line-height: 1.6 !important;
+    text-align: center !important;
+  }
+
+  /* FAQ — two clear topics, with lightweight native details accordions. */
+  body .dl-landing.dl-landing .dl-faq-section.dl-viewport-section {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: clamp(4.75rem, 7vw, 6.5rem) var(--dl-content-gutter, clamp(1.25rem, 5vw, 5.5rem)) !important;
+    background: #ffffff !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-layout {
+    display: grid !important;
+    width: min(100%, 82rem) !important;
+    max-width: 82rem !important;
+    grid-template-columns: minmax(16rem, 0.64fr) minmax(0, 1.36fr) !important;
+    align-items: start !important;
+    gap: clamp(3rem, 7vw, 7rem) !important;
+    margin: 0 auto !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-layout .dl-faq-copy {
+    position: static !important;
+    top: auto !important;
+    max-width: 25rem !important;
+    justify-self: start !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-eyebrow {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.7rem !important;
+    margin-bottom: 1.05rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-eyebrow .dl-section-kicker {
+    margin: 0 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-eyebrow .dl-faq-logo {
+    display: grid !important;
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    place-items: center !important;
+    border-radius: 0.7rem !important;
+    background: var(--dl-blue) !important;
+    box-shadow: 0 0.65rem 1.5rem rgba(2, 85, 245, 0.18) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-eyebrow .dl-faq-logo::before,
+  body .dl-landing.dl-landing .dl-faq-eyebrow .dl-faq-logo::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-eyebrow .dl-faq-logo img {
+    position: relative !important;
+    z-index: 1 !important;
+    display: block !important;
+    width: 1.7rem !important;
+    height: 1.7rem !important;
+    object-fit: contain !important;
+    filter: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-layout .dl-faq-copy h2 {
+    margin: 0 !important;
+    color: var(--dl-ink) !important;
+    font-size: clamp(2.25rem, 4.5vw, 3.8rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.052em !important;
+    line-height: 1.06 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-columns {
+    display: grid !important;
+    min-width: 0 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: clamp(1.6rem, 3vw, 2.5rem) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-category {
+    min-width: 0 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-category > h3 {
+    margin: 0 !important;
+    padding: 0 0 1rem !important;
+    border-bottom: 1px solid #dfe5ee !important;
+    color: var(--dl-ink) !important;
+    font-size: 1rem !important;
+    font-weight: 750 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-category .dl-faq-list {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item {
+    overflow: hidden !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #e5e9f0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item[open],
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item.is-active {
+    border-color: #dce3ee !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item summary {
+    display: grid !important;
+    min-height: 4.65rem !important;
+    grid-template-columns: minmax(0, 1fr) 1.35rem !important;
+    align-items: center !important;
+    gap: 0.8rem !important;
+    padding: 0.9rem 0 !important;
+    color: var(--dl-ink) !important;
+    font-size: 0.84rem !important;
+    font-weight: 700 !important;
+    line-height: 1.45 !important;
+    cursor: pointer !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item summary:focus-visible {
+    border-radius: 0.45rem !important;
+    outline: 3px solid rgba(2, 85, 245, 0.2) !important;
+    outline-offset: 3px !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item summary .dl-faq-toggle {
+    position: relative !important;
+    display: block !important;
+    width: 1.35rem !important;
+    height: 1.35rem !important;
+    border-radius: 0 !important;
+    color: var(--dl-blue) !important;
+    background: transparent !important;
+    transform: none !important;
+    transition: transform 220ms ease !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item summary .dl-faq-toggle::before,
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item summary .dl-faq-toggle::after {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    display: block !important;
+    width: 0.75rem !important;
+    height: 1.5px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: currentColor !important;
+    content: "" !important;
+    transform: translate(-50%, -50%) !important;
+    transition: opacity 200ms ease, transform 200ms ease !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item summary .dl-faq-toggle::after {
+    transform: translate(-50%, -50%) rotate(90deg) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item[open] summary .dl-faq-toggle,
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item.is-active summary .dl-faq-toggle {
+    color: var(--dl-blue-deep) !important;
+    background: transparent !important;
+    transform: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item[open] summary .dl-faq-toggle::after,
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item.is-active summary .dl-faq-toggle::after {
+    opacity: 0 !important;
+    transform: translate(-50%, -50%) rotate(90deg) scaleX(0) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item .dl-faq-answer {
+    margin: 0 !important;
+    padding: 0 1.9rem 0 0 !important;
+    color: var(--dl-muted) !important;
+    font-size: 0.76rem !important;
+    line-height: 1.62 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item[open] .dl-faq-answer,
+  body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item.is-active .dl-faq-answer {
+    padding: 0 1.9rem 1.2rem 0 !important;
+  }
+
+  @keyframes dl-pricing-detail-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.55rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 980px) {
+    body .dl-landing.dl-landing .dl-access-board {
+      width: min(100%, 46rem) !important;
+      min-height: 0 !important;
+      grid-template-columns: 1fr !important;
+    }
+
+    body .dl-landing.dl-landing .dl-access-lead {
+      min-height: 15rem !important;
+      padding: 2.25rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-access-row-list {
+      grid-template-rows: repeat(4, auto) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-pricing-layout {
+      max-width: 44rem !important;
+      grid-template-columns: 1fr !important;
+      gap: 2.5rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-pricing-detail {
+      min-height: 0 !important;
+    }
+
+    body .dl-landing.dl-landing .dl-faq-layout {
+      grid-template-columns: 1fr !important;
+      gap: 2.5rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-faq-layout .dl-faq-copy {
+      max-width: 38rem !important;
+    }
+  }
+
+  @media (max-width: 680px) {
+    body .dl-landing.dl-landing .dl-access-section.dl-viewport-section,
+    body .dl-landing.dl-landing .dl-pricing-section.dl-viewport-section,
+    body .dl-landing.dl-landing .dl-faq-section.dl-viewport-section {
+      padding-top: 4.25rem !important;
+      padding-bottom: 4.25rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-access-board {
+      border-radius: 1.25rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-access-lead {
+      min-height: 0 !important;
+      gap: 0 !important;
+      padding: 1.55rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-access-lead h2 {
+      font-size: clamp(1.9rem, 9vw, 2.4rem) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-access-row {
+      grid-template-columns: 2.75rem minmax(0, 1fr) !important;
+      gap: 0.8rem !important;
+      padding: 0.95rem 1rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-access-row-icon {
+      width: 2.75rem !important;
+      height: 2.75rem !important;
+      border-radius: 0.78rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-access-row-media {
+      display: none !important;
+    }
+
+    body .dl-landing.dl-landing .dl-pricing-copy h2 {
+      font-size: clamp(2.15rem, 10vw, 3rem) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-pricing-option {
+      grid-template-columns: 1.25rem minmax(0, 1fr) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-pricing-option-price {
+      grid-column: 2 !important;
+      margin-top: 0.15rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-pricing-detail {
+      padding: 1.4rem !important;
+      border-radius: 1.35rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-faq-columns {
+      grid-template-columns: 1fr !important;
+      gap: 2.3rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-faq-layout .dl-faq-copy h2 {
+      font-size: clamp(2.1rem, 10vw, 2.9rem) !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body .dl-landing.dl-landing .dl-access-row,
+    body .dl-landing.dl-landing .dl-pricing-option,
+    body .dl-landing.dl-landing .dl-pricing-detail,
+    body .dl-landing.dl-landing .dl-pricing-detail-cta,
+    body .dl-landing.dl-landing .dl-faq-toggle::before,
+    body .dl-landing.dl-landing .dl-faq-toggle::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}

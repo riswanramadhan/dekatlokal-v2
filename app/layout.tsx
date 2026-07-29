@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import { SoundEffects } from "@/components/sound";
 import "./globals.css";
+import "./landing-nav-hero-refresh.css";
+import "./landing-course-refresh.css";
+import "./landing-sections-refresh.css";
+import "./landing-commercial-polish.css";
 
 const poppins = Poppins({
   variable: "--font-poppins",

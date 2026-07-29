@@ -1,86 +1,72 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  CheckCircle2,
-  Clock3,
-  Construction,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowLeft, Mail } from "lucide-react";
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Digital Checkup Maintenance | DekatLokal",
+  title: "Digital Checkup Sedang Dipelihara",
   description:
-    "Halaman informasi maintenance Assessment Digital Checkup 8 Dimensi DekatLokal.",
+    "Informasi pemeliharaan sementara layanan Digital Checkup DekatLokal.",
 };
-
-const dimensions = [
-  "Branding",
-  "Produk",
-  "Media sosial",
-  "Operasional",
-  "Keuangan",
-  "Legalitas",
-  "Kanal penjualan",
-  "Kesiapan website",
-] as const;
 
 export default function MulaiMaintenancePage() {
   return (
-    <main className="maintenance-page">
-      <section className="maintenance-card" aria-labelledby="maintenance-title">
-        <Link className="maintenance-logo" href="/" aria-label="Kembali ke beranda DekatLokal">
-          <Image
-            alt="DekatLokal"
-            height={48}
-            priority
-            src="/brand/dekat-lokal.png"
-            width={165}
-          />
-        </Link>
-
-        <div className="maintenance-icon" aria-hidden="true">
-          <Construction />
-        </div>
-
-        <p className="maintenance-kicker">Digital Checkup 8 Dimensi</p>
-        <h1 id="maintenance-title">
-          Assessment sedang dalam tahap maintenance.
-        </h1>
-        <p className="maintenance-copy">
-          Kami sedang merapikan pengalaman pertanyaan, hasil analisis, dan
-          rekomendasi agar setiap UMKM mendapatkan langkah yang lebih tepat.
-        </p>
-
-        <div className="maintenance-dimensions" aria-label="Dimensi Digital Checkup">
-          {dimensions.map((dimension) => (
-            <span key={dimension}>
-              <CheckCircle2 aria-hidden="true" />
-              {dimension}
-            </span>
-          ))}
-        </div>
-
-        <div className="maintenance-info">
-          <span>
-            <Clock3 aria-hidden="true" />
-            Estimasi kembali segera
-          </span>
-          <span>
-            <ShieldCheck aria-hidden="true" />
-            Data lama tetap aman
-          </span>
-        </div>
-
-        <div className="maintenance-actions">
-          <Link className="maintenance-primary" href="/">
-            <ArrowLeft aria-hidden="true" />
-            Kembali ke Beranda
+    <main className={styles.page}>
+      <section className={styles.card} aria-labelledby="maintenance-title">
+        <div className={styles.visualPanel}>
+          <Link
+            className={styles.logo}
+            href="/"
+            aria-label="Kembali ke beranda DekatLokal"
+          >
+            <Image
+              alt="DekatLokal"
+              height={48}
+              priority
+              src="/brand/dekat-lokal.png"
+              width={165}
+            />
           </Link>
-          <Link className="maintenance-secondary" href="/masuk">
-            Masuk ke Ruang Tumbuh
-          </Link>
+
+          <div className={styles.visual} aria-hidden="true">
+            <Image
+              alt=""
+              className={styles.maintenanceImage}
+              height={420}
+              priority
+              src="/illustrations/maintenance-toolkit.png"
+              width={420}
+            />
+          </div>
+        </div>
+
+        <div className={styles.content}>
+          <p className={styles.kicker}>Digital Checkup</p>
+          <h1 id="maintenance-title">Kami sedang melakukan pemeliharaan.</h1>
+          <p className={styles.copy}>
+            Layanan ini sementara belum tersedia. Kami sedang menyiapkan
+            pengalaman yang lebih stabil dan nyaman untukmu.
+          </p>
+
+          <p className={styles.status} role="status">
+            <span aria-hidden="true" />
+            Silakan kembali lagi beberapa saat.
+          </p>
+
+          <div className={styles.actions}>
+            <Link className={styles.primaryAction} href="/">
+              <ArrowLeft aria-hidden="true" />
+              Kembali ke Beranda
+            </Link>
+            <a
+              className={styles.secondaryAction}
+              href="mailto:hello@dekatlokal.com"
+            >
+              <Mail aria-hidden="true" />
+              Hubungi Tim
+            </a>
+          </div>
         </div>
       </section>
     </main>
