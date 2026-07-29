@@ -1,0 +1,487 @@
+@layer landing-final {
+  body .dl-landing.dl-landing .dl-course-shell {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+    min-height: 0 !important;
+    background: #ffffff !important;
+    padding-top: clamp(5rem, 8vw, 7.5rem) !important;
+    padding-bottom: clamp(5rem, 8vw, 7.5rem) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-shell::before {
+    position: absolute !important;
+    z-index: -2 !important;
+    inset: 20% 0 0 !important;
+    display: block !important;
+    background:
+      linear-gradient(
+        180deg,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.93) 16%,
+        rgba(239, 246, 255, 0.74) 48%,
+        rgba(234, 243, 255, 0.83) 76%,
+        #ffffff 100%
+      ),
+      url("/landing/hero-umkm-v2.png") center 34% / cover no-repeat !important;
+    content: "" !important;
+    opacity: 0.95 !important;
+    pointer-events: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-shell::after {
+    position: absolute !important;
+    z-index: -1 !important;
+    inset: 42% 0 8% !important;
+    display: block !important;
+    background:
+      radial-gradient(circle at 15% 45%, rgba(2, 85, 245, 0.12), transparent 28%),
+      radial-gradient(circle at 86% 36%, rgba(53, 120, 255, 0.13), transparent 25%) !important;
+    content: "" !important;
+    pointer-events: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-section {
+    position: relative !important;
+    z-index: 1 !important;
+    width: min(100%, 82rem) !important;
+    max-width: 82rem !important;
+    margin-inline: auto !important;
+    padding: 0 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-heading {
+    display: flex !important;
+    width: min(100%, 46rem) !important;
+    max-width: 46rem !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0 !important;
+    margin: 0 auto clamp(2.2rem, 4vw, 3.5rem) !important;
+    text-align: center !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-heading .dl-section-kicker {
+    margin: 0 0 0.75rem !important;
+    color: var(--dl-blue) !important;
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.13em !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-heading h2 {
+    max-width: none !important;
+    margin: 0 !important;
+    color: var(--dl-ink) !important;
+    font-size: clamp(2.25rem, 4.1vw, 4rem) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.055em !important;
+    line-height: 1.02 !important;
+    text-align: center !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-heading > p:last-child {
+    max-width: 41rem !important;
+    margin: 1rem auto 0 !important;
+    color: #66758a !important;
+    font-size: clamp(0.94rem, 1.25vw, 1.05rem) !important;
+    line-height: 1.7 !important;
+    text-align: center !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 1.15rem !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    scroll-snap-type: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-card {
+    display: flex !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    flex: none !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(30, 79, 158, 0.15) !important;
+    border-radius: 1rem !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    box-shadow: 0 1.15rem 2.8rem rgba(8, 45, 105, 0.11) !important;
+    transform: none !important;
+    transition:
+      transform 220ms ease,
+      border-color 220ms ease,
+      box-shadow 220ms ease !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-card:hover {
+    border-color: rgba(2, 85, 245, 0.32) !important;
+    box-shadow: 0 1.45rem 3.2rem rgba(8, 52, 128, 0.16) !important;
+    transform: translateY(-0.28rem) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-image {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16 / 9.7 !important;
+    flex: 0 0 auto !important;
+    overflow: hidden !important;
+    border-radius: 0 !important;
+    background: #dfe9f8 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-image::after {
+    position: absolute !important;
+    inset: auto 0 0 !important;
+    height: 38% !important;
+    background: linear-gradient(180deg, transparent, rgba(1, 20, 52, 0.35)) !important;
+    content: "" !important;
+    pointer-events: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-image > img {
+    object-fit: cover !important;
+    transform: scale(1.01) !important;
+    transition: transform 500ms ease !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-card:hover .dl-course-image > img {
+    transform: scale(1.045) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-image-badges {
+    position: absolute !important;
+    z-index: 3 !important;
+    top: 0.8rem !important;
+    left: 0.8rem !important;
+    display: flex !important;
+    max-width: calc(100% - 1.6rem) !important;
+    flex-wrap: wrap !important;
+    gap: 0.4rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-image-badges .dl-access-badge,
+  body .dl-landing.dl-landing .dl-course-image-badges .dl-recommended-badge {
+    position: static !important;
+    display: inline-flex !important;
+    min-height: 1.7rem !important;
+    align-items: center !important;
+    margin: 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.62) !important;
+    border-radius: 999px !important;
+    padding: 0.3rem 0.65rem !important;
+    box-shadow: 0 0.45rem 1.15rem rgba(1, 23, 60, 0.16) !important;
+    font-size: 0.63rem !important;
+    font-weight: 850 !important;
+    letter-spacing: 0.055em !important;
+    line-height: 1 !important;
+    text-transform: uppercase !important;
+    backdrop-filter: blur(0.6rem) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-image-badges .dl-access-badge.is-gratis {
+    background: #e6fff0 !important;
+    color: #0a7540 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-image-badges .dl-access-badge.is-premium {
+    background: #fff4ce !important;
+    color: #8a5600 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-image-badges .dl-recommended-badge {
+    background: var(--dl-blue) !important;
+    color: #ffffff !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-body {
+    display: flex !important;
+    min-height: 0 !important;
+    flex: 1 !important;
+    flex-direction: column !important;
+    padding: 1rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-access-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
+    color: #748197 !important;
+    font-size: 0.62rem !important;
+    font-weight: 750 !important;
+    letter-spacing: 0.06em !important;
+    line-height: 1.25 !important;
+    text-transform: uppercase !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-access-row > span:last-child {
+    overflow: hidden !important;
+    max-width: 50% !important;
+    color: var(--dl-blue) !important;
+    text-align: right !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-body h3 {
+    display: -webkit-box !important;
+    overflow: hidden !important;
+    min-height: 0 !important;
+    margin: 0.65rem 0 0.32rem !important;
+    color: var(--dl-ink) !important;
+    font-size: 1.02rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.025em !important;
+    line-height: 1.35 !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-body > p {
+    display: -webkit-box !important;
+    overflow: hidden !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    color: #69778c !important;
+    font-size: 0.78rem !important;
+    line-height: 1.6 !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 3 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-meta {
+    display: grid !important;
+    min-height: 0 !important;
+    align-content: start !important;
+    gap: 0.44rem !important;
+    margin: 0.68rem 0 0 !important;
+    border-top: 1px solid #e8edf5 !important;
+    padding: 0.68rem 0 0 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-meta > span {
+    display: grid !important;
+    grid-template-columns: 1.25rem minmax(0, 1fr) !important;
+    align-items: start !important;
+    gap: 0.48rem !important;
+    color: #65738a !important;
+    font-size: 0.7rem !important;
+    line-height: 1.35 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-meta svg {
+    width: 1.05rem !important;
+    height: 1.05rem !important;
+    margin: 0.08rem 0 0 !important;
+    color: var(--dl-blue) !important;
+    stroke-width: 2.2 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-meta span span {
+    overflow: hidden !important;
+    color: #65738a !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-meta strong {
+    display: inline !important;
+    margin-right: 0.3rem !important;
+    color: #24334a !important;
+    font-size: inherit !important;
+    font-weight: 800 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-price-row {
+    display: flex !important;
+    min-height: 0 !important;
+    align-items: flex-end !important;
+    justify-content: space-between !important;
+    gap: 0.75rem !important;
+    margin: 0.72rem 0 0 !important;
+    border-top: 1px solid #e8edf5 !important;
+    padding: 0.72rem 0 0 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-price-row > div {
+    display: flex !important;
+    min-width: 0 !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.15rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-price-row > div > small {
+    color: #7a8799 !important;
+    font-size: 0.62rem !important;
+    font-weight: 650 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-price-row > div > span {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 0.38rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-price-row strong {
+    color: var(--dl-ink) !important;
+    font-size: 1.08rem !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.025em !important;
+    line-height: 1 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-price-row del {
+    color: #98a3b3 !important;
+    font-size: 0.62rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-price-row > span {
+    border-radius: 999px !important;
+    background: #edf3ff !important;
+    color: #23529f !important;
+    padding: 0.35rem 0.55rem !important;
+    font-size: 0.58rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.04em !important;
+    line-height: 1 !important;
+    text-transform: uppercase !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem !important;
+    margin-top: 0.8rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-actions button,
+  body .dl-landing.dl-landing .dl-course-actions button:disabled {
+    display: inline-flex !important;
+    min-width: 0 !important;
+    min-height: 2.4rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.35rem !important;
+    overflow: hidden !important;
+    border: 1px solid var(--dl-blue) !important;
+    border-radius: 999px !important;
+    background: var(--dl-blue) !important;
+    color: #ffffff !important;
+    padding: 0.55rem 0.65rem !important;
+    font-family: inherit !important;
+    font-size: 0.66rem !important;
+    font-weight: 750 !important;
+    line-height: 1 !important;
+    opacity: 0.7 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-actions button:last-child,
+  body .dl-landing.dl-landing .dl-course-actions button:last-child:disabled {
+    border-color: #d5deec !important;
+    background: #ffffff !important;
+    color: #3f4d61 !important;
+  }
+
+  body .dl-landing.dl-landing .dl-course-actions button svg {
+    flex: 0 0 auto !important;
+  }
+
+  @media (max-width: 960px) {
+    body .dl-landing.dl-landing .dl-course-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 1.25rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-course-card {
+      min-height: 0 !important;
+    }
+  }
+
+  @media (max-width: 680px) {
+    body .dl-landing.dl-landing .dl-course-shell {
+      padding-top: 4.2rem !important;
+      padding-bottom: 4.2rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-course-heading {
+      margin-bottom: 1.8rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-course-heading h2 {
+      font-size: clamp(2rem, 10vw, 2.75rem) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-course-heading > p:last-child {
+      font-size: 0.94rem !important;
+      line-height: 1.6 !important;
+    }
+
+    body .dl-landing.dl-landing .dl-course-grid {
+      display: flex !important;
+      width: calc(100% + var(--dl-content-gutter)) !important;
+      gap: 0.9rem !important;
+      overflow-x: auto !important;
+      overflow-y: visible !important;
+      margin-right: calc(0px - var(--dl-content-gutter)) !important;
+      padding: 0.35rem var(--dl-content-gutter) 1.25rem 0 !important;
+      scroll-padding-inline: 0 var(--dl-content-gutter) !important;
+      scroll-snap-type: x mandatory !important;
+      scrollbar-width: none !important;
+      overscroll-behavior-inline: contain !important;
+    }
+
+    body .dl-landing.dl-landing .dl-course-grid::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    body .dl-landing.dl-landing .dl-course-card {
+      width: min(84vw, 20rem) !important;
+      min-width: min(84vw, 20rem) !important;
+      min-height: 0 !important;
+      flex: 0 0 min(84vw, 20rem) !important;
+      scroll-snap-align: start !important;
+      scroll-snap-stop: always !important;
+    }
+
+    body .dl-landing.dl-landing .dl-course-card:hover {
+      transform: none !important;
+    }
+  }
+
+  @media (max-width: 380px) {
+    body .dl-landing.dl-landing .dl-course-card {
+      width: 86vw !important;
+      min-width: 86vw !important;
+      flex-basis: 86vw !important;
+    }
+
+    body .dl-landing.dl-landing .dl-course-actions button,
+    body .dl-landing.dl-landing .dl-course-actions button:disabled {
+      font-size: 0.62rem !important;
+      padding-inline: 0.45rem !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body .dl-landing.dl-landing .dl-course-card,
+    body .dl-landing.dl-landing .dl-course-image > img {
+      transition: none !important;
+    }
+  }
+}

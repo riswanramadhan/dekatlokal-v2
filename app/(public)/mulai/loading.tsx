@@ -1,16 +1,27 @@
+import styles from "./page.module.css";
+
 export default function MulaiLoading() {
   return (
     <main
       aria-busy="true"
-      aria-label="Memeriksa hasil Digital Checkup"
-      className="min-h-screen bg-surface-page px-4 py-5"
+      aria-label="Memuat informasi pemeliharaan Digital Checkup"
+      className={styles.page}
     >
-      <div className="mx-auto max-w-[560px] animate-pulse space-y-6">
-        <div className="h-10 w-36 rounded-xl bg-brand-primary-soft" />
-        <div className="h-3 rounded-full bg-brand-primary-soft" />
-        <div className="h-16 w-16 rounded-2xl bg-brand-primary-soft" />
-        <div className="h-10 w-4/5 rounded-xl bg-surface-subtle" />
-        <div className="h-24 rounded-2xl bg-surface-subtle" />
+      <div className={`${styles.card} ${styles.loadingCard}`}>
+        <div aria-hidden="true" className={styles.loadingVisualPanel}>
+          <span className={styles.loadingLogo} />
+          <span className={styles.loadingVisual} />
+        </div>
+        <div aria-hidden="true" className={styles.loadingContent}>
+          <span className={styles.loadingKicker} />
+          <span className={styles.loadingTitle} />
+          <span className={styles.loadingCopy} />
+          <span className={styles.loadingStatus} />
+          <div className={styles.loadingActions}>
+            <span className={styles.loadingAction} />
+            <span className={styles.loadingSecondaryAction} />
+          </div>
+        </div>
       </div>
     </main>
   );

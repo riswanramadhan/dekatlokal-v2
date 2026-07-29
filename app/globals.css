@@ -10120,3 +10120,254 @@ body .dl-landing.dl-landing .dl-footer-bottom {
     --dl-page-x: 1.25rem;
   }
 }
+
+@layer landing-final {
+/* Pricing tickets: a perforated stub, edge cutouts, and a clean tear-off body. */
+body .dl-landing.dl-landing .dl-pricing-grid {
+  align-items: stretch !important;
+}
+
+body .dl-landing.dl-landing .dl-price-card,
+body .dl-landing.dl-landing .dl-price-card.is-featured {
+  position: relative !important;
+  display: flex !important;
+  min-height: 35rem !important;
+  flex-direction: column !important;
+  overflow: visible !important;
+  border: 1px solid rgba(2, 85, 245, 0.22) !important;
+  border-radius: 1.5rem !important;
+  background: #ffffff !important;
+  box-shadow: 0 1.25rem 3.25rem rgba(1, 34, 98, 0.1) !important;
+  clip-path: none !important;
+  isolation: isolate;
+}
+
+body .dl-landing.dl-landing .dl-price-card:hover {
+  border-color: rgba(2, 85, 245, 0.42) !important;
+  box-shadow: 0 1.65rem 3.75rem rgba(2, 85, 245, 0.14) !important;
+  transform: translateY(-0.4rem) !important;
+}
+
+body .dl-landing.dl-landing .dl-price-card.is-featured {
+  z-index: 2 !important;
+  border: 2px solid var(--dl-blue) !important;
+  transform: translateY(-0.75rem) !important;
+}
+
+body .dl-landing.dl-landing .dl-price-card.is-featured:hover {
+  transform: translateY(-1rem) !important;
+}
+
+body .dl-landing.dl-landing .dl-price-head,
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-head {
+  position: relative !important;
+  display: flex !important;
+  height: auto !important;
+  min-height: 12.75rem !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  overflow: hidden !important;
+  border-radius: 1.42rem 1.42rem 0 0 !important;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(2, 85, 245, 0.13), transparent 34%),
+    #f7faff !important;
+  padding: 1.4rem 1.65rem 1.5rem !important;
+  text-align: left !important;
+}
+
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-head {
+  background:
+    radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.22), transparent 35%),
+    linear-gradient(145deg, #075fff 0%, #013cb7 100%) !important;
+}
+
+body .dl-landing.dl-landing .dl-ticket-stub {
+  display: flex !important;
+  width: 100% !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  margin: 0 0 1.15rem !important;
+  color: #53709c !important;
+  font-size: 0.64rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.16em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+body .dl-landing.dl-landing .dl-ticket-stub > i {
+  display: block !important;
+  width: 3.25rem !important;
+  height: 0.85rem !important;
+  flex: 0 0 auto !important;
+  background: repeating-linear-gradient(90deg, currentColor 0 0.08rem, transparent 0.08rem 0.18rem) !important;
+  opacity: 0.58 !important;
+}
+
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-ticket-stub {
+  color: rgba(255, 255, 255, 0.78) !important;
+}
+
+body .dl-landing.dl-landing .dl-price-head > p {
+  margin: auto 0 0.55rem !important;
+  color: var(--dl-blue-deep) !important;
+  font-size: 0.98rem !important;
+  font-weight: 750 !important;
+}
+
+body .dl-landing.dl-landing .dl-price-head > strong {
+  color: var(--dl-ink) !important;
+  font-size: clamp(2rem, 2.8vw, 2.65rem) !important;
+  line-height: 1 !important;
+}
+
+body .dl-landing.dl-landing .dl-price-head > small {
+  margin-top: 0.4rem !important;
+  color: var(--dl-muted) !important;
+}
+
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-head > p,
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-head > strong {
+  color: #ffffff !important;
+}
+
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-head > small {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+body .dl-landing.dl-landing .dl-popular-plan {
+  position: absolute !important;
+  top: 3.35rem !important;
+  left: 1.65rem !important;
+  margin: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.42) !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(0.4rem);
+}
+
+body .dl-landing.dl-landing .dl-perforation,
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-perforation {
+  position: relative !important;
+  z-index: 4 !important;
+  display: block !important;
+  width: auto !important;
+  height: 0 !important;
+  margin: 0 1.1rem !important;
+  border: 0 !important;
+  border-top: 2px dashed rgba(2, 85, 245, 0.32) !important;
+  background: transparent !important;
+}
+
+body .dl-landing.dl-landing .dl-ticket-notch {
+  position: absolute !important;
+  z-index: 6 !important;
+  top: 50% !important;
+  display: block !important;
+  width: 1.65rem !important;
+  height: 1.65rem !important;
+  border: 1px solid rgba(2, 85, 245, 0.24) !important;
+  border-radius: 50% !important;
+  background: #f4f7fc !important;
+  transform: translateY(-50%) !important;
+}
+
+body .dl-landing.dl-landing .dl-ticket-notch.is-left {
+  left: -2rem !important;
+  right: auto !important;
+}
+
+body .dl-landing.dl-landing .dl-ticket-notch.is-right {
+  left: auto !important;
+  right: -2rem !important;
+}
+
+body .dl-landing.dl-landing .dl-price-body,
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-body {
+  display: flex !important;
+  min-height: 0 !important;
+  flex: 1 !important;
+  flex-direction: column !important;
+  border-radius: 0 0 1.42rem 1.42rem !important;
+  background: #ffffff !important;
+  color: #3c4a61 !important;
+  padding: 1.7rem 1.65rem 1.65rem !important;
+  text-align: left !important;
+}
+
+body .dl-landing.dl-landing .dl-price-body > p,
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-body > p {
+  min-height: 4.6rem !important;
+  color: var(--dl-muted) !important;
+}
+
+body .dl-landing.dl-landing .dl-price-body li,
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-body li {
+  color: #3c4a61 !important;
+}
+
+body .dl-landing.dl-landing .dl-price-body li > span,
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-body li > span {
+  background: #e9f0ff !important;
+  color: var(--dl-blue) !important;
+}
+
+body .dl-landing.dl-landing .dl-price-body > a,
+body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-body > a {
+  border: 1px solid var(--dl-blue) !important;
+  border-radius: 0.8rem !important;
+  background: var(--dl-blue) !important;
+  color: #ffffff !important;
+}
+
+@media (max-width: 980px) {
+  body .dl-landing.dl-landing .dl-pricing-grid {
+    max-width: 36rem !important;
+    gap: 1.5rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-price-card,
+  body .dl-landing.dl-landing .dl-price-card.is-featured,
+  body .dl-landing.dl-landing .dl-price-card:hover,
+  body .dl-landing.dl-landing .dl-price-card.is-featured:hover {
+    min-height: 0 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body .dl-landing.dl-landing .dl-price-head,
+  body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-head {
+    min-height: 11.75rem !important;
+    padding: 1.25rem 1.3rem 1.35rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-popular-plan {
+    top: 3.1rem !important;
+    left: 1.3rem !important;
+    max-width: calc(100% - 2.6rem) !important;
+    white-space: normal !important;
+  }
+
+  body .dl-landing.dl-landing .dl-price-body,
+  body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-body {
+    padding: 1.55rem 1.3rem 1.35rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-price-body > p,
+  body .dl-landing.dl-landing .dl-price-card.is-featured .dl-price-body > p {
+    min-height: 0 !important;
+  }
+}
+}
+
+/* Course previews remain visible while enrollment access is unavailable. */
+.dl-landing .dl-course-preview:disabled {
+  width: 100%;
+  border: 0;
+  cursor: not-allowed;
+  font-family: inherit;
+  opacity: 0.56;
+  transform: none !important;
+}

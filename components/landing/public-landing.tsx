@@ -1,16 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowRight,
   BarChart3,
   BookOpenCheck,
-  Check,
   CheckCircle2,
   ScanSearch,
   Target,
 } from "lucide-react";
 import { CourseExplorer, type LandingCourse } from "@/components/landing/course-explorer";
+import { HeroDashboardPreview } from "@/components/landing/hero-dashboard-preview";
 import { LandingNavbar } from "@/components/landing/landing-navbar";
+import { LandingPricingSelector } from "@/components/landing/landing-pricing-selector";
 import { LandingRuntimeScript } from "@/components/landing/landing-runtime-script";
 import { TestimonialsCarousel, type LandingStory } from "@/components/landing/testimonials-carousel";
 
@@ -60,12 +60,6 @@ const stories: LandingStory[] = [
   { id: "keripik", business: "Rumah Keripik", category: "Camilan", summary: "Kanal penjualan yang tepat dipilih setelah fondasi produk dan operasional siap mendukung permintaan.", image: "/platform-v2/stories/rumah-keripik.webp", imageAlt: "Suasana usaha camilan keripik Indonesia" },
   { id: "sikola", business: "Sikola Indonesia", category: "Pendidikan", summary: "Rencana pertumbuhan yang realistis mengubah tujuan besar menjadi langkah kecil yang bisa diselesaikan.", image: "/platform-v2/stories/sikola-indonesia.webp", imageAlt: "Pelaku usaha bidang pendidikan lokal" },
 ];
-
-const pricingPlans = [
-  { name: "Fondasi Gratis", price: "Rp0", description: "Mulai dari kondisi usaha dan tuntaskan tiga fokus paling penting.", features: ["Digital Checkup delapan aspek", "Tiga course fondasi personal", "Kuis dan tugas praktik usaha", "Aset Usaha dan Jejak Tumbuh"], cta: "Mulai Gratis", hrefType: "checkup", featured: false },
-  { name: "Tumbuh Terarah", price: "Rp249.000", description: "Pendalaman mandiri untuk menguatkan hasil setelah fondasi selesai.", features: ["Semua manfaat Fondasi Gratis", "Empat course lanjutan", "Jalur tindakan personal 90 hari", "Workbook dan template premium"], cta: "Lihat Preview", hrefType: "premium", featured: true },
-  { name: "Pendampingan Naik Kelas", price: "Rp799.000", description: "Belajar lebih terarah dengan klinik usaha dan review aset prioritas.", features: ["Semua manfaat Tumbuh Terarah", "Dua klinik usaha kelompok", "Review tiga Aset Usaha", "Rencana aksi personal 30 hari"], cta: "Daftar Minat", hrefType: "interest", featured: false },
-] as const;
 
 const faqItems = [
   {
@@ -139,6 +133,8 @@ function Hero({ checkupHref }: { checkupHref: string }) {
         </ul>
       </div>
 
+      <HeroDashboardPreview />
+
       <div aria-label="UMKM dalam ekosistem DekatLokal" className="dl-logo-ticker" tabIndex={0}>
         <p className="dl-logo-trusted-label">Dipercaya oleh UMKM dan komunitas lokal</p>
         <div className="dl-logo-track">
@@ -161,17 +157,48 @@ const accessSteps = [
 function AccessLearningSection() {
   return (
     <section aria-labelledby="access-title" className="dl-access-section dl-viewport-section" id="akses-belajar">
-      <div className="dl-access-heading"><p className="dl-section-kicker">Satu jalur, dari pemetaan hingga tindakan</p><h2 id="access-title">Dari Checkup ke Course, <span className="dl-title-pill">tetap terarah</span>.</h2><p>Tidak perlu menebak apa yang harus dipelajari. Kondisi usahamu menentukan urutan langkah berikutnya.</p></div>
-      <div className="dl-access-steps">
-        {accessSteps.map((step) => {
-          const Icon = step.icon;
-          return (
-            <article className="dl-access-card" key={step.number}>
-              <div className="dl-access-media"><Image alt={step.imageAlt} fill loading="eager" sizes="(max-width: 699px) 90vw, (max-width: 1099px) 46vw, 24vw" src={step.image} unoptimized /></div>
-              <div className="dl-access-copy"><span>{step.number}</span><div><p>{step.label}</p><h3>{step.title}</h3><small>{step.description}</small><div className="dl-access-ui"><span><Icon aria-hidden="true" size={16} /></span><i><b /></i><small>{step.label}</small></div></div></div>
-            </article>
-          );
-        })}
+      <div className="dl-access-board">
+        <article className="dl-access-lead">
+          <div className="dl-access-lead-heading">
+            <p className="dl-section-kicker">Satu jalur, dari pemetaan hingga tindakan</p>
+            <h2 id="access-title">
+              Dari Checkup ke Course, <span className="dl-title-pill">tetap terarah</span>.
+            </h2>
+            <p>
+              Tidak perlu menebak apa yang harus dipelajari. Kondisi usahamu menentukan urutan langkah
+              berikutnya.
+            </p>
+          </div>
+        </article>
+
+        <div className="dl-access-row-list">
+          {accessSteps.map((step) => {
+            const Icon = step.icon;
+
+            return (
+              <article className="dl-access-row" key={step.number}>
+                <div aria-hidden="true" className="dl-access-row-icon">
+                  <Icon size={23} />
+                </div>
+                <div className="dl-access-row-copy">
+                  <span>{step.number} / {step.label}</span>
+                  <h3>{step.title}</h3>
+                  <p>{step.description}</p>
+                </div>
+                <div className="dl-access-row-media">
+                  <Image
+                    alt={step.imageAlt}
+                    fill
+                    loading="eager"
+                    sizes="(max-width: 560px) 86vw, 150px"
+                    src={step.image}
+                    unoptimized
+                  />
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
@@ -187,47 +214,54 @@ function TestimonialsSection() {
 }
 
 function PricingSection({ checkupHref }: { checkupHref: string }) {
-  const resolveHref = (type: string) => type === "checkup" ? checkupHref : type === "premium" ? "/app/premium" : "mailto:hello@dekatlokal.com?subject=Minat%20Pendampingan%20Naik%20Kelas";
   return (
     <section aria-labelledby="pricing-title" className="dl-pricing-section dl-viewport-section" id="paket">
-      <div className="dl-pricing-heading"><p className="dl-section-kicker">Mulai dari kebutuhan, bukan paket terbesar</p><h2 id="pricing-title">Mulai gratis. Lanjut saat <span className="dl-title-pill">memang relevan</span>.</h2><p>Tuntaskan fondasi gratis lebih dahulu, lalu pilih pendalaman sesuai hasil usaha dan tujuan berikutnya.</p></div>
-      <div className="dl-pricing-grid">
-        {pricingPlans.map((plan) => (
-          <article className={`dl-price-card${plan.featured ? " is-featured" : ""}`} data-testid={plan.featured ? "featured-ticket" : undefined} key={plan.name}>
-            {plan.featured ? <><i aria-hidden="true" className="dl-ticket-notch is-left" /><i aria-hidden="true" className="dl-ticket-notch is-right" /></> : null}
-            <div className="dl-price-head">{plan.featured ? <span className="dl-popular-plan">Paling relevan setelah fondasi</span> : null}<p>{plan.name}</p><strong>{plan.price}</strong><small>sekali bayar</small></div>
-            <div className="dl-perforation" aria-hidden="true"><span /><i /></div>
-            <div className="dl-price-body"><p>{plan.description}</p><ul>{plan.features.map((feature) => <li key={feature}><span><Check aria-hidden="true" size={14} /></span>{feature}</li>)}</ul><Link href={resolveHref(plan.hrefType)}>{plan.cta}<ArrowRight aria-hidden="true" size={16} /></Link></div>
-          </article>
-        ))}
-      </div>
-      <p className="dl-pricing-note">Aktivasi pembayaran dan layanan pendampingan belum tersedia. Kamu tetap dapat memulai fondasi gratis dan melihat preview course lanjutan.</p>
+      <LandingPricingSelector checkupHref={checkupHref} />
     </section>
   );
 }
 
 function FaqSection() {
+  const faqGroups = [
+    { title: "Tentang Digital Checkup", items: faqItems.slice(0, 3) },
+    { title: "Tentang Ruang Tumbuh", items: faqItems.slice(3) },
+  ];
+
   return (
     <section aria-labelledby="faq-title" className="dl-faq-section dl-viewport-section" id="faq">
-      <div className="dl-faq-copy">
-        <p className="dl-section-kicker">FAQ</p>
-        <div className="dl-faq-title-row">
-          <span aria-hidden="true" className="dl-faq-logo">
-            <Image alt="" height={38} src="/brand/dekat-lokal-icon.png" unoptimized width={38} />
-          </span>
+      <div className="dl-faq-layout">
+        <div className="dl-faq-copy">
+          <div className="dl-faq-eyebrow">
+            <span aria-hidden="true" className="dl-faq-logo">
+              <Image alt="" height={32} loading="eager" src="/brand/dekat-lokal-icon.png" unoptimized width={32} />
+            </span>
+            <p className="dl-section-kicker">FAQ</p>
+          </div>
           <h2 id="faq-title">Yang Perlu Kamu Tahu Tentang Digital Checkup.</h2>
         </div>
-      </div>
-      <div className="dl-faq-list">
-        {faqItems.map((item, index) => (
-          <details className="dl-faq-item" key={item.question} open={index === 3}>
-            <summary>
-              <span>{item.question}</span>
-              <i aria-hidden="true" />
-            </summary>
-            <p className="dl-faq-answer">{item.answer}</p>
-          </details>
-        ))}
+
+        <div className="dl-faq-columns">
+          {faqGroups.map((group, groupIndex) => (
+            <section aria-labelledby={`faq-group-${groupIndex}`} className="dl-faq-category" key={group.title}>
+              <h3 id={`faq-group-${groupIndex}`}>{group.title}</h3>
+              <div className="dl-faq-list">
+                {group.items.map((item, itemIndex) => (
+                  <details
+                    className="dl-faq-item dl-faq-reference-item"
+                    key={item.question}
+                    open={groupIndex === 0 && itemIndex === 0}
+                  >
+                    <summary>
+                      <span>{item.question}</span>
+                      <i aria-hidden="true" className="dl-faq-toggle" />
+                    </summary>
+                    <p className="dl-faq-answer">{item.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
       </div>
     </section>
   );

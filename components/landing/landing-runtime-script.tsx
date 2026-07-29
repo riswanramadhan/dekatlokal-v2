@@ -19,7 +19,6 @@ const landingRuntime = `
     const menuButton = document.querySelector(".dl-navbar-menu-button");
     const overlay = document.querySelector(".dl-mobile-overlay");
     const mobileMenu = document.getElementById("landing-mobile-menu");
-    const closeButton = mobileMenu?.querySelector(".dl-mobile-menu-head button");
     const navLinksWrap = document.querySelector(".dl-navbar-links");
     const navIndicator = navLinksWrap?.querySelector(".dl-navbar-indicator");
     const desktopLinks = Array.from(document.querySelectorAll(".dl-navbar-links a"));
@@ -27,13 +26,35 @@ const landingRuntime = `
     if (!navbar || !menuButton || !overlay || !mobileMenu) return;
 
     function setMenuOpen(isOpen) {
+      const wasOpen = menuButton.getAttribute("aria-expanded") === "true";
       menuButton.setAttribute("aria-expanded", String(isOpen));
       menuButton.setAttribute("aria-label", isOpen ? "Tutup menu utama" : "Buka menu utama");
       mobileMenu.classList.toggle("is-open", isOpen);
+      mobileMenu.setAttribute("aria-hidden", String(!isOpen));
+      mobileMenu.inert = !isOpen;
       overlay.classList.toggle("is-open", isOpen);
       overlay.setAttribute("aria-hidden", String(!isOpen));
       overlay.tabIndex = isOpen ? 0 : -1;
       document.body.classList.toggle("dl-menu-is-open", isOpen);
+      if (isOpen) {
+        const focusCloseButton = () => {
+          if (
+            menuButton.getAttribute("aria-expanded") !== "true" ||
+            mobileMenu.contains(document.activeElement)
+          ) return;
+          mobileMenu.querySelector(".dl-mobile-menu-head button")?.focus({ preventScroll: true });
+        };
+        focusCloseButton();
+        window.requestAnimationFrame(focusCloseButton);
+        window.setTimeout(focusCloseButton, 120);
+        window.setTimeout(focusCloseButton, 420);
+      } else if (
+        wasOpen &&
+        document.activeElement &&
+        (mobileMenu.contains(document.activeElement) || document.activeElement === overlay)
+      ) {
+        menuButton.focus();
+      }
     }
 
     function setScrolled() {
@@ -90,11 +111,35 @@ const landingRuntime = `
         setMenuOpen(menuButton.getAttribute("aria-expanded") !== "true");
       });
       overlay.addEventListener("click", () => setMenuOpen(false));
-      closeButton?.addEventListener("click", () => setMenuOpen(false));
-      mobileLinks.forEach((link) => link.addEventListener("click", () => setMenuOpen(false)));
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") setMenuOpen(false);
+      mobileMenu.addEventListener("click", (event) => {
+        if (!(event.target instanceof Element)) return;
+        if (event.target.closest(".dl-mobile-menu-head button") || event.target.closest("a")) {
+          setMenuOpen(false);
+        }
       });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          setMenuOpen(false);
+          return;
+        }
+        if (event.key !== "Tab" || menuButton.getAttribute("aria-expanded") !== "true") return;
+        const focusable = Array.from(
+          mobileMenu.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+        ).filter((element) => !element.hasAttribute("hidden"));
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!first || !last) return;
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      });
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 980) setMenuOpen(false);
+      }, { passive: true });
     }
 
     if (navbar.dataset.dlScrollBound !== "true") {
@@ -126,6 +171,7 @@ const landingRuntime = `
       window.addEventListener("hashchange", () => window.setTimeout(updateActiveFromScroll, 80), { passive: true });
     }
 
+    mobileMenu.inert = menuButton.getAttribute("aria-expanded") !== "true";
     setScrolled();
     updateActiveFromScroll();
     window.setTimeout(updateActiveFromScroll, 260);
