@@ -1,0 +1,157 @@
+@layer landing-final {
+  /* Pricing actions intentionally stay unavailable while package selection remains interactive. */
+  body .dl-landing.dl-landing button.dl-pricing-detail-cta,
+  body .dl-landing.dl-landing button.dl-pricing-detail-cta:disabled,
+  body .dl-landing.dl-landing button.dl-pricing-detail-cta:disabled:hover,
+  body .dl-landing.dl-landing button.dl-pricing-detail-cta:disabled:active {
+    display: flex !important;
+    width: 100% !important;
+    min-height: 3.25rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.55rem !important;
+    margin-top: 1.35rem !important;
+    border: 1px solid #d6deea !important;
+    border-radius: 999px !important;
+    appearance: none !important;
+    background: #edf1f7 !important;
+    box-shadow: none !important;
+    color: #68758a !important;
+    padding: 0.68rem 1rem !important;
+    font-family: inherit !important;
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  body .dl-landing.dl-landing button.dl-pricing-detail-cta svg {
+    width: 1rem !important;
+    height: 1rem !important;
+    flex: 0 0 auto !important;
+    color: #7b8799 !important;
+  }
+
+  body .dl-landing.dl-landing button.dl-pricing-detail-cta small {
+    display: inline-flex !important;
+    min-height: 1.55rem !important;
+    align-items: center !important;
+    margin-left: auto !important;
+    border-radius: 999px !important;
+    background: #dde4ee !important;
+    color: #59667a !important;
+    padding: 0.3rem 0.55rem !important;
+    font-size: 0.61rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.035em !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  /* Preserve the complete original icon instead of clipping it inside another blue tile. */
+  body .dl-landing.dl-landing .dl-faq-eyebrow .dl-faq-logo {
+    display: grid !important;
+    width: 2.55rem !important;
+    height: 2.55rem !important;
+    flex: 0 0 2.55rem !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    place-items: center !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0.12rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-eyebrow .dl-faq-logo::before,
+  body .dl-landing.dl-landing .dl-faq-eyebrow .dl-faq-logo::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  body .dl-landing.dl-landing .dl-faq-eyebrow .dl-faq-logo img {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 2.3rem !important;
+    max-height: 2.3rem !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
+  @media (max-width: 699px) {
+    body .dl-landing.dl-landing .dl-final-cta {
+      display: grid !important;
+      min-height: 0 !important;
+      grid-template-columns: minmax(0, 1fr) !important;
+      align-items: start !important;
+      justify-items: start !important;
+      padding: 4.5rem var(--dl-content-gutter, 1.25rem) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-final-person,
+    body .dl-landing.dl-landing .dl-final-person img {
+      display: none !important;
+    }
+
+    body .dl-landing.dl-landing .dl-final-copy {
+      width: min(100%, 34rem) !important;
+      max-width: 34rem !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      text-align: left !important;
+    }
+
+    body .dl-landing.dl-landing .dl-final-copy > p:not(.dl-section-kicker) {
+      width: min(100%, 31rem) !important;
+      margin-top: 1rem !important;
+      font-size: 0.95rem !important;
+      line-height: 1.65 !important;
+    }
+
+    body .dl-landing.dl-landing .dl-final-copy > div {
+      width: 100% !important;
+      justify-content: flex-start !important;
+      margin-top: 1.5rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-final-copy .dl-final-primary {
+      width: min(100%, 19rem) !important;
+      min-height: 3.1rem !important;
+      padding-inline: 1.25rem !important;
+    }
+
+    body .dl-landing.dl-landing button.dl-pricing-detail-cta,
+    body .dl-landing.dl-landing button.dl-pricing-detail-cta:disabled {
+      flex-wrap: wrap !important;
+      row-gap: 0.4rem !important;
+    }
+  }
+
+  @media (max-width: 380px) {
+    body .dl-landing.dl-landing button.dl-pricing-detail-cta small {
+      width: 100% !important;
+      justify-content: center !important;
+      margin-left: 0 !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body .dl-landing.dl-landing button.dl-pricing-detail-cta,
+    body .dl-landing.dl-landing .dl-faq-eyebrow .dl-faq-logo img,
+    body .dl-landing.dl-landing .dl-final-copy .dl-final-primary {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}

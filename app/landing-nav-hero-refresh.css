@@ -1,0 +1,1446 @@
+@layer landing-final {
+  /*
+   * Navbar behavior:
+   * - at the top it is deliberately compact and inset
+   * - after 32px (the runtime adds .is-scrolled) it expands to the content rail
+   */
+  body .dl-landing.dl-landing .dl-navbar {
+    top: max(1.15rem, env(safe-area-inset-top)) !important;
+    width: min(64rem, calc(100vw - clamp(4rem, 11vw, 10rem))) !important;
+    max-width: 64rem !important;
+    min-height: 3.55rem !important;
+    padding: 0.4rem 0.52rem 0.4rem 0.88rem !important;
+    border-radius: 1.15rem !important;
+    box-shadow:
+      0 0.5rem 1.5rem rgba(1, 34, 98, 0.06),
+      0 0 0 1px rgba(255, 255, 255, 0.72) inset !important;
+    transition:
+      width 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      max-width 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      top 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      min-height 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      padding 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-radius 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 360ms ease,
+      box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+    will-change: width, max-width, top;
+  }
+
+  body .dl-landing.dl-landing .dl-navbar.is-scrolled {
+    top: max(0.65rem, env(safe-area-inset-top)) !important;
+    width: min(
+      var(--dl-section-max, 80rem),
+      calc(100vw - clamp(1.25rem, 3vw, 2rem))
+    ) !important;
+    max-width: var(--dl-section-max, 80rem) !important;
+    min-height: 4rem !important;
+    padding: 0.46rem 0.58rem 0.46rem 1rem !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow:
+      0 1rem 2.75rem rgba(1, 34, 98, 0.13),
+      0 0 0 1px rgba(255, 255, 255, 0.82) inset !important;
+  }
+
+  body .dl-landing.dl-landing .dl-navbar-indicator {
+    transition:
+      left 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 180ms ease !important;
+  }
+
+  /* Code-native dashboard window inspired by the supplied Apple-window reference. */
+  body .dl-landing.dl-landing .dl-hero-dashboard-preview {
+    position: relative;
+    z-index: 5;
+    width: min(70rem, 100%);
+    min-width: 0;
+    margin: clamp(2.6rem, 5vw, 4.25rem) auto 1rem;
+    text-align: left;
+    filter: drop-shadow(0 2rem 3.5rem rgba(0, 48, 146, 0.15));
+  }
+
+  body .dl-landing.dl-landing .dl-hero-dashboard-preview::before {
+    position: absolute;
+    z-index: -1;
+    inset: -8% 8% 1%;
+    border-radius: 50%;
+    background: rgba(2, 85, 245, 0.2);
+    content: "";
+    filter: blur(4.5rem);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-window {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.94);
+    border-radius: clamp(1rem, 2vw, 1.6rem);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow:
+      0 0 0 1px rgba(2, 85, 245, 0.08),
+      0 2rem 5rem rgba(1, 34, 98, 0.14),
+      0 0.35rem 1rem rgba(1, 34, 98, 0.06);
+    isolation: isolate;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-browser-bar {
+    display: grid;
+    min-height: 3.45rem;
+    grid-template-columns: 6rem minmax(12rem, 1fr) 6rem;
+    align-items: center;
+    gap: 0.8rem;
+    border-bottom: 1px solid #e8edf5;
+    background: rgba(250, 252, 255, 0.96);
+    padding: 0.65rem 1rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-window-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.42rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-window-controls i {
+    display: block;
+    width: 0.68rem;
+    height: 0.68rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 50%;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-window-controls .is-close {
+    background: #ff5f57;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-window-controls .is-minimize {
+    background: #febc2e;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-window-controls .is-maximize {
+    background: #28c840;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-browser-address {
+    display: flex;
+    width: min(31rem, 100%);
+    min-width: 0;
+    min-height: 2.1rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.42rem;
+    justify-self: center;
+    overflow: hidden;
+    border: 1px solid #e4eaf3;
+    border-radius: 0.72rem;
+    background: #fff;
+    padding: 0.3rem 0.85rem;
+    color: #536178;
+    font-size: 0.69rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-browser-address svg {
+    flex: 0 0 auto;
+    color: #16a065;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-browser-address span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-browser-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.55rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-browser-actions span {
+    display: block;
+    width: 1.55rem;
+    height: 1.55rem;
+    border: 1px solid #e3eaf4;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, #8b98aa 0 0.1rem, transparent 0.12rem) center /
+        0.31rem 0.31rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-browser-actions span:last-child {
+    border-radius: 0.5rem;
+    background:
+      linear-gradient(#8b98aa, #8b98aa) center / 0.6rem 1px no-repeat,
+      linear-gradient(90deg, #8b98aa, #8b98aa) center / 1px 0.6rem no-repeat;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-app {
+    display: grid;
+    min-height: 31rem;
+    grid-template-columns: 11.75rem minmax(0, 1fr);
+    background: #f7f9fd;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-sidebar {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    border-right: 1px solid #e8edf5;
+    background: #fff;
+    padding: 1.3rem 1rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-brand,
+  body .dl-landing.dl-landing .dl-dashboard-mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: #07142e;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-brand > span,
+  body .dl-landing.dl-landing .dl-dashboard-mobile-brand > span {
+    display: grid;
+    width: 1.95rem;
+    height: 1.95rem;
+    place-items: center;
+    border-radius: 0.62rem;
+    background: linear-gradient(145deg, #0872ff, #013393);
+    box-shadow: 0 0.45rem 1rem rgba(2, 85, 245, 0.24);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-brand strong,
+  body .dl-landing.dl-landing .dl-dashboard-mobile-brand strong {
+    font-size: 0.8rem;
+    font-weight: 750;
+    letter-spacing: -0.025em;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-menu-label {
+    margin: 2rem 0 0.65rem;
+    color: #a1adbd;
+    font-size: 0.58rem;
+    font-weight: 750;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-menu {
+    display: grid;
+    gap: 0.32rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-menu > span {
+    display: flex;
+    min-height: 2.5rem;
+    align-items: center;
+    gap: 0.65rem;
+    border-radius: 0.7rem;
+    padding: 0 0.72rem;
+    color: #66758a;
+    font-size: 0.68rem;
+    font-weight: 650;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-menu > span.is-active {
+    background: #edf4ff;
+    color: #0255f5;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-sidebar-note {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: auto;
+    border: 1px solid #dbe8ff;
+    border-radius: 0.9rem;
+    background:
+      radial-gradient(circle at 100% 0, rgba(2, 85, 245, 0.12), transparent 54%),
+      #f7faff;
+    padding: 0.8rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-sidebar-note > span {
+    display: grid;
+    width: 1.7rem;
+    height: 1.7rem;
+    place-items: center;
+    border-radius: 0.52rem;
+    background: #0255f5;
+    color: #fff;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-sidebar-note strong {
+    margin-top: 0.58rem;
+    color: #132342;
+    font-size: 0.66rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-sidebar-note p {
+    margin: 0.28rem 0 0;
+    color: #748297;
+    font-size: 0.56rem;
+    line-height: 1.55;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-main {
+    min-width: 0;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-topbar {
+    display: flex;
+    min-height: 4.05rem;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    border-bottom: 1px solid #e9eef6;
+    background: rgba(255, 255, 255, 0.92);
+    padding: 0 1.35rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-mobile-brand {
+    display: none;
+    margin-right: auto;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-search {
+    display: flex;
+    width: min(15rem, 34%);
+    min-height: 2.2rem;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid #e5ebf4;
+    border-radius: 999px;
+    background: #f9fbfe;
+    padding: 0 0.8rem;
+    color: #a0abbb;
+    font-size: 0.61rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-avatar {
+    position: relative;
+    display: grid;
+    width: 2.15rem;
+    height: 2.15rem;
+    place-items: center;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: #dce9ff;
+    box-shadow: 0 0 0 1px #d3deed;
+    color: #0255f5;
+    font-size: 0.61rem;
+    font-weight: 800;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-avatar i {
+    position: absolute;
+    right: -0.08rem;
+    bottom: 0.02rem;
+    width: 0.48rem;
+    height: 0.48rem;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: #22c55e;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-content {
+    padding: clamp(1.2rem, 2.5vw, 2rem);
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-welcome {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-kicker {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: #0255f5;
+    font-size: 0.59rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-welcome h2 {
+    margin: 0;
+    color: #0b1731;
+    font-size: clamp(1rem, 2vw, 1.42rem);
+    font-weight: 750;
+    letter-spacing: -0.035em;
+    line-height: 1.2;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-welcome p {
+    margin: 0.35rem 0 0;
+    color: #778499;
+    font-size: 0.66rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-level {
+    display: flex;
+    min-height: 2.25rem;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.42rem;
+    border: 1px solid #cfe0ff;
+    border-radius: 999px;
+    background: #fff;
+    padding: 0 0.75rem;
+    color: #0255f5;
+    font-size: 0.61rem;
+    font-weight: 750;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.72rem;
+    margin-top: 1.25rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-stats article {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.65rem;
+    border: 1px solid #e5ebf4;
+    border-radius: 0.85rem;
+    background: #fff;
+    padding: 0.82rem;
+    box-shadow: 0 0.45rem 1.2rem rgba(15, 23, 42, 0.035);
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-stat-icon {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border-radius: 0.62rem;
+    background: #eaf2ff;
+    color: #0255f5;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-stats article p,
+  body .dl-landing.dl-landing .dl-dashboard-stats article small {
+    display: block;
+    overflow: hidden;
+    margin: 0;
+    color: #8b97a9;
+    font-size: 0.55rem;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-stats article strong {
+    display: block;
+    margin: 0.2rem 0 0.08rem;
+    color: #13213e;
+    font-size: 0.91rem;
+    letter-spacing: -0.025em;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.45rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-heading > div > span {
+    color: #0255f5;
+    font-size: 0.55rem;
+    font-weight: 750;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-heading h3 {
+    margin: 0.12rem 0 0;
+    color: #0f1b35;
+    font-size: 0.93rem;
+    font-weight: 750;
+    letter-spacing: -0.025em;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-see-all {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    color: #0255f5;
+    font-size: 0.58rem;
+    font-weight: 700;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-grid {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.72rem;
+    margin-top: 0.75rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-grid article {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #e3eaf4;
+    border-radius: 0.9rem;
+    background: #fff;
+    box-shadow: 0 0.55rem 1.4rem rgba(15, 23, 42, 0.04);
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-art {
+    position: relative;
+    display: flex;
+    height: 4.7rem;
+    align-items: flex-end;
+    justify-content: space-between;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.48), transparent
+            34%),
+      linear-gradient(140deg, #075fff, #013393);
+    padding: 0.78rem;
+    color: #fff;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-grid article.is-sky .dl-dashboard-course-art {
+    background:
+      radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.55), transparent
+            34%),
+      linear-gradient(140deg, #2998ff, #0754d8);
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-grid article.is-amber .dl-dashboard-course-art {
+    background:
+      radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.5), transparent
+            34%),
+      linear-gradient(140deg, #ffb13b, #ef6c00);
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-art > span {
+    position: relative;
+    z-index: 2;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-art > i {
+    position: absolute;
+    right: -1rem;
+    bottom: -2rem;
+    width: 5.3rem;
+    height: 5.3rem;
+    border: 1rem solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-art > svg {
+    position: relative;
+    z-index: 2;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-copy {
+    padding: 0.72rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-badge {
+    display: inline-flex;
+    min-height: 1.25rem;
+    align-items: center;
+    border-radius: 999px;
+    background: #eaf2ff;
+    padding: 0 0.42rem;
+    color: #0255f5;
+    font-size: 0.47rem;
+    font-weight: 750;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-copy > small {
+    display: block;
+    margin-top: 0.55rem;
+    color: #8b97a9;
+    font-size: 0.5rem;
+    font-weight: 650;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-copy h4 {
+    min-height: 2rem;
+    margin: 0.15rem 0 0;
+    color: #111f3c;
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-progress {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.42rem;
+    margin-top: 0.58rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-progress > span {
+    height: 0.28rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e9eef6;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-progress > span > i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #0255f5;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-progress strong {
+    color: #526176;
+    font-size: 0.5rem;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-course-copy > p {
+    display: flex;
+    align-items: center;
+    gap: 0.28rem;
+    margin: 0.48rem 0 0;
+    color: #929daf;
+    font-size: 0.49rem;
+  }
+
+  /*
+   * A preview makes the hero naturally taller. Explicit spacing keeps the logo
+   * ticker in flow and prevents it from colliding with the browser window.
+   */
+  body .dl-landing.dl-landing .dl-hero-section:has(.dl-hero-dashboard-preview) {
+    min-height: auto !important;
+    align-content: start !important;
+    padding-top: clamp(8rem, 14vh, 9.5rem) !important;
+    padding-bottom: 8.5rem !important;
+  }
+
+  body
+    .dl-landing.dl-landing
+    .dl-hero-section:has(.dl-hero-dashboard-preview)
+    .dl-hero-copy {
+    margin-top: 0 !important;
+  }
+
+  @media (max-width: 1100px) {
+    body .dl-landing.dl-landing .dl-navbar {
+      width: min(61rem, calc(100vw - 2rem)) !important;
+      max-width: 61rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-navbar.is-scrolled {
+      width: calc(100vw - 1.5rem) !important;
+      max-width: calc(100vw - 1.5rem) !important;
+    }
+  }
+
+  @media (max-width: 980px) {
+    body .dl-landing.dl-landing .dl-navbar {
+      top: max(0.9rem, env(safe-area-inset-top)) !important;
+      width: calc(100vw - 2rem) !important;
+      max-width: calc(100vw - 2rem) !important;
+      min-height: 3.7rem !important;
+      border-radius: 1rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-navbar.is-scrolled {
+      top: max(0.5rem, env(safe-area-inset-top)) !important;
+      width: calc(100vw - 1rem) !important;
+      max-width: calc(100vw - 1rem) !important;
+      min-height: 3.8rem !important;
+      border-radius: 1.1rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-app {
+      grid-template-columns: 9.5rem minmax(0, 1fr);
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-sidebar {
+      padding-inline: 0.8rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-stats article {
+      gap: 0.48rem;
+      padding: 0.68rem;
+    }
+  }
+
+  @media (max-width: 720px) {
+    body .dl-landing.dl-landing .dl-hero-dashboard-preview {
+      width: 100%;
+      margin-top: 2.5rem;
+      filter: drop-shadow(0 1.4rem 2.6rem rgba(0, 48, 146, 0.13));
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-window {
+      border-radius: 1rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-browser-bar {
+      min-height: 3rem;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.7rem;
+      padding: 0.55rem 0.7rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-browser-actions {
+      display: none;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-browser-address {
+      min-height: 1.9rem;
+      justify-content: flex-start;
+      padding-inline: 0.65rem;
+      font-size: 0.58rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-app {
+      min-height: 28rem;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-sidebar {
+      display: none;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-topbar {
+      min-height: 3.6rem;
+      justify-content: flex-end;
+      padding: 0 0.8rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-mobile-brand {
+      display: flex;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-mobile-brand > span {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-search {
+      display: none;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-content {
+      padding: 1rem 0.8rem 1.1rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-level {
+      display: none;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-welcome h2 {
+      font-size: 1rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-welcome p {
+      max-width: 18rem;
+      font-size: 0.58rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-stats {
+      gap: 0.42rem;
+      margin-top: 0.9rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-stats article {
+      display: block;
+      padding: 0.58rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-stat-icon {
+      width: 1.65rem;
+      height: 1.65rem;
+      margin-bottom: 0.42rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-stats article p,
+    body .dl-landing.dl-landing .dl-dashboard-stats article small {
+      font-size: 0.46rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-stats article strong {
+      font-size: 0.76rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-course-heading {
+      margin-top: 1rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-course-grid {
+      grid-template-columns: repeat(3, minmax(10.5rem, 1fr));
+      gap: 0.55rem;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      padding-bottom: 0.35rem;
+      scroll-snap-type: inline proximity;
+      scrollbar-color: rgba(2, 85, 245, 0.35) transparent;
+      scrollbar-width: thin;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-course-grid article {
+      scroll-snap-align: start;
+    }
+
+    body
+      .dl-landing.dl-landing
+      .dl-hero-section:has(.dl-hero-dashboard-preview) {
+      padding-top: 7.25rem !important;
+      padding-bottom: 7rem !important;
+    }
+  }
+
+  @media (max-width: 420px) {
+    body .dl-landing.dl-landing .dl-navbar {
+      width: calc(100vw - 1.5rem) !important;
+      max-width: calc(100vw - 1.5rem) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-navbar.is-scrolled {
+      width: calc(100vw - 0.75rem) !important;
+      max-width: calc(100vw - 0.75rem) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-browser-address svg {
+      display: none;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-window-controls {
+      gap: 0.3rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-window-controls i {
+      width: 0.56rem;
+      height: 0.56rem;
+    }
+
+    body .dl-landing.dl-landing .dl-dashboard-stats article small {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body .dl-landing.dl-landing .dl-navbar,
+    body .dl-landing.dl-landing .dl-navbar.is-scrolled,
+    body .dl-landing.dl-landing .dl-navbar-indicator {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/*
+ * Interaction polish requested after the reference pass. Kept in the same
+ * cascade layer so these rules reliably supersede the earlier landing guards.
+ */
+@layer landing-final {
+  /* The active rail is intentionally revealed only after the navbar stretches. */
+  body .dl-landing.dl-landing .dl-navbar:not(.is-scrolled) .dl-navbar-indicator {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    transform: scaleX(0) !important;
+  }
+
+  body .dl-landing.dl-landing .dl-navbar.is-scrolled .dl-navbar-indicator {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: scaleX(1) !important;
+    transform-origin: center !important;
+  }
+
+  /* Pull the browser closer to the hero message and softly dissolve its base. */
+  body .dl-landing.dl-landing .dl-hero-dashboard-preview {
+    margin: clamp(0.9rem, 2vw, 1.5rem) auto -2rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-window {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 71%,
+      rgba(0, 0, 0, 0.9) 80%,
+      rgba(0, 0, 0, 0.34) 93%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 71%,
+      rgba(0, 0, 0, 0.9) 80%,
+      rgba(0, 0, 0, 0.34) 93%,
+      transparent 100%
+    );
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-brand-logo {
+    display: block !important;
+    width: 1.95rem !important;
+    height: 1.95rem !important;
+    flex: 0 0 auto !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 0.4rem 0.65rem rgba(2, 85, 245, 0.2));
+  }
+
+  body .dl-landing.dl-landing .dl-dashboard-mobile-brand .dl-dashboard-brand-logo {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+  }
+
+  /* A restrained light ring gives both hero actions a clear invitation to tap. */
+  body .dl-landing.dl-landing .dl-hero-actions .dl-primary-button,
+  body .dl-landing.dl-landing .dl-hero-actions .dl-secondary-button {
+    position: relative !important;
+    z-index: 1 !important;
+    isolation: isolate !important;
+    transition:
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 220ms ease !important;
+  }
+
+  body .dl-landing.dl-landing .dl-hero-actions .dl-primary-button::after,
+  body .dl-landing.dl-landing .dl-hero-actions .dl-secondary-button::after {
+    position: absolute;
+    z-index: -1;
+    inset: -0.34rem;
+    border: 1px solid rgba(2, 85, 245, 0.34);
+    border-radius: inherit;
+    box-shadow: 0 0 1.2rem rgba(2, 85, 245, 0.2);
+    content: "";
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.96);
+    animation: dl-hero-cta-light-ring 3.6s ease-out infinite;
+  }
+
+  body .dl-landing.dl-landing .dl-hero-actions .dl-secondary-button::after {
+    border-color: rgba(2, 85, 245, 0.22);
+    box-shadow: 0 0 1rem rgba(2, 85, 245, 0.12);
+    animation-delay: 1.15s;
+  }
+
+  body .dl-landing.dl-landing .dl-hero-actions .dl-primary-button:hover,
+  body .dl-landing.dl-landing .dl-hero-actions .dl-primary-button:focus-visible,
+  body .dl-landing.dl-landing .dl-hero-actions .dl-secondary-button:hover,
+  body .dl-landing.dl-landing .dl-hero-actions .dl-secondary-button:focus-visible {
+    transform: translateY(-2px) !important;
+    filter: brightness(1.035) saturate(1.08);
+  }
+
+  @keyframes dl-hero-cta-light-ring {
+    0%,
+    54%,
+    100% {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+
+    66% {
+      opacity: 0.7;
+    }
+
+    84% {
+      opacity: 0;
+      transform: scale(1.09);
+    }
+  }
+
+  @media (max-width: 980px) {
+    body.dl-menu-is-open {
+      overflow: hidden !important;
+      overscroll-behavior: none;
+    }
+
+    body .dl-landing.dl-landing .dl-navbar-menu-button {
+      position: relative !important;
+      z-index: 1 !important;
+      overflow: hidden !important;
+      box-shadow:
+        0 0.65rem 1.4rem rgba(2, 85, 245, 0.23),
+        0 0 0 1px rgba(255, 255, 255, 0.18) inset !important;
+      cursor: pointer !important;
+    }
+
+    body .dl-landing.dl-landing .dl-menu-button-glyph {
+      position: relative;
+      display: grid;
+      width: 1.15rem;
+      height: 0.88rem;
+      align-content: space-between;
+    }
+
+    body .dl-landing.dl-landing .dl-menu-button-glyph i {
+      display: block;
+      width: 100%;
+      height: 1.5px;
+      border-radius: 999px;
+      background: currentColor;
+      transform-origin: center;
+      transition:
+        transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 160ms ease,
+        width 220ms ease;
+    }
+
+    body .dl-landing.dl-landing .dl-menu-button-glyph i:nth-child(2) {
+      width: 72%;
+      justify-self: end;
+    }
+
+    body
+      .dl-landing.dl-landing
+      .dl-navbar-menu-button[aria-expanded="true"]
+      .dl-menu-button-glyph
+      i:first-child {
+      transform: translateY(0.365rem) rotate(45deg);
+    }
+
+    body
+      .dl-landing.dl-landing
+      .dl-navbar-menu-button[aria-expanded="true"]
+      .dl-menu-button-glyph
+      i:nth-child(2) {
+      width: 0;
+      opacity: 0;
+    }
+
+    body
+      .dl-landing.dl-landing
+      .dl-navbar-menu-button[aria-expanded="true"]
+      .dl-menu-button-glyph
+      i:last-child {
+      transform: translateY(-0.365rem) rotate(-45deg);
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-overlay {
+      position: fixed !important;
+      z-index: 110 !important;
+      inset: 0 !important;
+      display: block !important;
+      visibility: hidden !important;
+      border: 0 !important;
+      background:
+        radial-gradient(circle at 82% 12%, rgba(36, 107, 255, 0.24), transparent 17rem),
+        rgba(1, 12, 36, 0.68) !important;
+      opacity: 0 !important;
+      backdrop-filter: blur(0.65rem) saturate(125%) !important;
+      transition:
+        opacity 320ms ease,
+        visibility 320ms ease !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-overlay.is-open {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu {
+      position: fixed !important;
+      z-index: 120 !important;
+      top: max(0.75rem, env(safe-area-inset-top)) !important;
+      right: 0.75rem !important;
+      bottom: max(0.75rem, env(safe-area-inset-bottom)) !important;
+      left: 0.75rem !important;
+      display: grid !important;
+      visibility: hidden !important;
+      width: auto !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      height: auto !important;
+      max-height: none !important;
+      align-self: stretch !important;
+      justify-self: stretch !important;
+      box-sizing: border-box !important;
+      grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+      gap: 0.85rem !important;
+      overflow: hidden !important;
+      border: 1px solid rgba(255, 255, 255, 0.94) !important;
+      border-radius: 1.75rem !important;
+      background:
+        radial-gradient(circle at 100% 0, rgba(2, 85, 245, 0.15), transparent 18rem),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.99), rgba(241, 247, 255, 0.98)) !important;
+      padding: clamp(0.85rem, 3.5vw, 1.15rem) !important;
+      opacity: 0 !important;
+      box-shadow:
+        0 2rem 6rem rgba(0, 19, 61, 0.34),
+        0 0 0 1px rgba(2, 85, 245, 0.05) inset !important;
+      clip-path: inset(0 0 100% 0 round 1.75rem);
+      transform: translate3d(0, 1.25rem, 0) scale(0.985) !important;
+      transform-origin: 50% 100% !important;
+      transition:
+        clip-path 430ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 430ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 240ms ease,
+        visibility 430ms ease !important;
+      overscroll-behavior: contain;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu::before {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(2, 85, 245, 0.035) 1px, transparent 1px),
+        linear-gradient(rgba(2, 85, 245, 0.035) 1px, transparent 1px);
+      background-size: 3rem 3rem;
+      content: "";
+      opacity: 0.62;
+      pointer-events: none;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu.is-open {
+      visibility: visible !important;
+      opacity: 1 !important;
+      clip-path: inset(0 round 1.75rem);
+      transform: translate3d(0, 0, 0) scale(1) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu > * {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-head {
+      display: flex !important;
+      min-height: 3.4rem !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 1rem !important;
+      padding: 0 !important;
+      color: inherit !important;
+      font-size: inherit !important;
+      letter-spacing: 0 !important;
+      text-transform: none !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-brand {
+      display: flex !important;
+      min-width: 0 !important;
+      align-items: center !important;
+      gap: 0.7rem !important;
+      color: #07142e !important;
+      text-decoration: none !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-brand > img {
+      display: block !important;
+      width: 2.35rem !important;
+      height: 2.35rem !important;
+      flex: 0 0 auto !important;
+      object-fit: contain !important;
+      filter: drop-shadow(0 0.5rem 0.9rem rgba(2, 85, 245, 0.2));
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-brand > span {
+      display: grid !important;
+      gap: 0.08rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-brand strong {
+      color: #07142e !important;
+      font-size: 0.98rem !important;
+      font-weight: 780 !important;
+      letter-spacing: -0.025em !important;
+      line-height: 1.2 !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-brand small {
+      color: #728097 !important;
+      font-size: 0.64rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.015em !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-head > button {
+      display: grid !important;
+      width: 2.75rem !important;
+      height: 2.75rem !important;
+      flex: 0 0 auto !important;
+      place-items: center !important;
+      border: 1px solid rgba(2, 85, 245, 0.11) !important;
+      border-radius: 0.9rem !important;
+      background: rgba(255, 255, 255, 0.82) !important;
+      color: #013bb3 !important;
+      box-shadow: 0 0.6rem 1.2rem rgba(15, 23, 42, 0.06) !important;
+      cursor: pointer !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-intro {
+      overflow: hidden !important;
+      border: 1px solid rgba(2, 85, 245, 0.1) !important;
+      border-radius: 1.15rem !important;
+      background:
+        linear-gradient(115deg, rgba(2, 85, 245, 0.09), rgba(255, 255, 255, 0.68)),
+        #f8fbff !important;
+      padding: 0.9rem 1rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-intro > span {
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.4rem !important;
+      color: #0255f5 !important;
+      font-family: var(--font-geist-mono), monospace !important;
+      font-size: 0.64rem !important;
+      font-weight: 760 !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-intro p {
+      max-width: 30rem !important;
+      margin: 0.45rem 0 0 !important;
+      color: #516078 !important;
+      font-size: 0.77rem !important;
+      line-height: 1.55 !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-links {
+      position: relative !important;
+      inset: auto !important;
+      display: grid !important;
+      width: 100% !important;
+      max-width: none !important;
+      height: auto !important;
+      max-height: none !important;
+      min-height: 0 !important;
+      align-content: start !important;
+      gap: 0.35rem !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      padding: 0.05rem 0.08rem !important;
+      transform: none !important;
+      scrollbar-color: rgba(2, 85, 245, 0.28) transparent;
+      scrollbar-width: thin;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a {
+      display: grid !important;
+      min-height: 3.25rem !important;
+      grid-template-columns: 2.1rem minmax(0, 1fr) auto !important;
+      align-items: center !important;
+      gap: 0.75rem !important;
+      border: 1px solid transparent !important;
+      border-radius: 0.95rem !important;
+      background: rgba(255, 255, 255, 0.52) !important;
+      padding: 0.35rem 0.65rem !important;
+      color: #17233c !important;
+      text-decoration: none !important;
+      transition:
+        border-color 180ms ease,
+        background-color 180ms ease,
+        color 180ms ease,
+        transform 180ms ease !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a > span {
+      display: grid !important;
+      width: 2rem !important;
+      height: 2rem !important;
+      place-items: center !important;
+      border: 1px solid rgba(2, 85, 245, 0.11) !important;
+      border-radius: 0.65rem !important;
+      background: #edf4ff !important;
+      color: #0255f5 !important;
+      font-family: var(--font-geist-mono), monospace !important;
+      font-size: 0.61rem !important;
+      font-weight: 760 !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a > strong {
+      color: inherit !important;
+      font-size: 0.86rem !important;
+      font-weight: 680 !important;
+      letter-spacing: -0.012em !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a > svg {
+      color: #8b9ab0 !important;
+      transition: transform 180ms ease !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a.is-active,
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a:hover,
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a:focus-visible {
+      border-color: rgba(2, 85, 245, 0.15) !important;
+      background: #fff !important;
+      color: #0255f5 !important;
+      box-shadow: 0 0.65rem 1.5rem rgba(1, 34, 98, 0.07) !important;
+      transform: translateX(0.15rem) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a:hover > svg,
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a:focus-visible > svg {
+      color: #0255f5 !important;
+      transform: translateX(0.15rem) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-footer {
+      display: grid !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr) !important;
+      grid-auto-rows: auto !important;
+      align-content: start !important;
+      align-self: end !important;
+      gap: 0.55rem !important;
+      padding-top: 0.7rem !important;
+      border-top: 1px solid rgba(2, 85, 245, 0.1) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-login,
+    body .dl-landing.dl-landing .dl-mobile-menu-checkup {
+      display: flex !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 3.1rem !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.45rem !important;
+      border-radius: 0.95rem !important;
+      padding: 0.55rem 0.75rem !important;
+      font-size: 0.76rem !important;
+      font-weight: 720 !important;
+      line-height: 1.25 !important;
+      text-align: center !important;
+      text-decoration: none !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-login {
+      border: 1px solid rgba(2, 85, 245, 0.16) !important;
+      background: rgba(255, 255, 255, 0.82) !important;
+      color: #013bb3 !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-checkup {
+      border: 1px solid #0255f5 !important;
+      background: #0255f5 !important;
+      color: #fff !important;
+      box-shadow: 0 0.75rem 1.5rem rgba(2, 85, 245, 0.2) !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-footer > small {
+      display: block !important;
+      width: 100% !important;
+      height: auto !important;
+      grid-column: 1 / -1 !important;
+      color: #7b899e !important;
+      font-size: 0.62rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.015em !important;
+      text-align: center !important;
+    }
+  }
+
+  @media (max-width: 720px) {
+    body .dl-landing.dl-landing .dl-hero-dashboard-preview {
+      margin-top: 0.9rem !important;
+      margin-bottom: -1.5rem !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    body .dl-landing.dl-landing .dl-mobile-menu {
+      top: max(0.5rem, env(safe-area-inset-top)) !important;
+      right: 0.5rem !important;
+      bottom: max(0.5rem, env(safe-area-inset-bottom)) !important;
+      left: 0.5rem !important;
+      gap: 0.65rem !important;
+      border-radius: 1.45rem !important;
+      padding: 0.75rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-intro {
+      padding: 0.72rem 0.8rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-links {
+      gap: 0.25rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a {
+      min-height: 2.85rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-footer {
+      grid-template-columns: 1fr !important;
+      gap: 0.4rem !important;
+      padding-top: 0.55rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-footer > small {
+      grid-column: auto !important;
+    }
+  }
+
+  @media (max-height: 680px) and (max-width: 980px) {
+    body .dl-landing.dl-landing .dl-mobile-menu {
+      gap: 0.5rem !important;
+      padding: 0.65rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-intro {
+      padding: 0.62rem 0.75rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-intro p,
+    body .dl-landing.dl-landing .dl-mobile-menu-footer > small {
+      display: none !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-links > a {
+      min-height: 2.7rem !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu-login,
+    body .dl-landing.dl-landing .dl-mobile-menu-checkup {
+      min-height: 2.7rem !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body .dl-landing.dl-landing .dl-hero-actions .dl-primary-button::after,
+    body .dl-landing.dl-landing .dl-hero-actions .dl-secondary-button::after {
+      animation: none !important;
+      opacity: 0 !important;
+    }
+
+    body .dl-landing.dl-landing .dl-mobile-menu,
+    body .dl-landing.dl-landing .dl-mobile-overlay,
+    body .dl-landing.dl-landing .dl-menu-button-glyph i {
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
