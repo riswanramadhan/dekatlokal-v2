@@ -6,6 +6,7 @@ import "./landing-nav-hero-refresh.css";
 import "./landing-course-refresh.css";
 import "./landing-sections-refresh.css";
 import "./landing-commercial-polish.css";
+import "./landing-future.css";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -27,7 +28,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://app.dekatlokal.com"),
+  metadataBase: new URL("https://digitalcheckup.dekatlokal.com"),
   title: {
     default: "Digital Checkup UMKM | DekatLokal",
     template: "%s | DekatLokal",

@@ -161,7 +161,7 @@ export function HeroDashboardPreview() {
                   <span className="dl-dashboard-kicker">
                     Dashboard course
                   </span>
-                  <h2>Selamat datang, Raka! 👋</h2>
+                  <h2>Selamat datang, Raka!</h2>
                   <p>Lanjutkan progres kecil yang membuat usahamu makin siap.</p>
                 </div>
 

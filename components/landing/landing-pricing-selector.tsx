@@ -74,18 +74,17 @@ export function LandingPricingSelector({ checkupHref }: { checkupHref: string })
     <>
       <div className="dl-pricing-layout">
         <div className="dl-pricing-choice">
-          <div className="dl-pricing-copy">
-            <p className="dl-section-kicker">Mulai dari kebutuhan, bukan paket terbesar</p>
+          <div className="dl-pricing-copy" data-reveal-item>
+            <p className="dl-section-kicker">Pilih sesuai kebutuhan</p>
             <h2 id="pricing-title">
-              Mulai gratis. Lanjut saat <span className="dl-title-pill">memang relevan</span>.
+              Mulai gratis. Naik level saat <span className="dl-title-pill">sudah siap</span>.
             </h2>
             <p>
-              Tuntaskan fondasi gratis lebih dahulu, lalu pilih pendalaman sesuai hasil usaha dan tujuan
-              berikutnya.
+              Bereskan fondasinya dulu. Kalau butuh pendampingan lebih jauh, pilih paket yang benar-benar cocok dengan tujuanmu.
             </p>
           </div>
 
-          <div aria-label="Pilih paket DekatLokal" className="dl-pricing-options">
+          <div aria-label="Pilih paket DekatLokal" className="dl-pricing-options" data-reveal-item>
             {pricingPlans.map((plan, index) => {
               const isSelected = selectedPlanIndex === index;
 
@@ -113,6 +112,7 @@ export function LandingPricingSelector({ checkupHref }: { checkupHref: string })
         <article
           aria-live="polite"
           className="dl-pricing-detail"
+          data-reveal-item
           id={detailId}
           key={selectedPlan.name}
         >

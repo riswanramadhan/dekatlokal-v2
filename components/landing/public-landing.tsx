@@ -1,17 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  ArrowUpRight,
   BarChart3,
   BookOpenCheck,
   CheckCircle2,
   ScanSearch,
+  Sparkles,
   Target,
 } from "lucide-react";
 import { CourseExplorer, type LandingCourse } from "@/components/landing/course-explorer";
 import { HeroDashboardPreview } from "@/components/landing/hero-dashboard-preview";
 import { LandingNavbar } from "@/components/landing/landing-navbar";
 import { LandingPricingSelector } from "@/components/landing/landing-pricing-selector";
-import { LandingRuntimeScript } from "@/components/landing/landing-runtime-script";
+import { LandingEffects } from "@/components/landing/landing-effects";
 import { TestimonialsCarousel, type LandingStory } from "@/components/landing/testimonials-carousel";
 
 type ModuleCardView = { slug: string; title: string; outcome: string; icon: string };
@@ -51,14 +53,16 @@ const umkmLogos = [
 ] as const;
 
 const stories: LandingStory[] = [
-  { id: "aroma", business: "Aroma Bakery", category: "Kuliner", summary: "Fondasi digital dimulai dari informasi produk yang rapi, mudah ditemukan, dan mudah dibagikan kepada pelanggan.", image: "/platform-v2/stories/aroma-bakery.webp", imageAlt: "Suasana usaha bakery lokal Indonesia" },
-  { id: "bakpia", business: "Bakpia Malino", category: "Oleh-oleh", summary: "Kemasan, cerita produk, dan kanal pemesanan dapat dirangkai menjadi pengalaman pelanggan yang lebih konsisten.", image: "/platform-v2/stories/bakpia-malino.webp", imageAlt: "Suasana produksi oleh-oleh bakpia lokal" },
-  { id: "bio", business: "Bio Atama", category: "Produk alami", summary: "Pesan usaha yang sederhana membantu manfaat produk dipahami tanpa membuat pelanggan menebak-nebak.", image: "/platform-v2/stories/bio-atama.webp", imageAlt: "Pelaku usaha produk alami Indonesia" },
-  { id: "dapur", business: "Dapur Karaeng", category: "Kuliner", summary: "Konten promosi menjadi lebih ringan ketika ada fokus, jadwal, dan format yang dapat digunakan berulang.", image: "/platform-v2/stories/dapur-karaeng.webp", imageAlt: "Pemilik usaha kuliner di dapur Indonesia" },
-  { id: "eyfa", business: "Eyfa Natural Oil", category: "Perawatan alami", summary: "Kejelasan identitas dan informasi produk menjadi dasar untuk membangun kepercayaan di kanal digital.", image: "/platform-v2/stories/eyfa-natural-oil.webp", imageAlt: "Suasana usaha perawatan alami lokal" },
-  { id: "gingerfit", business: "Gingerfit Plus", category: "Minuman herbal", summary: "Catatan usaha yang teratur memudahkan pemilik melihat prioritas dan menentukan aksi berikutnya.", image: "/platform-v2/stories/gingerfit-plus.webp", imageAlt: "Pelaku UMKM menyiapkan minuman herbal" },
-  { id: "keripik", business: "Rumah Keripik", category: "Camilan", summary: "Kanal penjualan yang tepat dipilih setelah fondasi produk dan operasional siap mendukung permintaan.", image: "/platform-v2/stories/rumah-keripik.webp", imageAlt: "Suasana usaha camilan keripik Indonesia" },
-  { id: "sikola", business: "Sikola Indonesia", category: "Pendidikan", summary: "Rencana pertumbuhan yang realistis mengubah tujuan besar menjadi langkah kecil yang bisa diselesaikan.", image: "/platform-v2/stories/sikola-indonesia.webp", imageAlt: "Pelaku usaha bidang pendidikan lokal" },
+  { id: "bio", business: "Bio Atama", category: "Produk alami", summary: "Produk bagus butuh pesan yang gampang dipahami. Bio Atama merapikan cara menjelaskan manfaat produknya supaya calon pelanggan tidak perlu menebak.", image: "/platform-v2/stories/latest/bio-atama.webp", imageAlt: "Tim Bio Atama menunjukkan perkembangan kanal digital usahanya", logo: "/umkm/bio-atama.webp" },
+  { id: "eyfa", business: "Eyfa Natural Oil", category: "Perawatan alami", summary: "Identitas yang konsisten bikin produk lebih mudah dikenali. Eyfa mulai dari fondasi sederhana yang bisa dipakai di setiap kanal penjualan.", image: "/platform-v2/stories/latest/eyfa-natural-oil.webp", imageAlt: "Tim Eyfa Natural Oil dalam perjalanan pengembangan usaha", logo: "/umkm/eyfa-natural-oil.webp" },
+  { id: "gingerfit", business: "Gingerfit Plus", category: "Minuman herbal", summary: "Bertumbuh tidak harus serba sekaligus. Gingerfit memilih prioritas yang paling dekat, mengerjakannya, lalu lanjut ke langkah berikutnya.", image: "/platform-v2/stories/latest/gingerfit-plus.webp", imageAlt: "Tim Gingerfit Plus menunjukkan perkembangan usaha", logo: "/umkm/gingerfit-plus.webp" },
+  { id: "iboo", business: "Iboo IDN", category: "Produk lokal", summary: "Saat arah usaha lebih jelas, bikin konten dan mengambil keputusan terasa lebih ringan. Iboo IDN memulai dari hal yang paling berdampak.", image: "/platform-v2/stories/latest/iboo-idn.webp", imageAlt: "Tim Iboo IDN dalam perjalanan pengembangan usaha", logo: "/umkm/iboo-idn.webp" },
+  { id: "kareppe", business: "Kareppe", category: "Kuliner", summary: "Cerita produk yang kuat membuat orang lebih mudah ingat. Kareppe menyusun fondasi digital agar karakter produknya tetap terasa di layar.", image: "/platform-v2/stories/latest/kareppe.webp", imageAlt: "Tim Kareppe dalam perjalanan pengembangan usaha", logo: "/umkm/logo-kareppe-transparent.webp" },
+  { id: "michi", business: "Kira Kira Michi", category: "Kuliner kreatif", summary: "Ide kreatif jadi lebih kuat saat tampilannya konsisten. Kira Kira Michi menyatukan identitas, konten, dan pengalaman pelanggan.", image: "/platform-v2/stories/latest/kira-kira-michi.webp", imageAlt: "Tim Kira Kira Michi menunjukkan perkembangan usaha", logo: "/umkm/kira-kira-michi.webp" },
+  { id: "kopi", business: "Kopi Teko", category: "Kopi lokal", summary: "Kopi Teko merapikan informasi produk dan kanal pemesanan agar pelanggan bisa menemukan, memahami, lalu membeli dengan lebih mudah.", image: "/platform-v2/stories/latest/kopi-teko.webp", imageAlt: "Tim Kopi Teko dalam perjalanan pengembangan usaha", logo: "/umkm/kopi-teko.webp" },
+  { id: "pamboang", business: "Minyak Pamboang", category: "Produk tradisional", summary: "Produk lokal punya cerita yang layak dikenal lebih luas. Minyak Pamboang membawanya ke ruang digital dengan langkah yang tetap realistis.", image: "/platform-v2/stories/latest/minyak-pamboang.webp", imageAlt: "Tim Minyak Pamboang menunjukkan perkembangan kanal digital", logo: "/umkm/minyak-pamboang.webp" },
+  { id: "mulkan", business: "Mulkan Mimbaun", category: "Produk lokal", summary: "Mulkan Mimbaun mengubah target besar menjadi aksi kecil yang jelas—lebih mudah dimulai, dilacak, dan dilanjutkan.", image: "/platform-v2/stories/latest/mulkan-mimbaun.webp", imageAlt: "Tim Mulkan Mimbaun dalam perjalanan pengembangan usaha", logo: "/umkm/mulkan-mimbaun.webp" },
+  { id: "keripik", business: "Rumah Keripik", category: "Camilan", summary: "Rumah Keripik fokus membangun fondasi yang rapi, supaya promosi tidak cuma ramai sesaat tetapi benar-benar membantu penjualan.", image: "/platform-v2/stories/latest/rumah-keripik.webp", imageAlt: "Tim Rumah Keripik menunjukkan perkembangan usahanya", logo: "/umkm/rumah-keripik.webp" },
 ];
 
 const faqItems = [
@@ -111,7 +115,7 @@ export function PublicLanding({ modules, checkupHref }: { modules: ModuleCardVie
         <FinalCta checkupHref={checkupHref} />
       </main>
       <LandingFooter checkupHref={checkupHref} />
-      <LandingRuntimeScript />
+      <LandingEffects />
     </div>
   );
 }
@@ -120,23 +124,30 @@ function Hero({ checkupHref }: { checkupHref: string }) {
   return (
     <section aria-labelledby="hero-title" className="dl-hero-section" id="beranda">
       <div aria-hidden="true" className="dl-hero-grid" />
-      <div aria-hidden="true" className="dl-hero-soft-tiles" />
-      <div className="dl-hero-copy" id="konten-utama" tabIndex={-1}>
-        <h1 id="hero-title">Buka Potensi Usaha lewat Digital Checkup.</h1>
-        <p className="dl-hero-description">Pahami kondisi UMKM, temukan prioritas paling penting, lalu lanjut ke course singkat yang menghasilkan Aset Usaha.</p>
-        <div className="dl-hero-actions">
-          <Link className="dl-primary-button" href={checkupHref}>Mulai Checkup Gratis</Link>
-          <Link className="dl-secondary-button" href="#course">Lihat Course</Link>
+      <div aria-hidden="true" className="dl-hero-orb dl-hero-orb-one" />
+      <div aria-hidden="true" className="dl-hero-orb dl-hero-orb-two" />
+      <div className="dl-hero-inner">
+        <div className="dl-hero-copy" data-reveal-item id="konten-utama" tabIndex={-1}>
+          <p className="dl-hero-eyebrow"><Sparkles aria-hidden="true" size={15} /> Digital Checkup untuk UMKM</p>
+          <h1 id="hero-title">Cek kondisi usahamu. <span>Tahu langkah berikutnya.</span></h1>
+          <p className="dl-hero-description">Jawab pertanyaan singkat, lihat prioritas yang paling penting, lalu mulai aksi yang masuk akal untuk usahamu.</p>
+          <div className="dl-hero-actions">
+            <Link className="dl-primary-button" href={checkupHref}>Mulai Checkup <ArrowUpRight aria-hidden="true" size={18} /></Link>
+            <Link className="dl-secondary-button" href="#akses-belajar">Lihat cara kerjanya</Link>
+          </div>
+          <ul className="dl-hero-trust" aria-label="Informasi Digital Checkup">
+            {["Gratis", "Cuma 5–7 menit", "Hasil langsung"].map((item) => <li key={item}><CheckCircle2 aria-hidden="true" size={16} />{item}</li>)}
+          </ul>
         </div>
-        <ul className="dl-hero-trust" aria-label="Informasi Digital Checkup">
-          {["Gratis", "5-7 menit", "Hasil langsung"].map((item) => <li key={item}><CheckCircle2 aria-hidden="true" size={16} />{item}</li>)}
-        </ul>
+
+        <div className="dl-hero-product" data-reveal-item>
+          <div className="dl-hero-product-label"><span>Live preview</span><strong>Ruang Tumbuh</strong></div>
+          <HeroDashboardPreview />
+        </div>
       </div>
 
-      <HeroDashboardPreview />
-
-      <div aria-label="UMKM dalam ekosistem DekatLokal" className="dl-logo-ticker" tabIndex={0}>
-        <p className="dl-logo-trusted-label">Dipercaya oleh UMKM dan komunitas lokal</p>
+      <div aria-label="UMKM dalam ekosistem DekatLokal" className="dl-logo-ticker" data-reveal-item tabIndex={0}>
+        <p className="dl-logo-trusted-label">Tumbuh bareng usaha lokal dari berbagai daerah</p>
         <div className="dl-logo-track">
           {[...umkmLogos, ...umkmLogos].map(([name, src], index) => (
             <span aria-hidden={index >= umkmLogos.length} className="dl-logo-item" key={`${name}-${index}`}><Image alt={index < umkmLogos.length ? name : ""} height={52} loading="eager" src={src} unoptimized width={128} /></span>
@@ -157,16 +168,15 @@ const accessSteps = [
 function AccessLearningSection() {
   return (
     <section aria-labelledby="access-title" className="dl-access-section dl-viewport-section" id="akses-belajar">
-      <div className="dl-access-board">
+      <div className="dl-access-board" data-reveal-item>
         <article className="dl-access-lead">
           <div className="dl-access-lead-heading">
-            <p className="dl-section-kicker">Satu jalur, dari pemetaan hingga tindakan</p>
+            <p className="dl-section-kicker">Cara kerjanya</p>
             <h2 id="access-title">
-              Dari Checkup ke Course, <span className="dl-title-pill">tetap terarah</span>.
+              Mulai dari yang penting. <span className="dl-title-pill">Lanjut tanpa bingung.</span>
             </h2>
             <p>
-              Tidak perlu menebak apa yang harus dipelajari. Kondisi usahamu menentukan urutan langkah
-              berikutnya.
+              Tidak perlu belajar semuanya. Hasil checkup membantu memilih langkah yang paling relevan untuk usahamu sekarang.
             </p>
           </div>
         </article>
@@ -207,7 +217,7 @@ function AccessLearningSection() {
 function TestimonialsSection() {
   return (
     <section aria-labelledby="experience-title" className="dl-testimonials-section dl-viewport-section" id="pengalaman">
-      <div className="dl-story-heading"><div><p className="dl-section-kicker">Cerita Perjalanan UMKM</p><h2 id="experience-title">Setiap usaha punya <span className="dl-title-pill">langkah terdekat</span>.</h2></div><p>Gambaran fokus perjalanan dari pelaku usaha lokal. Visual bersifat representatif dan tidak digunakan sebagai klaim hasil pelanggan.</p></div>
+      <div className="dl-story-heading" data-reveal-item><div><p className="dl-section-kicker">Cerita perjalanan UMKM</p><h2 id="experience-title">Bukan soal langsung besar. <span className="dl-title-pill">Soal terus bergerak.</span></h2></div><p>Lihat bagaimana pelaku usaha lokal merapikan fondasi digitalnya, satu langkah pada satu waktu.</p></div>
       <TestimonialsCarousel stories={stories} />
     </section>
   );
@@ -229,7 +239,7 @@ function FaqSection() {
 
   return (
     <section aria-labelledby="faq-title" className="dl-faq-section dl-viewport-section" id="faq">
-      <div className="dl-faq-layout">
+      <div className="dl-faq-layout" data-reveal-item>
         <div className="dl-faq-copy">
           <div className="dl-faq-eyebrow">
             <span aria-hidden="true" className="dl-faq-logo">
@@ -237,7 +247,7 @@ function FaqSection() {
             </span>
             <p className="dl-section-kicker">FAQ</p>
           </div>
-          <h2 id="faq-title">Yang Perlu Kamu Tahu Tentang Digital Checkup.</h2>
+          <h2 id="faq-title">Masih ada yang bikin ragu?</h2>
         </div>
 
         <div className="dl-faq-columns">
@@ -271,7 +281,7 @@ function FinalCta({ checkupHref }: { checkupHref: string }) {
   return (
     <section aria-labelledby="start-title" className="dl-final-cta dl-viewport-section" id="mulai">
       <div aria-hidden="true" className="dl-cta-grid" />
-      <div className="dl-final-copy"><h2 id="start-title">Siap Naikkan Kelas Usaha?</h2><p>Dapatkan prioritas tindakan, course singkat, dan Aset Usaha yang membantu pelanggan lebih mudah percaya.</p><div><Link className="dl-final-primary" href={checkupHref}>Mulai Checkup Gratis</Link></div></div>
+      <div className="dl-final-copy" data-reveal-item><p className="dl-section-kicker">Mulai dari langkah kecil hari ini</p><h2 id="start-title">Biar usahamu nggak jalan sambil menebak.</h2><p>Luangkan 5–7 menit. Pulang dengan prioritas yang lebih jelas dan bisa langsung dikerjakan.</p><div><Link className="dl-final-primary" href={checkupHref}>Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} /></Link></div></div>
       <div aria-hidden="true" className="dl-final-person">
         <Image alt="" height={1050} src="/platform-v2/hero/owner-cutout.webp" unoptimized width={820} />
       </div>
@@ -280,9 +290,8 @@ function FinalCta({ checkupHref }: { checkupHref: string }) {
 }
 
 function LandingFooter({ checkupHref }: { checkupHref: string }) {
-  const policyHref = "https://dekatlokal.com/kebijakan";
   return (
-    <footer className="dl-footer" data-testid="landing-footer"><div className="dl-footer-grid"><div className="dl-footer-about"><Image alt="DekatLokal" height={64} src="/brand/dekat-lokal.png" width={207} /><p>DekatLokal membantu UMKM memahami kondisi, belajar yang relevan, dan menuntaskan aksi usaha yang terukur.</p><a href="mailto:hello@dekatlokal.com">hello@dekatlokal.com</a><span>Indonesia</span></div><FooterColumn title="Platform" links={[["Digital Checkup", checkupHref], ["Cara Kerja", "#akses-belajar"], ["Course", "#course"], ["Harga", "#paket"]]} /><FooterColumn title="Ruang Tumbuh" links={[["Jalur Naik Kelas", "/masuk"], ["Jejak Tumbuh", "/masuk"], ["Aset Usaha", "/masuk"]]} /><FooterColumn title="Dukungan" links={[["Masuk", "/masuk"], ["Bantuan", "mailto:hello@dekatlokal.com"], ["Hubungi Kami", "mailto:hello@dekatlokal.com"]]} /></div><div aria-hidden="true" className="dl-footer-word">DekatLokal</div><div className="dl-footer-bottom"><span>&copy; 2026 DekatLokal. Hak cipta dilindungi.</span><div><Link href={policyHref}>Kebijakan Privasi</Link><Link href={policyHref}>Syarat &amp; Ketentuan</Link></div><span>UMKM bertumbuh dengan langkah yang lebih dekat.</span></div></footer>
+    <footer className="dl-footer" data-testid="landing-footer"><div className="dl-footer-grid"><div className="dl-footer-about"><Image alt="DekatLokal" height={64} src="/brand/dekat-lokal.png" width={207} /><p>DekatLokal membantu UMKM melihat kondisi dengan jernih, belajar yang relevan, dan bergerak lewat langkah yang realistis.</p><a href="mailto:hello@dekatlokal.com">hello@dekatlokal.com</a><span>Indonesia</span></div><FooterColumn title="Platform" links={[["Digital Checkup", checkupHref], ["Cara Kerja", "#akses-belajar"], ["Course", "#course"], ["Harga", "#paket"]]} /><FooterColumn title="Ruang Tumbuh" links={[["Jalur Naik Kelas", "/masuk"], ["Jejak Tumbuh", "/masuk"], ["Aset Usaha", "/masuk"]]} /><FooterColumn title="Dukungan" links={[["Masuk", "/masuk"], ["Bantuan", "mailto:hello@dekatlokal.com"], ["Hubungi Kami", "mailto:hello@dekatlokal.com"]]} /></div><div aria-hidden="true" className="dl-footer-word">DekatLokal</div><div className="dl-footer-bottom"><span>&copy; 2026 DekatLokal. Hak cipta dilindungi.</span><div><a href="https://dekatlokal.com/privacy-policy" rel="noreferrer" target="_blank">Kebijakan Privasi</a><a href="https://dekatlokal.com/terms-of-service" rel="noreferrer" target="_blank">Syarat &amp; Ketentuan</a></div><span>UMKM bertumbuh, satu langkah lebih dekat.</span></div></footer>
   );
 }
 

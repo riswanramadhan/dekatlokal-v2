@@ -1,0 +1,881 @@
+/* Final landing-page system. Kept separate so the visual contract is easy to audit. */
+
+body .dl-landing.dl-landing {
+  --dl-shell: 76rem;
+  --dl-gutter: clamp(1.25rem, 4vw, 2rem);
+  --dl-shell-width: min(var(--dl-shell), calc(100vw - (var(--dl-gutter) * 2)));
+  --dl-blue: #075cff;
+  --dl-blue-dark: #0638b7;
+  --dl-ink: #071327;
+  --dl-muted: #53627a;
+  --dl-line: rgba(21, 57, 112, 0.12);
+  --dl-soft: #f5f8ff;
+  overflow: clip !important;
+  background: #ffffff !important;
+  color: var(--dl-ink) !important;
+  font-family: var(--font-poppins), system-ui, sans-serif !important;
+}
+
+body .dl-landing.dl-landing h1,
+body .dl-landing.dl-landing h2,
+body .dl-landing.dl-landing h3,
+body .dl-landing.dl-landing h4 {
+  font-family: var(--font-poppins), system-ui, sans-serif !important;
+  text-wrap: balance;
+}
+
+body .dl-landing.dl-landing h1,
+body .dl-landing.dl-landing h2 {
+  font-weight: 500 !important;
+  letter-spacing: -0.045em !important;
+}
+
+body .dl-landing.dl-landing h3,
+body .dl-landing.dl-landing h4 {
+  font-weight: 600 !important;
+}
+
+body .dl-landing.dl-landing p {
+  text-wrap: pretty;
+}
+
+body .dl-landing.dl-landing .dl-title-pill {
+  display: inline !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: linear-gradient(115deg, #075cff 5%, #6946ee 94%) !important;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  box-shadow: none !important;
+  color: transparent !important;
+  padding: 0 !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+
+body .dl-landing.dl-landing .dl-section-kicker {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  margin: 0 0 1rem !important;
+  color: var(--dl-blue) !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+body .dl-landing.dl-landing .dl-section-kicker::before {
+  width: 1.45rem !important;
+  height: 1px !important;
+  border-radius: 999px !important;
+  background: currentColor !important;
+  content: "" !important;
+}
+
+body .dl-landing.dl-landing .dl-section-kicker::after {
+  display: none !important;
+  content: none !important;
+}
+
+.dl-motion-enabled .dl-viewport-section:not(.is-revealed) [data-reveal-item] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* One pill silhouette at rest and while scrolling. */
+body .dl-landing.dl-landing .dl-navbar,
+body .dl-landing.dl-landing .dl-navbar.is-scrolled {
+  position: fixed !important;
+  z-index: 100 !important;
+  top: max(0.85rem, env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  width: var(--dl-shell-width) !important;
+  max-width: var(--dl-shell) !important;
+  min-height: 4rem !important;
+  height: 4rem !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 1.25rem !important;
+  margin: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.78) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 0.45rem 1.8rem rgba(8, 28, 68, 0.07) !important;
+  padding: 0.45rem 0.52rem 0.45rem 1rem !important;
+  transform: translateX(-50%) !important;
+  transition: background-color 260ms ease, border-color 260ms ease, box-shadow 260ms ease, top 260ms ease !important;
+  backdrop-filter: blur(18px) saturate(145%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(145%) !important;
+}
+
+html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="false"],
+html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="true"] {
+  border-radius: 999px !important;
+}
+
+body .dl-landing.dl-landing .dl-navbar.is-scrolled {
+  top: max(0.55rem, env(safe-area-inset-top)) !important;
+  border-color: rgba(197, 211, 237, 0.72) !important;
+  background: rgba(255, 255, 255, 0.93) !important;
+  box-shadow: 0 1rem 2.6rem rgba(8, 28, 68, 0.13) !important;
+}
+
+body .dl-landing.dl-landing .dl-navbar-logo {
+  min-height: 2.5rem !important;
+}
+
+body .dl-landing.dl-landing .dl-navbar-logo img {
+  width: 7.75rem !important;
+  height: auto !important;
+}
+
+body .dl-landing.dl-landing .dl-navbar-links {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.15rem !important;
+}
+
+body .dl-landing.dl-landing .dl-navbar-links a,
+body .dl-landing.dl-landing .dl-navbar-login {
+  min-height: 2.45rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  color: #46536a !important;
+  padding: 0.62rem 0.78rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  transition: color 180ms ease, background-color 180ms ease, transform 180ms ease !important;
+}
+
+body .dl-landing.dl-landing .dl-navbar-links a::after {
+  display: none !important;
+}
+
+body .dl-landing.dl-landing .dl-navbar-links a:hover,
+body .dl-landing.dl-landing .dl-navbar-links a:focus-visible,
+body .dl-landing.dl-landing .dl-navbar-links a.is-active {
+  background: #edf3ff !important;
+  color: var(--dl-blue-dark) !important;
+}
+
+body .dl-landing.dl-landing .dl-navbar-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.15rem !important;
+}
+
+body .dl-landing.dl-landing .dl-navbar-checkup {
+  display: inline-flex !important;
+  min-height: 3rem !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  border-radius: 999px !important;
+  background: linear-gradient(120deg, #075cff, #0846d8) !important;
+  box-shadow: 0 0.55rem 1.2rem rgba(7, 92, 255, 0.22) !important;
+  color: #fff !important;
+  padding: 0.65rem 1.05rem !important;
+  font-size: 0.76rem !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+}
+
+/* Hero */
+body .dl-landing.dl-landing .dl-hero-section {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 8.75rem var(--dl-gutter) 0 !important;
+  background:
+    radial-gradient(circle at 80% 18%, rgba(75, 116, 255, 0.16), transparent 30rem),
+    radial-gradient(circle at 8% 4%, rgba(99, 220, 255, 0.12), transparent 24rem),
+    linear-gradient(180deg, #f8fbff 0%, #ffffff 82%) !important;
+  isolation: isolate !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-grid {
+  position: absolute !important;
+  z-index: -2 !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-image:
+    linear-gradient(rgba(45, 91, 170, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 91, 170, 0.055) 1px, transparent 1px) !important;
+  background-size: 4.5rem 4.5rem !important;
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 78%) !important;
+  opacity: 0.58 !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-orb {
+  position: absolute;
+  z-index: -1;
+  width: 22rem;
+  height: 22rem;
+  border: 1px solid rgba(55, 106, 255, 0.14);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+body .dl-landing.dl-landing .dl-hero-orb::after {
+  position: absolute;
+  inset: 18%;
+  border: inherit;
+  border-radius: inherit;
+  content: "";
+}
+
+body .dl-landing.dl-landing .dl-hero-orb-one { top: 4rem; right: -8rem; }
+body .dl-landing.dl-landing .dl-hero-orb-two { bottom: 3rem; left: -14rem; width: 27rem; height: 27rem; }
+
+body .dl-landing.dl-landing .dl-hero-inner {
+  position: relative !important;
+  z-index: 2 !important;
+  display: grid !important;
+  width: var(--dl-shell-width) !important;
+  max-width: var(--dl-shell) !important;
+  grid-template-columns: minmax(0, 0.88fr) minmax(31rem, 1.12fr) !important;
+  align-items: center !important;
+  gap: clamp(2.5rem, 6vw, 5rem) !important;
+  margin: 0 auto !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-copy {
+  position: relative !important;
+  z-index: 3 !important;
+  width: 100% !important;
+  max-width: 34rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-eyebrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.48rem !important;
+  margin: 0 0 1.35rem !important;
+  border: 1px solid #d5e2fb !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.84) !important;
+  box-shadow: 0 0.45rem 1.25rem rgba(17, 59, 137, 0.06) !important;
+  color: var(--dl-blue-dark) !important;
+  padding: 0.52rem 0.78rem !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.025em !important;
+  line-height: 1 !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-copy h1 {
+  max-width: 34rem !important;
+  margin: 0 !important;
+  color: var(--dl-ink) !important;
+  font-size: clamp(3rem, 4.65vw, 4.45rem) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.06em !important;
+  line-height: 1.02 !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-copy h1 span {
+  display: block !important;
+  background: linear-gradient(110deg, #075cff 10%, #6547e8 95%) !important;
+  color: transparent !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-description {
+  width: min(100%, 32rem) !important;
+  margin: 1.5rem 0 0 !important;
+  color: var(--dl-muted) !important;
+  font-size: clamp(0.98rem, 1.3vw, 1.08rem) !important;
+  line-height: 1.75 !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0.8rem !important;
+  margin: 1.85rem 0 0 !important;
+}
+
+body .dl-landing.dl-landing .dl-primary-button,
+body .dl-landing.dl-landing .dl-secondary-button {
+  display: inline-flex !important;
+  min-height: 3.35rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  border-radius: 999px !important;
+  padding: 0.85rem 1.25rem !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease !important;
+}
+
+body .dl-landing.dl-landing .dl-primary-button {
+  border: 1px solid var(--dl-blue) !important;
+  background: linear-gradient(120deg, #075cff, #0844d1) !important;
+  box-shadow: 0 0.8rem 1.8rem rgba(7, 92, 255, 0.22) !important;
+  color: #fff !important;
+}
+
+body .dl-landing.dl-landing .dl-secondary-button {
+  border: 1px solid #cad8ee !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  color: #17325f !important;
+}
+
+body .dl-landing.dl-landing .dl-primary-button:hover,
+body .dl-landing.dl-landing .dl-secondary-button:hover {
+  transform: translateY(-2px) !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-trust {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  gap: 0.65rem 1rem !important;
+  margin: 1.25rem 0 0 !important;
+  padding: 0 !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-trust li {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #58657a !important;
+  padding: 0 !important;
+  font-size: 0.72rem !important;
+  font-weight: 500 !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-trust svg { color: #18a66d !important; }
+
+body .dl-landing.dl-landing .dl-hero-product {
+  position: relative !important;
+  min-width: 0 !important;
+  border: 1px solid rgba(207, 220, 242, 0.75) !important;
+  border-radius: 1.75rem !important;
+  background: rgba(255, 255, 255, 0.48) !important;
+  box-shadow: 0 2.4rem 5rem rgba(24, 67, 147, 0.13) !important;
+  padding: 0.65rem !important;
+  transform: perspective(1000px) rotateY(-2deg) rotateX(1deg) !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-product-label {
+  position: absolute;
+  z-index: 9;
+  right: -1rem;
+  top: -1.25rem;
+  display: flex;
+  min-width: 8.2rem;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 1rem;
+  background: rgba(8, 25, 54, 0.9);
+  box-shadow: 0 1rem 2rem rgba(8, 25, 54, 0.2);
+  color: #fff;
+  padding: 0.72rem 0.9rem;
+  backdrop-filter: blur(14px);
+}
+
+body .dl-landing.dl-landing .dl-hero-product-label span { color: #9bbcff !important; font-size: 0.58rem !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; }
+body .dl-landing.dl-landing .dl-hero-product-label strong { margin-top: 0.18rem !important; font-size: 0.78rem !important; font-weight: 600 !important; }
+
+body .dl-landing.dl-landing .dl-hero-dashboard-preview {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+body .dl-landing.dl-landing .dl-hero-dashboard-preview::before { display: none !important; }
+body .dl-landing.dl-landing .dl-dashboard-window { border-radius: 1.25rem !important; box-shadow: none !important; }
+body .dl-landing.dl-landing .dl-dashboard-app { min-height: 27.5rem !important; }
+
+body .dl-landing.dl-landing .dl-logo-ticker {
+  position: relative !important;
+  z-index: 3 !important;
+  width: var(--dl-shell-width) !important;
+  max-width: var(--dl-shell) !important;
+  height: auto !important;
+  margin: 4rem auto 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-top: 1px solid var(--dl-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 1.45rem 0 1.2rem !important;
+}
+
+body .dl-landing.dl-landing .dl-logo-trusted-label {
+  position: static !important;
+  display: block !important;
+  margin: 0 0 1rem !important;
+  background: transparent !important;
+  color: #778399 !important;
+  font-size: 0.62rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.09em !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+}
+
+body .dl-landing.dl-landing .dl-logo-track {
+  display: flex !important;
+  width: max-content !important;
+  gap: 0.8rem !important;
+  animation-duration: 38s !important;
+}
+
+body .dl-landing.dl-landing .dl-logo-item {
+  display: grid !important;
+  width: 8.6rem !important;
+  height: 3.2rem !important;
+  place-items: center !important;
+  border: 1px solid rgba(210, 220, 237, 0.72) !important;
+  border-radius: 1rem !important;
+  background: rgba(255, 255, 255, 0.84) !important;
+  padding: 0.6rem 0.9rem !important;
+}
+
+body .dl-landing.dl-landing .dl-logo-item img { width: 100% !important; height: 100% !important; object-fit: contain !important; filter: saturate(0.88) !important; }
+
+/* Shared section rails */
+body .dl-landing.dl-landing .dl-access-section.dl-viewport-section,
+body .dl-landing.dl-landing .dl-testimonials-section.dl-viewport-section,
+body .dl-landing.dl-landing .dl-course-shell.dl-viewport-section,
+body .dl-landing.dl-landing .dl-pricing-section.dl-viewport-section,
+body .dl-landing.dl-landing .dl-faq-section.dl-viewport-section {
+  min-height: 0 !important;
+  padding: clamp(5rem, 8vw, 7.5rem) var(--dl-gutter) !important;
+  scroll-margin-top: 5.5rem !important;
+}
+
+body .dl-landing.dl-landing .dl-access-board,
+body .dl-landing.dl-landing .dl-story-heading,
+body .dl-landing.dl-landing .dl-story-carousel,
+body .dl-landing.dl-landing .dl-course-section,
+body .dl-landing.dl-landing .dl-pricing-layout,
+body .dl-landing.dl-landing .dl-pricing-note,
+body .dl-landing.dl-landing .dl-faq-layout,
+body .dl-landing.dl-landing .dl-footer-grid,
+body .dl-landing.dl-landing .dl-footer-bottom {
+  width: var(--dl-shell-width) !important;
+  max-width: var(--dl-shell) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+body .dl-landing.dl-landing .dl-access-section { background: #fff !important; }
+body .dl-landing.dl-landing .dl-access-board { max-width: var(--dl-shell) !important; border-radius: 2rem !important; }
+body .dl-landing.dl-landing .dl-access-lead h2 { font-size: clamp(2.25rem, 3.7vw, 3.35rem) !important; font-weight: 500 !important; line-height: 1.08 !important; }
+body .dl-landing.dl-landing .dl-access-lead .dl-title-pill { background: none !important; color: #fff !important; text-decoration: underline !important; text-decoration-color: rgba(255,255,255,.34) !important; text-decoration-thickness: 0.12em !important; text-underline-offset: 0.11em !important; }
+body .dl-landing.dl-landing .dl-access-row { transition: background-color 200ms ease, padding-left 200ms ease !important; }
+body .dl-landing.dl-landing .dl-access-row:hover { padding-left: 1.6rem !important; }
+
+/* Story showcase */
+body .dl-landing.dl-landing .dl-testimonials-section { background: #f5f8ff !important; }
+
+body .dl-landing.dl-landing .dl-story-heading {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr) !important;
+  align-items: end !important;
+  gap: 3rem !important;
+  padding: 0 !important;
+}
+
+body .dl-landing.dl-landing .dl-story-heading h2,
+body .dl-landing.dl-landing .dl-course-heading h2,
+body .dl-landing.dl-landing .dl-pricing-copy h2,
+body .dl-landing.dl-landing .dl-faq-copy h2 {
+  margin: 0 !important;
+  color: var(--dl-ink) !important;
+  font-size: clamp(2.4rem, 4.5vw, 4.2rem) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.055em !important;
+  line-height: 1.05 !important;
+}
+
+body .dl-landing.dl-landing .dl-story-heading > p {
+  max-width: 28rem !important;
+  margin: 0 0 0.35rem !important;
+  color: var(--dl-muted) !important;
+  font-size: 0.94rem !important;
+  line-height: 1.72 !important;
+}
+
+body .dl-landing.dl-landing .dl-story-carousel {
+  position: relative !important;
+  margin-top: 3rem !important;
+  overflow: visible !important;
+}
+
+body .dl-landing.dl-landing .dl-story-stage {
+  overflow: hidden !important;
+  border: 1px solid rgba(190, 207, 234, 0.75) !important;
+  border-radius: 2rem !important;
+  background: #fff !important;
+  box-shadow: 0 1.8rem 4.8rem rgba(19, 52, 113, 0.1) !important;
+}
+
+body .dl-landing.dl-landing .dl-story-card {
+  display: grid !important;
+  width: 100% !important;
+  min-height: 34rem !important;
+  grid-template-columns: minmax(0, 1.14fr) minmax(22rem, 0.86fr) !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+body .dl-landing.dl-landing .dl-story-image {
+  position: relative !important;
+  min-height: 34rem !important;
+  overflow: hidden !important;
+  background: #dce7f9 !important;
+}
+
+body .dl-landing.dl-landing .dl-story-image::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 48%, rgba(3, 13, 31, 0.48));
+  content: "";
+  pointer-events: none;
+}
+
+body .dl-landing.dl-landing .dl-story-image img { object-fit: cover !important; object-position: center !important; }
+
+body .dl-landing.dl-landing .dl-story-image > span {
+  position: absolute !important;
+  z-index: 3 !important;
+  left: 1.35rem !important;
+  top: 1.35rem !important;
+  bottom: auto !important;
+  display: inline-flex !important;
+  border: 1px solid rgba(255,255,255,.75) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.86) !important;
+  color: #10264b !important;
+  padding: 0.48rem 0.72rem !important;
+  font-size: 0.66rem !important;
+  font-weight: 600 !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+body .dl-landing.dl-landing .dl-story-image-index {
+  position: absolute;
+  z-index: 3;
+  right: 1.35rem;
+  bottom: 0.75rem;
+  color: rgba(255,255,255,.86);
+  font-size: clamp(3.5rem, 7vw, 6.5rem);
+  font-weight: 500;
+  letter-spacing: -0.08em;
+  line-height: 1;
+}
+
+body .dl-landing.dl-landing .dl-story-content {
+  display: flex !important;
+  min-width: 0 !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  padding: clamp(2.2rem, 5vw, 4rem) !important;
+}
+
+body .dl-landing.dl-landing .dl-story-brand { display: flex !important; align-items: center !important; gap: 1rem !important; }
+body .dl-landing.dl-landing .dl-story-logo { position: relative !important; display: block !important; width: 5.6rem !important; height: 3.8rem !important; flex: 0 0 5.6rem !important; overflow: hidden !important; border: 1px solid var(--dl-line) !important; border-radius: 0.9rem !important; background: #fff !important; }
+body .dl-landing.dl-landing .dl-story-logo img { object-fit: contain !important; padding: 0.55rem !important; }
+body .dl-landing.dl-landing .dl-story-brand > span:last-child { display: flex !important; min-width: 0 !important; flex-direction: column !important; }
+body .dl-landing.dl-landing .dl-story-brand small { color: var(--dl-blue) !important; font-size: 0.64rem !important; font-weight: 600 !important; letter-spacing: .09em !important; text-transform: uppercase !important; }
+body .dl-landing.dl-landing .dl-story-brand strong { margin-top: .2rem !important; color: var(--dl-ink) !important; font-size: 1rem !important; font-weight: 600 !important; }
+
+body .dl-landing.dl-landing .dl-story-content blockquote {
+  margin: 2.1rem 0 0 !important;
+  color: #14213a !important;
+  font-size: clamp(1.35rem, 2.2vw, 2rem) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.035em !important;
+  line-height: 1.45 !important;
+}
+
+body .dl-landing.dl-landing .dl-story-content > p { margin: 1.4rem 0 0 !important; color: #748096 !important; font-size: .78rem !important; line-height: 1.6 !important; }
+
+body .dl-landing.dl-landing .dl-story-controls {
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  margin-top: 1.5rem !important;
+}
+
+body .dl-landing.dl-landing .dl-story-arrows { display: flex !important; gap: .6rem !important; }
+body .dl-landing.dl-landing .dl-story-arrows button,
+body .dl-landing.dl-landing .dl-story-status button {
+  display: grid !important;
+  width: 2.8rem !important;
+  height: 2.8rem !important;
+  place-items: center !important;
+  border: 1px solid #cbd8ed !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  color: #15346a !important;
+  cursor: pointer !important;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease !important;
+}
+
+body .dl-landing.dl-landing .dl-story-arrows button:hover,
+body .dl-landing.dl-landing .dl-story-status button:hover { background: var(--dl-blue) !important; color: #fff !important; transform: translateY(-2px) !important; }
+
+body .dl-landing.dl-landing .dl-story-dots { display: flex !important; align-items: center !important; justify-content: center !important; gap: .32rem !important; }
+body .dl-landing.dl-landing .dl-story-dots button { display: grid !important; width: 1.1rem !important; height: 1.1rem !important; place-items: center !important; border: 0 !important; border-radius: 50% !important; background: transparent !important; padding: 0 !important; cursor: pointer !important; }
+body .dl-landing.dl-landing .dl-story-dots button span { display: block !important; width: .34rem !important; height: .34rem !important; border-radius: 50% !important; background: #aab7cb !important; transition: width 180ms ease, background-color 180ms ease !important; }
+body .dl-landing.dl-landing .dl-story-dots button.is-active { width: 2.2rem !important; background: transparent !important; }
+body .dl-landing.dl-landing .dl-story-dots button.is-active span { width: 1.65rem !important; border-radius: 999px !important; background: var(--dl-blue) !important; }
+body .dl-landing.dl-landing .dl-story-status { display: flex !important; align-items: center !important; justify-content: flex-end !important; gap: .7rem !important; }
+body .dl-landing.dl-landing .dl-story-status > span { color: #69758b !important; font-family: var(--font-geist-mono), monospace !important; font-size: .72rem !important; }
+body .dl-landing.dl-landing .dl-story-status button { width: 2.25rem !important; height: 2.25rem !important; }
+body .dl-landing.dl-landing .dl-story-live-region { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0 0 0 0) !important; white-space: nowrap !important; }
+
+/* Remaining commercial sections */
+body .dl-landing.dl-landing .dl-course-shell { background: #fff !important; }
+body .dl-landing.dl-landing .dl-course-section { max-width: var(--dl-shell) !important; }
+body .dl-landing.dl-landing .dl-course-heading { max-width: 48rem !important; margin-bottom: 2.6rem !important; }
+body .dl-landing.dl-landing .dl-course-heading > p:last-child,
+body .dl-landing.dl-landing .dl-pricing-copy > p:last-child { max-width: 39rem !important; color: var(--dl-muted) !important; font-size: .95rem !important; line-height: 1.72 !important; }
+body .dl-landing.dl-landing .dl-course-card { border-color: var(--dl-line) !important; border-radius: 1.45rem !important; box-shadow: 0 1rem 2.6rem rgba(17, 47, 100, 0.07) !important; }
+body .dl-landing.dl-landing .dl-course-card:hover { box-shadow: 0 1.5rem 3.4rem rgba(17, 47, 100, 0.12) !important; transform: translateY(-5px) !important; }
+
+body .dl-landing.dl-landing .dl-pricing-section { background: #f7f9fd !important; }
+body .dl-landing.dl-landing .dl-pricing-layout { max-width: var(--dl-shell) !important; }
+body .dl-landing.dl-landing .dl-pricing-detail { border: 1px solid #cad9ef !important; border-radius: 1.75rem !important; box-shadow: 0 1.5rem 4rem rgba(17, 47, 100, .09) !important; }
+body .dl-landing.dl-landing .dl-pricing-option { border-radius: 1.15rem !important; }
+
+body .dl-landing.dl-landing .dl-faq-section { background: #fff !important; }
+body .dl-landing.dl-landing .dl-faq-layout { max-width: var(--dl-shell) !important; }
+body .dl-landing.dl-landing .dl-faq-item { border-radius: 1.1rem !important; }
+
+body .dl-landing.dl-landing .dl-final-cta {
+  width: 100% !important;
+  min-height: 34rem !important;
+  padding: clamp(5rem, 8vw, 7.5rem) max(var(--dl-gutter), calc((100vw - var(--dl-shell)) / 2)) !important;
+  background:
+    radial-gradient(circle at 72% 16%, rgba(64, 132, 255, 0.42), transparent 26rem),
+    linear-gradient(135deg, #07152f 0%, #0a2f78 58%, #075cff 100%) !important;
+}
+
+body .dl-landing.dl-landing .dl-final-copy { max-width: 42rem !important; text-align: left !important; }
+body .dl-landing.dl-landing .dl-final-copy h2 { font-size: clamp(2.7rem, 5vw, 4.8rem) !important; font-weight: 500 !important; line-height: 1.02 !important; }
+body .dl-landing.dl-landing .dl-final-copy .dl-section-kicker { color: #9cc1ff !important; }
+body .dl-landing.dl-landing .dl-final-primary { display: inline-flex !important; align-items: center !important; gap: .55rem !important; border-radius: 999px !important; font-weight: 600 !important; }
+
+body .dl-landing.dl-landing .dl-footer { padding-right: var(--dl-gutter) !important; padding-left: var(--dl-gutter) !important; }
+body .dl-landing.dl-landing .dl-footer-grid,
+body .dl-landing.dl-landing .dl-footer-bottom { max-width: var(--dl-shell) !important; }
+
+@media (max-width: 1080px) {
+  body .dl-landing.dl-landing .dl-navbar-links a { padding-inline: .58rem !important; font-size: .69rem !important; }
+  body .dl-landing.dl-landing .dl-hero-inner { grid-template-columns: minmax(0, .9fr) minmax(27rem, 1.1fr) !important; gap: 2rem !important; }
+  body .dl-landing.dl-landing .dl-hero-copy h1 { font-size: clamp(2.8rem, 5vw, 3.8rem) !important; }
+  body .dl-landing.dl-landing .dl-dashboard-sidebar { display: none !important; }
+  body .dl-landing.dl-landing .dl-dashboard-app { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 980px) {
+  body .dl-landing.dl-landing .dl-navbar,
+  body .dl-landing.dl-landing .dl-navbar.is-scrolled { grid-template-columns: auto 1fr auto !important; }
+  body .dl-landing.dl-landing .dl-navbar-links,
+  body .dl-landing.dl-landing .dl-navbar-actions { display: none !important; }
+  body .dl-landing.dl-landing .dl-navbar-menu-button { display: grid !important; justify-self: end !important; }
+  body .dl-landing.dl-landing .dl-hero-section { padding-top: 7.6rem !important; }
+  body .dl-landing.dl-landing .dl-hero-inner { grid-template-columns: 1fr !important; gap: 3rem !important; }
+  body .dl-landing.dl-landing .dl-hero-copy { max-width: 45rem !important; }
+  body .dl-landing.dl-landing .dl-hero-copy h1 { max-width: 44rem !important; font-size: clamp(3.3rem, 8vw, 5.4rem) !important; }
+  body .dl-landing.dl-landing .dl-hero-product { width: 100% !important; transform: none !important; }
+  body .dl-landing.dl-landing .dl-access-board { grid-template-columns: 1fr !important; }
+  body .dl-landing.dl-landing .dl-story-card { grid-template-columns: minmax(0, 1.08fr) minmax(19rem, .92fr) !important; }
+}
+
+@media (max-width: 699px) {
+  body .dl-landing.dl-landing { --dl-gutter: 1.1rem; }
+
+  body .dl-landing.dl-landing .dl-navbar,
+  body .dl-landing.dl-landing .dl-navbar.is-scrolled {
+    top: max(.65rem, env(safe-area-inset-top)) !important;
+    width: calc(100vw - 1.25rem) !important;
+    height: 3.65rem !important;
+    min-height: 3.65rem !important;
+    padding: .35rem .38rem .35rem .82rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-navbar.is-scrolled { top: max(.45rem, env(safe-area-inset-top)) !important; }
+  body .dl-landing.dl-landing .dl-navbar-logo img { width: 7.1rem !important; }
+  body .dl-landing.dl-landing .dl-navbar-menu-button { width: 2.9rem !important; height: 2.9rem !important; border-radius: 50% !important; }
+
+  body .dl-landing.dl-landing .dl-mobile-menu {
+    right: .7rem !important;
+    top: max(4.8rem, calc(env(safe-area-inset-top) + 4.25rem)) !important;
+    width: calc(100vw - 1.4rem) !important;
+    max-width: 25rem !important;
+    max-height: calc(100dvh - 5.5rem) !important;
+    border-radius: 1.6rem !important;
+  }
+
+  body .dl-landing.dl-landing .dl-hero-section { padding: 7.2rem var(--dl-gutter) 0 !important; }
+  body .dl-landing.dl-landing .dl-hero-inner { gap: 2.4rem !important; }
+  body .dl-landing.dl-landing .dl-hero-copy h1 { max-width: 22rem !important; font-size: clamp(2.55rem, 12.5vw, 3.5rem) !important; letter-spacing: -.055em !important; line-height: 1.04 !important; }
+  body .dl-landing.dl-landing .dl-hero-description { margin-top: 1.2rem !important; font-size: .93rem !important; line-height: 1.68 !important; }
+  body .dl-landing.dl-landing .dl-hero-eyebrow { margin-bottom: 1.1rem !important; }
+  body .dl-landing.dl-landing .dl-hero-actions { display: grid !important; grid-template-columns: 1fr !important; gap: .65rem !important; margin-top: 1.5rem !important; }
+  body .dl-landing.dl-landing .dl-primary-button,
+  body .dl-landing.dl-landing .dl-secondary-button { width: 100% !important; }
+  body .dl-landing.dl-landing .dl-hero-trust { gap: .6rem .8rem !important; }
+  body .dl-landing.dl-landing .dl-hero-trust li { font-size: .67rem !important; }
+  body .dl-landing.dl-landing .dl-hero-product { border-radius: 1.25rem !important; padding: .42rem !important; }
+  body .dl-landing.dl-landing .dl-hero-product-label { right: .7rem !important; top: -.85rem !important; min-width: 7.4rem !important; }
+  body .dl-landing.dl-landing .dl-dashboard-window { border-radius: .95rem !important; }
+  body .dl-landing.dl-landing .dl-dashboard-browser-bar { min-height: 2.7rem !important; grid-template-columns: 3.3rem 1fr 2rem !important; padding: .45rem .6rem !important; }
+  body .dl-landing.dl-landing .dl-dashboard-browser-actions span:first-child { display: none !important; }
+  body .dl-landing.dl-landing .dl-dashboard-app { min-height: 22rem !important; }
+  body .dl-landing.dl-landing .dl-dashboard-content { padding: 1rem !important; }
+  body .dl-landing.dl-landing .dl-dashboard-welcome h2 { font-size: 1rem !important; }
+  body .dl-landing.dl-landing .dl-dashboard-welcome p,
+  body .dl-landing.dl-landing .dl-dashboard-level,
+  body .dl-landing.dl-landing .dl-dashboard-search { display: none !important; }
+  body .dl-landing.dl-landing .dl-dashboard-stats { grid-template-columns: repeat(3, minmax(0,1fr)) !important; gap: .45rem !important; }
+  body .dl-landing.dl-landing .dl-dashboard-stats article { padding: .7rem !important; }
+  body .dl-landing.dl-landing .dl-dashboard-stat-icon,
+  body .dl-landing.dl-landing .dl-dashboard-stats small { display: none !important; }
+  body .dl-landing.dl-landing .dl-dashboard-course-grid { grid-template-columns: 1fr !important; }
+  body .dl-landing.dl-landing .dl-dashboard-course-grid article:not(:first-child) { display: none !important; }
+  body .dl-landing.dl-landing .dl-logo-ticker { margin-top: 2.7rem !important; }
+
+  body .dl-landing.dl-landing .dl-access-section.dl-viewport-section,
+  body .dl-landing.dl-landing .dl-testimonials-section.dl-viewport-section,
+  body .dl-landing.dl-landing .dl-course-shell.dl-viewport-section,
+  body .dl-landing.dl-landing .dl-pricing-section.dl-viewport-section,
+  body .dl-landing.dl-landing .dl-faq-section.dl-viewport-section { padding: 4.5rem var(--dl-gutter) !important; }
+
+  body .dl-landing.dl-landing .dl-access-board { border-radius: 1.5rem !important; }
+  body .dl-landing.dl-landing .dl-access-lead { padding: 2rem 1.35rem !important; }
+  body .dl-landing.dl-landing .dl-access-lead h2 { font-size: 2.2rem !important; line-height: 1.08 !important; }
+  body .dl-landing.dl-landing .dl-access-row { grid-template-columns: 2.75rem minmax(0,1fr) !important; padding: 1rem !important; }
+  body .dl-landing.dl-landing .dl-access-row:hover { padding-left: 1rem !important; }
+  body .dl-landing.dl-landing .dl-access-row-media { display: none !important; }
+
+  body .dl-landing.dl-landing .dl-story-heading { grid-template-columns: 1fr !important; gap: 1.15rem !important; }
+  body .dl-landing.dl-landing .dl-story-heading h2,
+  body .dl-landing.dl-landing .dl-course-heading h2,
+  body .dl-landing.dl-landing .dl-pricing-copy h2,
+  body .dl-landing.dl-landing .dl-faq-copy h2 { font-size: clamp(2.25rem, 11vw, 3.2rem) !important; line-height: 1.06 !important; }
+  body .dl-landing.dl-landing .dl-story-heading > p { margin: 0 !important; }
+  body .dl-landing.dl-landing .dl-story-carousel { margin-top: 2rem !important; }
+  body .dl-landing.dl-landing .dl-story-stage { border-radius: 1.45rem !important; }
+  body .dl-landing.dl-landing .dl-story-card { min-height: 0 !important; grid-template-columns: 1fr !important; }
+  body .dl-landing.dl-landing .dl-story-image { min-height: 28rem !important; }
+  body .dl-landing.dl-landing .dl-story-content { padding: 1.55rem 1.25rem 1.8rem !important; }
+  body .dl-landing.dl-landing .dl-story-content blockquote { margin-top: 1.4rem !important; font-size: 1.22rem !important; line-height: 1.5 !important; }
+  body .dl-landing.dl-landing .dl-story-logo { width: 4.8rem !important; height: 3.2rem !important; flex-basis: 4.8rem !important; }
+  body .dl-landing.dl-landing .dl-story-controls { grid-template-columns: auto 1fr auto !important; }
+  body .dl-landing.dl-landing .dl-story-dots { max-width: 9rem !important; overflow: hidden !important; }
+  body .dl-landing.dl-landing .dl-story-dots button { display: none !important; }
+  body .dl-landing.dl-landing .dl-story-dots button.is-active { display: grid !important; width: 2.2rem !important; }
+
+  body .dl-landing.dl-landing .dl-course-grid { margin-right: calc(-1 * var(--dl-gutter)) !important; margin-left: 0 !important; padding-right: var(--dl-gutter) !important; }
+  body .dl-landing.dl-landing .dl-course-card { flex-basis: min(86vw, 21rem) !important; }
+  body .dl-landing.dl-landing .dl-pricing-layout { grid-template-columns: 1fr !important; gap: 2rem !important; }
+  body .dl-landing.dl-landing .dl-faq-layout { grid-template-columns: 1fr !important; gap: 2rem !important; }
+
+  body .dl-landing.dl-landing .dl-final-cta { min-height: 0 !important; padding: 4.8rem var(--dl-gutter) !important; }
+  body .dl-landing.dl-landing .dl-final-copy { width: 100% !important; }
+  body .dl-landing.dl-landing .dl-final-copy h2 { max-width: 22rem !important; font-size: clamp(2.45rem, 12vw, 3.4rem) !important; }
+  body .dl-landing.dl-landing .dl-final-copy .dl-final-primary { width: 100% !important; }
+
+  body .dl-landing.dl-landing .dl-footer { padding: 4rem var(--dl-gutter) 1.5rem !important; }
+  body .dl-landing.dl-landing .dl-footer-grid { grid-template-columns: 1fr 1fr !important; gap: 2.4rem 1.2rem !important; }
+  body .dl-landing.dl-landing .dl-footer-about { grid-column: 1 / -1 !important; }
+  body .dl-landing.dl-landing .dl-footer-bottom { display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+  body .dl-landing.dl-landing .dl-footer-bottom > div { flex-wrap: wrap !important; }
+  body .dl-landing.dl-landing .dl-footer-bottom > span:last-child { justify-self: auto !important; }
+}
+
+@media (max-width: 380px) {
+  body .dl-landing.dl-landing .dl-hero-copy h1 { font-size: 2.4rem !important; }
+  body .dl-landing.dl-landing .dl-hero-trust { display: grid !important; grid-template-columns: 1fr 1fr !important; }
+  body .dl-landing.dl-landing .dl-story-image { min-height: 24rem !important; }
+  body .dl-landing.dl-landing .dl-footer-grid { grid-template-columns: 1fr !important; }
+  body .dl-landing.dl-landing .dl-footer-about { grid-column: auto !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body .dl-landing.dl-landing *,
+  body .dl-landing.dl-landing *::before,
+  body .dl-landing.dl-landing *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .dl-motion-enabled .dl-viewport-section [data-reveal-item] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Important declarations inside the existing layer outrank its older definitions. */
+@layer landing-final {
+  html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="false"],
+  html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="true"] {
+    width: var(--dl-shell-width) !important;
+    max-width: var(--dl-shell) !important;
+    min-height: 4rem !important;
+    height: 4rem !important;
+    border-radius: 999px !important;
+  }
+
+  html body .dl-landing.dl-landing header.dl-navbar .dl-navbar-links {
+    gap: 0.28rem !important;
+  }
+
+  html body .dl-landing.dl-landing header.dl-navbar .dl-navbar-links a,
+  html body .dl-landing.dl-landing header.dl-navbar .dl-navbar-login {
+    min-height: 2.45rem !important;
+    border-radius: 999px !important;
+    padding: 0.65rem 0.82rem !important;
+    font-size: 0.74rem !important;
+    font-weight: 500 !important;
+  }
+
+  @media (max-width: 699px) {
+    html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="false"],
+    html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="true"] {
+      width: calc(100vw - 1.25rem) !important;
+      min-height: 3.65rem !important;
+      height: 3.65rem !important;
+      border-radius: 999px !important;
+    }
+  }
+}

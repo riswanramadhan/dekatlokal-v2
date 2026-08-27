@@ -37,14 +37,13 @@ export function CourseExplorer({ courses }: { courses: LandingCourse[] }) {
   return (
     <section aria-labelledby="course-title" className="dl-course-shell dl-viewport-section" id="course">
       <div className="dl-course-section">
-        <div className="dl-course-heading">
-          <p className="dl-section-kicker">Belajar sesuai prioritas usahamu</p>
+        <div className="dl-course-heading" data-reveal-item>
+          <p className="dl-section-kicker">Course yang langsung kepakai</p>
           <h2 id="course-title">
-            Pilih course untuk <span className="dl-title-pill">aksi usahamu.</span>
+            Belajar seperlunya. <span className="dl-title-pill">Praktikkan setelahnya.</span>
           </h2>
           <p>
-            Materi singkat dan praktis untuk membantumu membangun fondasi,
-            menyelesaikan prioritas, dan menghasilkan Aset Usaha.
+            Materi singkat, contoh yang dekat dengan keseharian UMKM, dan tugas yang menghasilkan Aset Usaha.
           </p>
         </div>
 
@@ -54,7 +53,7 @@ export function CourseExplorer({ courses }: { courses: LandingCourse[] }) {
             const originalPrice = course.access === "Gratis" ? "Rp199.000" : "Rp149.000";
             const focus = conciseReasonBySlug[course.slug] ?? course.reason ?? "Praktik usaha";
             return (
-              <article className="dl-course-card" key={course.slug}>
+              <article className="dl-course-card" data-reveal-item key={course.slug}>
                 <div className="dl-course-image">
                   <Image alt={course.imageAlt} fill sizes="(max-width: 699px) 84vw, (max-width: 1099px) 42vw, 23vw" src={course.image} unoptimized />
                   <div className="dl-course-image-badges">
