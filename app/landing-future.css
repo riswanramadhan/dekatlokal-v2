@@ -879,3 +879,390 @@ body .dl-landing.dl-landing .dl-footer-bottom { max-width: var(--dl-shell) !impo
     }
   }
 }
+
+@layer landing-final {
+  /* Compact at the top, then smoothly expands to the shared content rail. */
+  html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="false"] {
+    width: min(64rem, calc(100vw - 6rem)) !important;
+    max-width: 64rem !important;
+  }
+
+  html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="true"] {
+    width: var(--dl-shell-width) !important;
+    max-width: var(--dl-shell) !important;
+  }
+
+  html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="false"],
+  html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="true"] {
+    border-radius: 999px !important;
+    transition:
+      width 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      max-width 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      top 300ms ease,
+      background-color 300ms ease,
+      border-color 300ms ease,
+      box-shadow 300ms ease !important;
+  }
+
+  /* Hero returns to a vertical story: message first, product directly below. */
+  html body .dl-landing.dl-landing .dl-hero-inner {
+    display: block !important;
+    width: var(--dl-shell-width) !important;
+    max-width: var(--dl-shell) !important;
+    margin: 0 auto !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-hero-copy {
+    width: min(100%, 58rem) !important;
+    max-width: 58rem !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-hero-copy h1 {
+    max-width: 58rem !important;
+    margin-inline: auto !important;
+    font-size: clamp(3.35rem, 5.15vw, 4.85rem) !important;
+    font-weight: 500 !important;
+    line-height: 1.03 !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-hero-description {
+    width: min(100%, 39rem) !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-hero-actions,
+  html body .dl-landing.dl-landing .dl-hero-trust {
+    justify-content: center !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-hero-product {
+    position: relative !important;
+    width: min(70rem, var(--dl-shell-width)) !important;
+    max-width: 70rem !important;
+    margin: clamp(2.4rem, 4.5vw, 3.5rem) auto 0 !important;
+    transform: none !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-logo-ticker {
+    width: var(--dl-shell-width) !important;
+    max-width: var(--dl-shell) !important;
+    margin: 3.5rem auto 1.5rem !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(196, 211, 236, 0.78) !important;
+    border-radius: 1.45rem !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 0 1rem 2.8rem rgba(22, 56, 116, 0.07) !important;
+    padding: 1.15rem 0 1rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-logo-trusted-label {
+    margin: 0 1rem 0.9rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-logo-mask {
+    position: relative !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    padding: 0 0.75rem !important;
+    mask-image: linear-gradient(90deg, transparent, #000 3.5rem, #000 calc(100% - 3.5rem), transparent) !important;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 3.5rem, #000 calc(100% - 3.5rem), transparent) !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-logo-track {
+    display: flex !important;
+    width: max-content !important;
+    align-items: center !important;
+    gap: 0.7rem !important;
+    padding: 0 !important;
+    animation-duration: 42s !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-logo-item {
+    display: grid !important;
+    width: 8.4rem !important;
+    height: 3.25rem !important;
+    flex: 0 0 8.4rem !important;
+    place-items: center !important;
+    overflow: hidden !important;
+    border: 1px solid #e1e8f3 !important;
+    border-radius: 0.9rem !important;
+    background: #fff !important;
+    padding: 0.6rem 0.85rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-logo-item img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 6.8rem !important;
+    max-height: 2rem !important;
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+
+  /* Keep the accent light; it should never thicken or collide with another line. */
+  html body .dl-landing.dl-landing .dl-access-lead .dl-title-pill {
+    display: inline !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #fff !important;
+    padding: 0 !important;
+    font-weight: 400 !important;
+    text-decoration: none !important;
+    -webkit-text-fill-color: #fff !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-access-lead h2 {
+    font-weight: 500 !important;
+  }
+
+  /* Story carousel returns to the familiar multi-card layout. */
+  html body .dl-landing.dl-landing .dl-story-carousel {
+    --story-gap: 1.25rem;
+    position: relative !important;
+    width: var(--dl-shell-width) !important;
+    max-width: var(--dl-shell) !important;
+    margin: 3rem auto 0 !important;
+    overflow: visible !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-viewport {
+    width: 100% !important;
+    overflow: hidden !important;
+    padding: 0.35rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-track {
+    display: flex !important;
+    width: 100% !important;
+    gap: var(--story-gap) !important;
+    transform: translate3d(calc(var(--story-index) * -1 * ((100% + var(--story-gap)) / var(--story-visible))), 0, 0) !important;
+    transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+    will-change: transform !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-card {
+    display: flex !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    flex: 0 0 calc((100% - ((var(--story-visible) - 1) * var(--story-gap))) / var(--story-visible)) !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    border: 1px solid #dce5f2 !important;
+    border-radius: 1.55rem !important;
+    background: #fff !important;
+    box-shadow: 0 1rem 2.8rem rgba(16, 47, 102, 0.08) !important;
+    transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-card:hover {
+    border-color: #c6d7f1 !important;
+    box-shadow: 0 1.5rem 3.4rem rgba(16, 47, 102, 0.13) !important;
+    transform: translateY(-4px) !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-image {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 15.5rem !important;
+    aspect-ratio: 4 / 3 !important;
+    overflow: hidden !important;
+    background: #dce7f9 !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-image img {
+    object-fit: cover !important;
+    object-position: center !important;
+    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-card:hover .dl-story-image img {
+    transform: scale(1.035) !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-content {
+    display: flex !important;
+    min-height: 16rem !important;
+    flex: 1 !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: 1.45rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-content > p {
+    display: block !important;
+    margin: 0 !important;
+    color: #28364e !important;
+    font-size: 0.92rem !important;
+    font-weight: 400 !important;
+    line-height: 1.7 !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-content footer {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.8rem !important;
+    margin-top: 1.5rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-logo {
+    position: relative !important;
+    display: block !important;
+    width: 4.4rem !important;
+    height: 3rem !important;
+    flex: 0 0 4.4rem !important;
+    overflow: hidden !important;
+    border: 1px solid #e0e7f1 !important;
+    border-radius: 0.8rem !important;
+    background: #fff !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-logo img {
+    object-fit: contain !important;
+    padding: 0.42rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-content footer > span:last-child {
+    display: flex !important;
+    min-width: 0 !important;
+    flex-direction: column !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-content footer strong {
+    color: var(--dl-ink) !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-content footer small {
+    margin-top: 0.2rem !important;
+    color: #7a879b !important;
+    font-size: 0.66rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-arrows {
+    position: absolute !important;
+    z-index: 6 !important;
+    top: 50% !important;
+    right: -1.2rem !important;
+    left: -1.2rem !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    margin: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-50%) !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-arrows button,
+  html body .dl-landing.dl-landing .dl-story-status button {
+    display: grid !important;
+    width: 2.8rem !important;
+    height: 2.8rem !important;
+    place-items: center !important;
+    border: 1px solid #cbd8ed !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    box-shadow: 0 0.7rem 1.8rem rgba(17, 47, 100, 0.12) !important;
+    color: #15346a !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-controls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    margin-top: 1.35rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-dots {
+    display: flex !important;
+    max-width: none !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0.28rem !important;
+    overflow: visible !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-dots button {
+    display: grid !important;
+  }
+
+  @media (max-width: 980px) {
+    html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="false"],
+    html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="true"] {
+      width: calc(100vw - 1.5rem) !important;
+      max-width: none !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-hero-copy h1 {
+      font-size: clamp(3.1rem, 8vw, 4.7rem) !important;
+    }
+  }
+
+  @media (max-width: 699px) {
+    html body .dl-landing.dl-landing .dl-hero-copy {
+      text-align: center !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-hero-copy h1 {
+      max-width: 23rem !important;
+      font-size: clamp(2.45rem, 11.5vw, 3.25rem) !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-hero-product {
+      width: 100% !important;
+      margin-top: 2.7rem !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-logo-ticker {
+      margin-top: 2.4rem !important;
+      border-radius: 1.15rem !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-logo-mask {
+      mask-image: linear-gradient(90deg, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent) !important;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent) !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-logo-item {
+      width: 7.4rem !important;
+      height: 3rem !important;
+      flex-basis: 7.4rem !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-story-image {
+      min-height: 22rem !important;
+      aspect-ratio: 4 / 5 !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-story-content {
+      min-height: 14rem !important;
+      padding: 1.3rem !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-story-arrows {
+      position: static !important;
+      justify-content: flex-start !important;
+      gap: 0.6rem !important;
+      margin-top: 1rem !important;
+      transform: none !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-story-controls {
+      margin-top: 0.9rem !important;
+    }
+
+    html body .dl-landing.dl-landing .dl-story-dots {
+      max-width: calc(100% - 5.5rem) !important;
+      overflow: hidden !important;
+    }
+  }
+}

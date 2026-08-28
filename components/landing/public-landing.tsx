@@ -6,7 +6,6 @@ import {
   BookOpenCheck,
   CheckCircle2,
   ScanSearch,
-  Sparkles,
   Target,
 } from "lucide-react";
 import { CourseExplorer, type LandingCourse } from "@/components/landing/course-explorer";
@@ -128,7 +127,6 @@ function Hero({ checkupHref }: { checkupHref: string }) {
       <div aria-hidden="true" className="dl-hero-orb dl-hero-orb-two" />
       <div className="dl-hero-inner">
         <div className="dl-hero-copy" data-reveal-item id="konten-utama" tabIndex={-1}>
-          <p className="dl-hero-eyebrow"><Sparkles aria-hidden="true" size={15} /> Digital Checkup untuk UMKM</p>
           <h1 id="hero-title">Cek kondisi usahamu. <span>Tahu langkah berikutnya.</span></h1>
           <p className="dl-hero-description">Jawab pertanyaan singkat, lihat prioritas yang paling penting, lalu mulai aksi yang masuk akal untuk usahamu.</p>
           <div className="dl-hero-actions">
@@ -139,19 +137,20 @@ function Hero({ checkupHref }: { checkupHref: string }) {
             {["Gratis", "Cuma 5–7 menit", "Hasil langsung"].map((item) => <li key={item}><CheckCircle2 aria-hidden="true" size={16} />{item}</li>)}
           </ul>
         </div>
+      </div>
 
-        <div className="dl-hero-product" data-reveal-item>
-          <div className="dl-hero-product-label"><span>Live preview</span><strong>Ruang Tumbuh</strong></div>
-          <HeroDashboardPreview />
-        </div>
+      <div className="dl-hero-product" data-reveal-item>
+        <HeroDashboardPreview />
       </div>
 
       <div aria-label="UMKM dalam ekosistem DekatLokal" className="dl-logo-ticker" data-reveal-item tabIndex={0}>
         <p className="dl-logo-trusted-label">Tumbuh bareng usaha lokal dari berbagai daerah</p>
-        <div className="dl-logo-track">
-          {[...umkmLogos, ...umkmLogos].map(([name, src], index) => (
-            <span aria-hidden={index >= umkmLogos.length} className="dl-logo-item" key={`${name}-${index}`}><Image alt={index < umkmLogos.length ? name : ""} height={52} loading="eager" src={src} unoptimized width={128} /></span>
-          ))}
+        <div className="dl-logo-mask">
+          <div className="dl-logo-track">
+            {[...umkmLogos, ...umkmLogos].map(([name, src], index) => (
+              <span aria-hidden={index >= umkmLogos.length} className="dl-logo-item" key={`${name}-${index}`}><Image alt={index < umkmLogos.length ? name : ""} height={52} loading="eager" src={src} unoptimized width={128} /></span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

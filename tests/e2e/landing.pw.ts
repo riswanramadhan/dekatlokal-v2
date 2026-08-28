@@ -8,10 +8,12 @@ test.describe("landing page", () => {
     const navbar = page.locator(".dl-navbar");
     await expect(navbar).toBeVisible();
     await expect(navbar).toHaveCSS("border-radius", "999px", { timeout: 10_000 });
+    const compactWidth = (await navbar.boundingBox())?.width ?? 0;
 
     await page.evaluate(() => window.scrollTo(0, 400));
     await expect(navbar).toHaveClass(/is-scrolled/);
     await expect(navbar).toHaveCSS("border-radius", "999px", { timeout: 10_000 });
+    await expect.poll(async () => (await navbar.boundingBox())?.width ?? 0).toBeGreaterThan(compactWidth + 100);
 
     const story = page.locator(".dl-story-live-region");
     const firstStory = await story.textContent();
