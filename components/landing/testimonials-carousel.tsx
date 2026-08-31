@@ -4,7 +4,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, Pause, Play } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export type LandingStory = {
   id: string;
@@ -16,7 +16,7 @@ export type LandingStory = {
   logo: string;
 };
 
-const AUTOPLAY_DELAY = 5000;
+const AUTOPLAY_DELAY = 3000;
 
 function getVisibleCount() {
   if (typeof window === "undefined") return 3;
@@ -28,13 +28,16 @@ function getVisibleCount() {
 export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
   const reduceMotion = useReducedMotion();
   const maxIndex = Math.max(0, stories.length - visibleCount);
 
   const goTo = useCallback((index: number) => {
-    setActiveIndex(index > maxIndex ? 0 : index < 0 ? maxIndex : index);
-  }, [maxIndex]);
+    const nextIndex = index > maxIndex ? 0 : index < 0 ? maxIndex : index;
+    setActiveIndex(nextIndex);
+    setAnnouncement(`Menampilkan cerita ${nextIndex + 1} sampai ${Math.min(nextIndex + visibleCount, stories.length)} dari ${stories.length}`);
+  }, [maxIndex, stories.length, visibleCount]);
 
   useEffect(() => {
     const updateLayout = () => {
@@ -49,28 +52,30 @@ export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
   }, [stories.length]);
 
   useEffect(() => {
-    if (isPaused || reduceMotion || maxIndex === 0) return;
-    const timer = window.setInterval(() => {
+    if (reduceMotion || maxIndex === 0 || isInteracting) return;
+    const timer = window.setTimeout(() => {
       setActiveIndex((current) => (current >= maxIndex ? 0 : current + 1));
     }, AUTOPLAY_DELAY);
-    return () => window.clearInterval(timer);
-  }, [isPaused, maxIndex, reduceMotion]);
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, isInteracting, maxIndex, reduceMotion]);
 
   if (!stories.length) return null;
 
   return (
-    <div
+    <section
       aria-label="Cerita perjalanan UMKM"
       aria-roledescription="carousel"
       className="dl-story-carousel"
       data-reveal-item
       data-testid="story-carousel"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsInteracting(false);
+      }}
+      onFocusCapture={() => setIsInteracting(true)}
+      onMouseEnter={() => setIsInteracting(true)}
+      onMouseLeave={() => setIsInteracting(false)}
     >
-      <div aria-live="polite" className="dl-story-live-region">
-        Cerita {activeIndex + 1} sampai {Math.min(activeIndex + visibleCount, stories.length)} dari {stories.length}
-      </div>
+      <div aria-atomic="true" aria-live="polite" className="dl-story-live-region">{announcement}</div>
 
       <div className="dl-story-viewport">
         <div
@@ -125,7 +130,7 @@ export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
       </div>
 
       <div className="dl-story-controls">
-        <div aria-label="Pilih kelompok cerita" className="dl-story-dots">
+        <div aria-label="Pilih kelompok cerita" className="dl-story-dots" role="group">
           {Array.from({ length: maxIndex + 1 }, (_, index) => (
             <button
               aria-label={`Tampilkan kelompok cerita ${index + 1}`}
@@ -142,15 +147,8 @@ export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
 
         <div className="dl-story-status">
           <span>{String(activeIndex + 1).padStart(2, "0")} / {String(maxIndex + 1).padStart(2, "0")}</span>
-          <button
-            aria-label={isPaused ? "Putar otomatis cerita" : "Jeda putar otomatis cerita"}
-            onClick={() => setIsPaused((paused) => !paused)}
-            type="button"
-          >
-            {isPaused ? <Play aria-hidden="true" size={15} /> : <Pause aria-hidden="true" size={15} />}
-          </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

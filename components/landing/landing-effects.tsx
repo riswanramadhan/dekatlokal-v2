@@ -7,10 +7,30 @@ export function LandingEffects() {
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const sections = Array.from(document.querySelectorAll<HTMLElement>(".dl-viewport-section"));
+    const faqItems = Array.from(document.querySelectorAll<HTMLDetailsElement>(".dl-faq-item"));
+    const faqCleanups = faqItems.map((item) => {
+      const handleToggle = () => {
+        item.classList.toggle("is-active", item.open);
+        item.querySelector("summary")?.setAttribute("aria-expanded", String(item.open));
+        if (!item.open) return;
+
+        faqItems.forEach((otherItem) => {
+          if (otherItem === item) return;
+          otherItem.open = false;
+          otherItem.classList.remove("is-active");
+          otherItem.querySelector("summary")?.setAttribute("aria-expanded", "false");
+        });
+      };
+
+      item.classList.toggle("is-active", item.open);
+      item.querySelector("summary")?.setAttribute("aria-expanded", String(item.open));
+      item.addEventListener("toggle", handleToggle);
+      return () => item.removeEventListener("toggle", handleToggle);
+    });
 
     if (reduceMotion) {
       sections.forEach((section) => section.classList.add("is-revealed"));
-      return;
+      return () => faqCleanups.forEach((cleanup) => cleanup());
     }
 
     document.documentElement.classList.add("dl-motion-enabled");
@@ -43,6 +63,7 @@ export function LandingEffects() {
 
     return () => {
       stops.forEach((stop) => stop());
+      faqCleanups.forEach((cleanup) => cleanup());
       document.documentElement.classList.remove("dl-motion-enabled");
     };
   }, []);

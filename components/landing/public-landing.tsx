@@ -143,12 +143,12 @@ function Hero({ checkupHref }: { checkupHref: string }) {
         <HeroDashboardPreview />
       </div>
 
-      <div aria-label="UMKM dalam ekosistem DekatLokal" className="dl-logo-ticker" data-reveal-item tabIndex={0}>
-        <p className="dl-logo-trusted-label">Tumbuh bareng usaha lokal dari berbagai daerah</p>
+      <div aria-label="UMKM dalam ekosistem DekatLokal" className="dl-logo-strip" data-reveal-item tabIndex={0}>
+        <p className="dl-logo-strip-label">Tumbuh bareng usaha lokal dari berbagai daerah</p>
         <div className="dl-logo-mask">
           <div className="dl-logo-track">
             {[...umkmLogos, ...umkmLogos].map(([name, src], index) => (
-              <span aria-hidden={index >= umkmLogos.length} className="dl-logo-item" key={`${name}-${index}`}><Image alt={index < umkmLogos.length ? name : ""} height={52} loading="eager" src={src} unoptimized width={128} /></span>
+              <span aria-hidden={index >= umkmLogos.length} className="dl-logo-item" key={`${name}-${index}`}><Image alt={index < umkmLogos.length ? name : ""} height={52} loading={index < 4 ? "eager" : "lazy"} src={src} unoptimized width={128} /></span>
             ))}
           </div>
         </div>
@@ -280,9 +280,16 @@ function FinalCta({ checkupHref }: { checkupHref: string }) {
   return (
     <section aria-labelledby="start-title" className="dl-final-cta dl-viewport-section" id="mulai">
       <div aria-hidden="true" className="dl-cta-grid" />
-      <div className="dl-final-copy" data-reveal-item><p className="dl-section-kicker">Mulai dari langkah kecil hari ini</p><h2 id="start-title">Biar usahamu nggak jalan sambil menebak.</h2><p>Luangkan 5–7 menit. Pulang dengan prioritas yang lebih jelas dan bisa langsung dikerjakan.</p><div><Link className="dl-final-primary" href={checkupHref}>Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} /></Link></div></div>
-      <div aria-hidden="true" className="dl-final-person">
-        <Image alt="" height={1050} src="/platform-v2/hero/owner-cutout.webp" unoptimized width={820} />
+      <div className="dl-final-inner">
+        <div className="dl-final-copy" data-reveal-item>
+          <p className="dl-section-kicker">Mulai saat usahamu masih berproses</p>
+          <h2 id="start-title">Nggak harus sempurna untuk mulai bertumbuh.</h2>
+          <p>Cukup 5–7 menit untuk melihat kondisi usahamu dan menemukan langkah yang bisa langsung dikerjakan.</p>
+          <div><Link className="dl-final-primary" href={checkupHref}>Cek Usahaku Sekarang <ArrowUpRight aria-hidden="true" size={18} /></Link></div>
+        </div>
+        <div aria-hidden="true" className="dl-final-visual" data-reveal-item>
+          <Image alt="" height={1050} src="/platform-v2/hero/owner-cutout.webp" unoptimized width={820} />
+        </div>
       </div>
     </section>
   );

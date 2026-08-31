@@ -7,6 +7,7 @@ import "./landing-course-refresh.css";
 import "./landing-sections-refresh.css";
 import "./landing-commercial-polish.css";
 import "./landing-future.css";
+import "./landing-request-lock.css";
 
 const poppins = Poppins({
   variable: "--font-poppins",

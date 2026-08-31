@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, Sparkles, X } from "lucide-react";
 
 const navItems = [
@@ -18,6 +18,27 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeHref, setActiveHref] = useState("#beranda");
+  const mobileMenuRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const menuFocusTimerRef = useRef<number | null>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+
+  const closeMenu = useCallback((restoreFocus = true) => {
+    if (menuFocusTimerRef.current !== null) window.clearTimeout(menuFocusTimerRef.current);
+    menuFocusTimerRef.current = null;
+    if (!restoreFocus) returnFocusRef.current = null;
+    setIsOpen(false);
+  }, []);
+
+  const openMenu = useCallback(() => {
+    returnFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : menuButtonRef.current;
+    setIsOpen(true);
+    menuFocusTimerRef.current = window.setTimeout(() => {
+      closeButtonRef.current?.focus();
+      menuFocusTimerRef.current = null;
+    }, 50);
+  }, []);
 
   useEffect(() => {
     const updateNavigation = () => {
@@ -42,15 +63,47 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
 
   useEffect(() => {
     document.body.classList.toggle("dl-menu-is-open", isOpen);
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsOpen(false);
+    if (!isOpen) return () => document.body.classList.remove("dl-menu-is-open");
+
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeMenu();
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const focusable = Array.from(
+        mobileMenuRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      );
+      if (!focusable.length) {
+        event.preventDefault();
+        mobileMenuRef.current?.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
-    document.addEventListener("keydown", closeOnEscape);
+
+    document.addEventListener("keydown", handleKeydown);
     return () => {
       document.body.classList.remove("dl-menu-is-open");
-      document.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("keydown", handleKeydown);
+      const returnFocus = returnFocusRef.current;
+      returnFocusRef.current = null;
+      if (returnFocus?.isConnected) window.requestAnimationFrame(() => returnFocus.focus());
     };
-  }, [isOpen]);
+  }, [closeMenu, isOpen]);
 
   return (
     <>
@@ -66,7 +119,7 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
           {navItems.map(([label, href]) => {
             const isActive = activeHref === href;
             return (
-              <Link aria-current={isActive ? "page" : undefined} className={isActive ? "is-active" : undefined} href={href} key={href}>
+              <Link aria-current={isActive ? "location" : undefined} className={isActive ? "is-active" : undefined} href={href} key={href}>
                 {label}
               </Link>
             );
@@ -83,34 +136,35 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
           aria-expanded={isOpen}
           aria-label={isOpen ? "Tutup menu utama" : "Buka menu utama"}
           className="dl-navbar-menu-button"
-          onClick={() => setIsOpen((open) => !open)}
+          onClick={() => (isOpen ? closeMenu() : openMenu())}
+          ref={menuButtonRef}
           type="button"
         >
           <span aria-hidden="true" className="dl-menu-button-glyph"><i /><i /><i /></span>
         </button>
       </header>
 
-      <button aria-hidden={!isOpen} aria-label="Tutup menu" className={`dl-mobile-overlay${isOpen ? " is-open" : ""}`} onClick={() => setIsOpen(false)} tabIndex={isOpen ? 0 : -1} type="button" />
-      <aside aria-hidden={!isOpen} aria-labelledby="landing-mobile-menu-title" aria-modal="true" className={`dl-mobile-menu${isOpen ? " is-open" : ""}`} id="landing-mobile-menu" role="dialog">
+      <button aria-hidden="true" className={`dl-mobile-overlay${isOpen ? " is-open" : ""}`} onClick={() => closeMenu()} tabIndex={-1} type="button" />
+      <aside aria-hidden={!isOpen} aria-labelledby="landing-mobile-menu-title" aria-modal="true" className={`dl-mobile-menu${isOpen ? " is-open" : ""}`} id="landing-mobile-menu" inert={!isOpen} ref={mobileMenuRef} role="dialog" tabIndex={-1}>
         <div className="dl-mobile-menu-head">
-          <Link aria-label="Ke beranda DekatLokal" className="dl-mobile-menu-brand" href="#beranda" onClick={() => setIsOpen(false)}>
+          <Link aria-label="Ke beranda DekatLokal" className="dl-mobile-menu-brand" href="#beranda" onClick={() => closeMenu(false)}>
             <Image alt="" aria-hidden="true" height={38} src="/brand/dekat-lokal-icon.png" unoptimized width={38} />
             <span><strong id="landing-mobile-menu-title">DekatLokal</strong><small>Ruang tumbuh UMKM</small></span>
           </Link>
-          <button aria-label="Tutup menu utama" onClick={() => setIsOpen(false)} type="button"><X aria-hidden="true" size={22} /></button>
+          <button aria-label="Tutup menu utama" data-menu-close onClick={() => closeMenu()} ref={closeButtonRef} type="button"><X aria-hidden="true" size={22} /></button>
         </div>
 
         <div className="dl-mobile-menu-intro"><span><Sparkles aria-hidden="true" size={14} /> Menu utama</span><p>Temukan langkah yang paling relevan untuk usahamu sekarang.</p></div>
         <nav aria-label="Navigasi landing page mobile" className="dl-mobile-menu-links">
           {navItems.map(([label, href], index) => (
-            <Link className={activeHref === href ? "is-active" : undefined} href={href} key={href} onClick={() => setIsOpen(false)}>
+            <Link aria-current={activeHref === href ? "location" : undefined} className={activeHref === href ? "is-active" : undefined} href={href} key={href} onClick={() => closeMenu(false)}>
               <span>0{index + 1}</span><strong>{label}</strong><ArrowRight aria-hidden="true" size={18} />
             </Link>
           ))}
         </nav>
         <div className="dl-mobile-menu-footer">
-          <Link className="dl-mobile-menu-login" href="/masuk" onClick={() => setIsOpen(false)}>Masuk ke Ruang Tumbuh</Link>
-          <Link className="dl-mobile-menu-checkup" href={checkupHref} onClick={() => setIsOpen(false)}>Mulai Cek Gratis <ArrowRight aria-hidden="true" size={17} /></Link>
+          <Link className="dl-mobile-menu-login" href="/masuk" onClick={() => closeMenu(false)}>Masuk ke Ruang Tumbuh</Link>
+          <Link className="dl-mobile-menu-checkup" href={checkupHref} onClick={() => closeMenu(false)}>Mulai Cek Gratis <ArrowRight aria-hidden="true" size={17} /></Link>
           <small>Gratis • 5–7 menit • Hasil langsung</small>
         </div>
       </aside>
