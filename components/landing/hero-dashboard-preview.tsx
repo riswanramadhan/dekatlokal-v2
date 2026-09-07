@@ -91,13 +91,12 @@ export function HeroDashboardPreview() {
               <Image
                 alt=""
                 aria-hidden="true"
-                className="dl-dashboard-brand-logo"
-                height={32}
-                src="/brand/dekat-lokal-icon.png"
+                className="dl-dashboard-wordmark"
+                height={44}
+                src="/brand/dekat-lokal.png"
                 unoptimized
-                width={32}
+                width={143}
               />
-              <strong>DekatLokal</strong>
             </div>
 
             <div className="dl-dashboard-menu-label">Ruang belajar</div>
@@ -135,13 +134,12 @@ export function HeroDashboardPreview() {
                 <Image
                   alt=""
                   aria-hidden="true"
-                  className="dl-dashboard-brand-logo"
-                  height={28}
-                  src="/brand/dekat-lokal-icon.png"
+                  className="dl-dashboard-wordmark"
+                  height={44}
+                  src="/brand/dekat-lokal.png"
                   unoptimized
-                  width={28}
+                  width={143}
                 />
-                <strong>DekatLokal</strong>
               </div>
 
               <div className="dl-dashboard-search">

@@ -355,3 +355,448 @@
   from { opacity: 0; transform: translateY(-7px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Latest mobile-first interaction and content polish. */
+@layer landing-final {
+  html body .dl-landing.dl-landing :is(#akses-belajar,#pengalaman,#course,#paket,#faq).dl-viewport-section {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-dashboard-window-controls .is-close {
+    background: #ff5f57 !important;
+  }
+  html body .dl-landing.dl-landing .dl-dashboard-window-controls .is-minimize {
+    background: #febc2e !important;
+  }
+  html body .dl-landing.dl-landing .dl-dashboard-window-controls .is-maximize {
+    background: #2f80ed !important;
+  }
+  html body .dl-landing.dl-landing .dl-dashboard-wordmark {
+    display: block !important;
+    width: 112px !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+  html body .dl-landing.dl-landing .dl-dashboard-mobile-brand .dl-dashboard-wordmark {
+    width: 98px !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-story-image img {
+    object-position: center top !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-pricing-option-price {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 3px !important;
+  }
+  html body .dl-landing.dl-landing .dl-pricing-option-price del {
+    color: #8290a5 !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    text-decoration-thickness: 1px !important;
+  }
+  html body .dl-landing.dl-landing .dl-pricing-option-price strong {
+    color: #0347c9 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+  }
+  html body .dl-landing.dl-landing .dl-pricing-detail-price {
+    flex-wrap: wrap !important;
+    row-gap: 7px !important;
+  }
+  html body .dl-landing.dl-landing .dl-pricing-detail-price del {
+    flex-basis: 100% !important;
+    color: #8290a5 !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    text-decoration-color: #0255f5 !important;
+    text-decoration-thickness: 1.5px !important;
+  }
+  html body .dl-landing.dl-landing .dl-pricing-discount {
+    display: inline-flex !important;
+    width: max-content !important;
+    align-items: center !important;
+    margin-top: 10px !important;
+    padding: 7px 11px !important;
+    border: 1px solid #cfe0ff !important;
+    border-radius: 999px !important;
+    color: #0347c9 !important;
+    background: #eaf2ff !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+  }
+  html body .dl-landing.dl-landing .dl-pricing-status {
+    gap: 12px !important;
+    margin-top: 22px !important;
+    padding: 15px 16px !important;
+    border: 1px solid #dce7fa !important;
+    border-radius: 16px !important;
+  }
+  html body .dl-landing.dl-landing .dl-pricing-status > span {
+    margin-top: 5px !important;
+  }
+  html body .dl-landing.dl-landing .dl-pricing-status strong {
+    margin-bottom: 4px !important;
+  }
+
+  html body .dl-landing.dl-landing #faq {
+    background: #f7faff !important;
+  }
+  html body .dl-landing.dl-landing .dl-faq-category > h3 {
+    margin-bottom: 10px !important;
+    padding: 0 4px 8px !important;
+    border: 0 !important;
+    color: #53627a !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+  }
+  html body .dl-landing.dl-landing .dl-faq-category .dl-faq-list {
+    display: grid !important;
+    gap: 9px !important;
+  }
+  html body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item {
+    border: 1px solid #dce7fa !important;
+    border-radius: 16px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 30px -25px rgba(1,51,147,.45) !important;
+    transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease !important;
+  }
+  html body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item[open],
+  html body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item.is-active {
+    border-color: #b9d1fb !important;
+    background: #fff !important;
+    box-shadow: 0 18px 42px -28px rgba(2,85,245,.46) !important;
+    transform: translateY(-1px) !important;
+  }
+  html body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item summary {
+    min-height: 64px !important;
+    padding: 13px 15px !important;
+    font-weight: 500 !important;
+  }
+  html body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item summary .dl-faq-toggle {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    background: #edf4ff !important;
+    transition: color .25s ease, background .25s ease, transform .35s cubic-bezier(.22,1,.36,1) !important;
+  }
+  html body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item[open] summary .dl-faq-toggle,
+  html body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item.is-active summary .dl-faq-toggle {
+    color: #fff !important;
+    background: #0255f5 !important;
+    transform: rotate(180deg) !important;
+  }
+  html body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item .dl-faq-answer {
+    padding: 0 48px 0 15px !important;
+  }
+  html body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item[open] .dl-faq-answer,
+  html body .dl-landing.dl-landing .dl-faq-item.dl-faq-reference-item.is-active .dl-faq-answer {
+    padding: 0 48px 16px 15px !important;
+  }
+  @supports selector(details::details-content) {
+    html body .dl-landing.dl-landing .dl-faq-item::details-content {
+      block-size: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: block-size .38s cubic-bezier(.22,1,.36,1), opacity .24s ease, content-visibility .38s allow-discrete;
+    }
+    html body .dl-landing.dl-landing .dl-faq-item[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+
+  html body .dl-landing.dl-landing #mulai.dl-final-cta {
+    position: relative !important;
+    min-height: 0 !important;
+    padding: clamp(60px,8vw,92px) var(--dl-gutter) !important;
+    overflow: hidden !important;
+    background: #edf4ff !important;
+    isolation: isolate !important;
+  }
+  html body .dl-landing.dl-landing #mulai.dl-final-cta::before,
+  html body .dl-landing.dl-landing #mulai.dl-final-cta::after {
+    position: absolute !important;
+    z-index: -1 !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 280px !important;
+    height: 280px !important;
+    border: 1px solid rgba(2,85,245,.18) !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    content: "" !important;
+    transform: translate(-50%,-50%) !important;
+    animation: dl-cta-ring 4.5s ease-out infinite !important;
+    pointer-events: none !important;
+  }
+  html body .dl-landing.dl-landing #mulai.dl-final-cta::after {
+    animation-delay: 2.25s !important;
+  }
+  html body .dl-landing.dl-landing #mulai .dl-final-inner {
+    display: block !important;
+    min-height: 0 !important;
+  }
+  html body .dl-landing.dl-landing #mulai .dl-final-copy {
+    max-width: 760px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    text-align: center !important;
+  }
+  html body .dl-landing.dl-landing #mulai .dl-final-copy > p:not(.dl-section-kicker) {
+    max-width: 580px !important;
+    margin: 18px auto 0 !important;
+  }
+  html body .dl-landing.dl-landing #mulai .dl-final-copy > div {
+    justify-content: center !important;
+    margin-top: 24px !important;
+  }
+
+  @media (max-width: 1023px) {
+    html body .dl-landing.dl-landing header.dl-navbar {
+      display: grid !important;
+      height: 58px !important;
+      min-height: 58px !important;
+      max-height: none !important;
+      grid-template-columns: minmax(0,1fr) 44px !important;
+      grid-template-rows: 44px minmax(0,1fr) !important;
+      gap: 0 !important;
+      align-items: start !important;
+      overflow: hidden !important;
+      padding: 6px 8px 6px 17px !important;
+      border-radius: 28px !important;
+      transition: width .55s cubic-bezier(.22,1,.36,1), top .4s ease, height .5s cubic-bezier(.22,1,.36,1), box-shadow .35s ease !important;
+    }
+    html body .dl-landing.dl-landing header.dl-navbar[data-scrolled] {
+      transition: width .55s cubic-bezier(.22,1,.36,1), top .4s ease, height .5s cubic-bezier(.22,1,.36,1), box-shadow .35s ease !important;
+    }
+    html body .dl-landing.dl-landing header.dl-navbar.is-menu-open {
+      height: min(470px, calc(100dvh - 32px)) !important;
+      border-radius: 28px !important;
+      border-color: #dbe6f7 !important;
+      box-shadow: 0 24px 70px -30px rgba(1,51,147,.52) !important;
+    }
+    html body .dl-landing.dl-landing header.dl-navbar .dl-navbar-logo {
+      align-self: center !important;
+    }
+    html body .dl-landing.dl-landing header.dl-navbar .dl-navbar-menu-button {
+      display: grid !important;
+      width: 44px !important;
+      min-width: 44px !important;
+      height: 44px !important;
+      min-height: 44px !important;
+      place-items: center !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      color: #0255f5 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand {
+      display: block !important;
+      min-width: 0 !important;
+      height: 100% !important;
+      max-height: 0 !important;
+      grid-column: 1 / -1 !important;
+      overflow: hidden !important;
+      padding: 0 6px !important;
+      border-top: 1px solid transparent !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(-8px) !important;
+      transition: max-height .5s cubic-bezier(.22,1,.36,1), padding .42s cubic-bezier(.22,1,.36,1), border-color .2s ease, opacity .28s ease, transform .42s cubic-bezier(.22,1,.36,1) !important;
+    }
+    html body .dl-landing.dl-landing header.dl-navbar.is-menu-open .dl-nav-mobile-expand {
+      max-height: none !important;
+      overflow-y: auto !important;
+      padding: 11px 6px 10px !important;
+      border-color: #e3eaf5 !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: translateY(0) !important;
+    }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand nav {
+      display: grid !important;
+      gap: 3px !important;
+    }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand nav a {
+      display: flex !important;
+      min-height: 43px !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 8px 11px !important;
+      border-radius: 12px !important;
+      color: #253b59 !important;
+      font-size: 12px !important;
+      text-decoration: none !important;
+      transition: color .2s ease, background .2s ease, transform .2s ease !important;
+    }
+    html body .dl-landing.dl-landing header.is-menu-open .dl-nav-mobile-expand nav a {
+      animation: dl-mobile-item-in .32s cubic-bezier(.22,1,.36,1) both !important;
+    }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand nav a > span {
+      display: flex !important;
+      align-items: center !important;
+      gap: 11px !important;
+    }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand nav a small {
+      min-width: 18px !important;
+      color: #88a0c1 !important;
+      font-size: 8px !important;
+    }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand nav a svg { color: #0255f5 !important; }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand nav a:is(:hover,[aria-current]) {
+      color: #0255f5 !important;
+      background: #edf4ff !important;
+    }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand footer {
+      display: grid !important;
+      grid-template-columns: .7fr 1.3fr !important;
+      gap: 8px !important;
+      margin-top: 10px !important;
+      padding-top: 11px !important;
+      border-top: 1px solid #e3eaf5 !important;
+    }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand footer a {
+      display: flex !important;
+      min-height: 42px !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
+      border-radius: 999px !important;
+      color: #0255f5 !important;
+      background: #edf4ff !important;
+      font-size: 10px !important;
+      text-decoration: none !important;
+    }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand footer a:nth-child(2) {
+      color: #fff !important;
+      background: #0255f5 !important;
+    }
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand footer p {
+      grid-column: 1 / -1 !important;
+      margin: 3px 0 0 !important;
+      color: #53627a !important;
+      font-size: 9px !important;
+      text-align: center !important;
+    }
+  }
+
+  @media (max-width: 699px) {
+    html body .dl-landing.dl-landing :is(#pengalaman,#course,#paket,#faq).dl-viewport-section {
+      min-height: 0 !important;
+      height: auto !important;
+      padding-top: 38px !important;
+      padding-bottom: 38px !important;
+    }
+    html body .dl-landing.dl-landing .dl-story-carousel {
+      margin-top: 26px !important;
+    }
+    html body .dl-landing.dl-landing .dl-story-viewport {
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      scroll-snap-type: x mandatory !important;
+      scroll-padding-inline: 4px !important;
+      scrollbar-width: none !important;
+      overscroll-behavior-inline: contain !important;
+      touch-action: pan-x !important;
+    }
+    html body .dl-landing.dl-landing .dl-story-viewport::-webkit-scrollbar { display: none !important; }
+    html body .dl-landing.dl-landing .dl-story-track {
+      width: max-content !important;
+      gap: 12px !important;
+      transform: none !important;
+      transition: none !important;
+      will-change: auto !important;
+    }
+    html body .dl-landing.dl-landing .dl-story-card {
+      width: calc(100vw - (var(--dl-gutter) * 2) - 8px) !important;
+      max-width: 390px !important;
+      flex: 0 0 calc(100vw - (var(--dl-gutter) * 2) - 8px) !important;
+      scroll-snap-align: start !important;
+      scroll-snap-stop: always !important;
+    }
+    html body .dl-landing.dl-landing .dl-story-image {
+      min-height: 0 !important;
+      aspect-ratio: 4 / 4.6 !important;
+    }
+    html body .dl-landing.dl-landing .dl-story-content {
+      min-height: 0 !important;
+      padding: 18px !important;
+    }
+    html body .dl-landing.dl-landing .dl-story-arrows,
+    html body .dl-landing.dl-landing .dl-story-controls {
+      display: none !important;
+    }
+    html body .dl-landing.dl-landing #course .dl-course-grid {
+      display: flex !important;
+      width: 100% !important;
+      align-items: stretch !important;
+      gap: 12px !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding: 2px 2px 12px !important;
+      scroll-snap-type: x mandatory !important;
+      scroll-padding-inline: 2px !important;
+      scrollbar-width: none !important;
+      overscroll-behavior-inline: contain !important;
+      touch-action: pan-x !important;
+    }
+    html body .dl-landing.dl-landing #course .dl-course-grid::-webkit-scrollbar { display: none !important; }
+    html body .dl-landing.dl-landing #course .dl-course-card {
+      width: min(82vw, 326px) !important;
+      min-width: min(82vw, 326px) !important;
+      flex: 0 0 min(82vw, 326px) !important;
+      scroll-snap-align: start !important;
+      scroll-snap-stop: always !important;
+    }
+    html body .dl-landing.dl-landing .dl-pricing-layout {
+      gap: 28px !important;
+    }
+    html body .dl-landing.dl-landing .dl-pricing-options {
+      margin-top: 24px !important;
+    }
+    html body .dl-landing.dl-landing .dl-pricing-detail {
+      padding: 20px !important;
+    }
+    html body .dl-landing.dl-landing #mulai.dl-final-cta {
+      padding: 56px var(--dl-gutter) !important;
+    }
+    html body .dl-landing.dl-landing #mulai .dl-final-primary {
+      width: min(100%, 330px) !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html body .dl-landing.dl-landing #mulai.dl-final-cta::before,
+    html body .dl-landing.dl-landing #mulai.dl-final-cta::after,
+    html body .dl-landing.dl-landing .dl-nav-mobile-expand,
+    html body .dl-landing.dl-landing header.dl-navbar {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+.dl-nav-mobile-backdrop {
+  position: fixed;
+  z-index: 1001;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: rgba(7,27,61,.22);
+  backdrop-filter: blur(5px);
+  animation: dl-overlay-in .22s ease both;
+}
+.dl-nav-mobile-expand { display: none; }
+@media (min-width: 1024px) { .dl-nav-mobile-backdrop { display: none; } }
+
+@keyframes dl-cta-ring {
+  0% { opacity: .8; transform: translate(-50%,-50%) scale(.62); }
+  75%,100% { opacity: 0; transform: translate(-50%,-50%) scale(2.25); }
+}

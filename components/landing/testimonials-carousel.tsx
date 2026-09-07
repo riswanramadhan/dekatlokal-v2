@@ -51,12 +51,12 @@ export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
   }, [stories.length]);
 
   useEffect(() => {
-    if (reduceMotion || maxIndex === 0) return;
+    if (reduceMotion || maxIndex === 0 || visibleCount === 1) return;
     const timer = window.setTimeout(() => {
       setActiveIndex((current) => (current >= maxIndex ? 0 : current + 1));
     }, AUTOPLAY_DELAY);
     return () => window.clearTimeout(timer);
-  }, [activeIndex, maxIndex, reduceMotion]);
+  }, [activeIndex, maxIndex, reduceMotion, visibleCount]);
 
   if (!stories.length) return null;
 
@@ -82,7 +82,7 @@ export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
             const isVisible = storyIndex >= activeIndex && storyIndex < activeIndex + visibleCount;
 
             return (
-              <article aria-hidden={!isVisible} className="dl-story-card" key={story.id}>
+              <article aria-hidden={visibleCount === 1 ? undefined : !isVisible} className="dl-story-card" key={story.id}>
                 <div className="dl-story-image">
                   <Image
                     alt={story.imageAlt}
