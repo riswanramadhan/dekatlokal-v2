@@ -1,0 +1,189 @@
+/* Request-specific landing overrides. Imported last to bridge the legacy CSS safely. */
+
+@layer landing-final {
+html body .dl-landing.dl-landing .dl-hero-copy,
+html body .dl-landing.dl-landing .dl-hero-copy h1,
+html body .dl-landing.dl-landing .dl-hero-copy h1 span {
+  overflow: visible !important;
+}
+
+html body .dl-landing.dl-landing .dl-hero-copy h1 {
+  line-height: 1.07 !important;
+}
+
+html body .dl-landing.dl-landing .dl-hero-copy h1 span {
+  display: block !important;
+  padding-bottom: 0.1em !important;
+  line-height: 1.08 !important;
+}
+
+html body .dl-landing.dl-landing .dl-hero-product {
+  margin-top: 1.25rem !important;
+}
+
+html body .dl-landing.dl-landing section.dl-hero-section > .dl-logo-strip {
+  position: relative !important;
+  inset: auto !important;
+  width: 100vw !important;
+  max-width: none !important;
+  height: auto !important;
+  margin: 3rem calc((100% - 100vw) / 2) 1.5rem !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  padding: 1.75rem 0 1.6rem !important;
+  transform: none !important;
+}
+
+html body .dl-landing.dl-landing section.dl-hero-section > .dl-logo-strip > .dl-logo-strip-label {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: var(--dl-shell-width) !important;
+  max-width: var(--dl-shell) !important;
+  margin: 0 auto 1.55rem !important;
+  padding-inline: 0 !important;
+  color: #5d6b80 !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.035em !important;
+  line-height: 1.5 !important;
+  text-align: left !important;
+  text-transform: none !important;
+  transform: none !important;
+}
+
+html body .dl-landing.dl-landing .dl-logo-mask {
+  width: 100% !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  mask-image: linear-gradient(90deg, transparent, #000 2.25rem, #000 calc(100% - 2.25rem), transparent) !important;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 2.25rem, #000 calc(100% - 2.25rem), transparent) !important;
+}
+
+html body .dl-landing.dl-landing .dl-logo-track {
+  gap: clamp(2rem, 3.5vw, 3.75rem) !important;
+}
+
+html body .dl-landing.dl-landing .dl-logo-item {
+  width: 8rem !important;
+  height: 2.7rem !important;
+  flex: 0 0 8rem !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+html body .dl-landing.dl-landing .dl-logo-item img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 8rem !important;
+  max-height: 2.7rem !important;
+  object-fit: contain !important;
+}
+
+html body .dl-landing.dl-landing .dl-final-copy > .dl-section-kicker {
+  color: #1359d7 !important;
+  -webkit-text-fill-color: #1359d7 !important;
+}
+
+html body .dl-landing.dl-landing .dl-final-copy h2 {
+  color: #07162f !important;
+  -webkit-text-fill-color: #07162f !important;
+}
+
+html body .dl-landing.dl-landing .dl-final-copy > p:not(.dl-section-kicker) {
+  color: #34445f !important;
+  -webkit-text-fill-color: #34445f !important;
+}
+
+html body .dl-landing.dl-landing .dl-final-inner > .dl-final-visual {
+  position: relative !important;
+  z-index: 1 !important;
+  display: flex !important;
+  width: 100% !important;
+  height: 32rem !important;
+  align-items: flex-end !important;
+  justify-content: flex-end !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+}
+
+html body .dl-landing.dl-landing .dl-final-inner > .dl-final-visual img {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: block !important;
+  width: min(100%, 26rem) !important;
+  height: calc(100% - 1rem) !important;
+  object-fit: contain !important;
+  object-position: right bottom !important;
+}
+
+@media (max-width: 699px) {
+  html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="false"] {
+    width: calc(100vw - 2.75rem) !important;
+  }
+
+  html body .dl-landing.dl-landing header.dl-navbar[data-scrolled="true"] {
+    width: calc(100vw - 1.25rem) !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-hero-product {
+    margin-top: 1rem !important;
+  }
+
+  html body .dl-landing.dl-landing section.dl-hero-section > .dl-logo-strip {
+    margin-top: 2.6rem !important;
+    padding-block: 1.55rem !important;
+  }
+
+  html body .dl-landing.dl-landing section.dl-hero-section > .dl-logo-strip > .dl-logo-strip-label {
+    margin-bottom: 1.35rem !important;
+    padding-inline: var(--dl-gutter) !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-logo-track {
+    gap: 2rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-logo-item {
+    width: 7.25rem !important;
+    height: 2.5rem !important;
+    flex-basis: 7.25rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-final-copy {
+    padding-bottom: 1.5rem !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-final-inner > .dl-final-visual {
+    position: relative !important;
+    inset: auto !important;
+    display: flex !important;
+    width: 100% !important;
+    height: 21rem !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    margin-top: -0.5rem !important;
+    opacity: 0.92 !important;
+  }
+
+  html body .dl-landing.dl-landing .dl-final-inner > .dl-final-visual img {
+    position: absolute !important;
+    right: 50% !important;
+    bottom: 0 !important;
+    display: block !important;
+    width: min(76vw, 17rem) !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    transform: translateX(50%) !important;
+  }
+}
+}

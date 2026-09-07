@@ -40,21 +40,21 @@ const dashboardCourses = [
 
 const dashboardStats = [
   {
-    detail: "6 dari 9 modul",
+    detail: "6 dari 9 materi",
     icon: BarChart3,
     label: "Progres belajar",
-    value: "68%",
+    value: "67%",
   },
   {
     detail: "Siap dilanjutkan",
     icon: BookOpenCheck,
-    label: "Course aktif",
+    label: "Kelas aktif",
     value: "3",
   },
   {
     detail: "Terus pertahankan",
     icon: Flame,
-    label: "Streak belajar",
+    label: "Belajar rutin",
     value: "7 hari",
   },
 ] as const;
@@ -62,7 +62,7 @@ const dashboardStats = [
 export function HeroDashboardPreview() {
   return (
     <div
-      aria-label="Pratinjau dashboard course DekatLokal"
+      aria-label="Pratinjau ruang belajar DekatLokal"
       className="dl-hero-dashboard-preview"
       role="img"
     >
@@ -108,11 +108,11 @@ export function HeroDashboardPreview() {
               </span>
               <span>
                 <BookOpenCheck size={16} />
-                Course saya
+                Kelas saya
               </span>
               <span>
                 <Target size={16} />
-                Aset usaha
+                Hasil praktik
               </span>
               <span>
                 <Trophy size={16} />
@@ -125,7 +125,7 @@ export function HeroDashboardPreview() {
                 <Sparkles size={15} />
               </span>
               <strong>Langkah berikutnya</strong>
-              <p>Selesaikan satu modul untuk membuka rekomendasi baru.</p>
+              <p>Lanjut satu materi lagi hari ini.</p>
             </div>
           </aside>
 
@@ -146,11 +146,11 @@ export function HeroDashboardPreview() {
 
               <div className="dl-dashboard-search">
                 <Search size={14} />
-                <span>Cari materi course...</span>
+                <span>Cari materi belajar...</span>
               </div>
 
               <div className="dl-dashboard-avatar">
-                <span>RA</span>
+                <span>SA</span>
                 <i />
               </div>
             </div>
@@ -159,10 +159,10 @@ export function HeroDashboardPreview() {
               <header className="dl-dashboard-welcome">
                 <div>
                   <span className="dl-dashboard-kicker">
-                    Dashboard course
+                    Ruang belajarmu
                   </span>
-                  <h2>Selamat datang, Raka! 👋</h2>
-                  <p>Lanjutkan progres kecil yang membuat usahamu makin siap.</p>
+                  <h2>Selamat Datang, Sarah!</h2>
+                  <p>Belajar sebentar, coba langsung di usahamu.</p>
                 </div>
 
                 <span className="dl-dashboard-level">
@@ -192,7 +192,7 @@ export function HeroDashboardPreview() {
 
               <div className="dl-dashboard-course-heading">
                 <div>
-                  <span>Course untukmu</span>
+                  <span>Kelas untukmu</span>
                   <h3>Lanjutkan belajar</h3>
                 </div>
                 <span className="dl-dashboard-see-all">

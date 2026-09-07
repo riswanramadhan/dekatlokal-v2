@@ -2,12 +2,14 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  testMatch: "**/*.pw.ts",
   timeout: 600_000,
   expect: {
     timeout: 120_000,
   },
   use: {
     baseURL: "http://localhost:3000",
+    channel: process.env.PLAYWRIGHT_CHANNEL,
     trace: "retain-on-failure",
   },
   webServer: {
