@@ -33,13 +33,6 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             </span>
           </div>
 
-          <div className="auth-status-row auth-maintenance-row">
-            <span className="auth-context-pill" role="status">
-              <span aria-hidden="true" />
-              Dalam maintenance
-            </span>
-          </div>
-
           {children}
 
           <p className="auth-support-copy">

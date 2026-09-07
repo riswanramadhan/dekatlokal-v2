@@ -1,0 +1,189 @@
+/* Compact, familiar sign-in card isolated from other account screens. */
+main.auth-shell:has(.dl-signin) {
+  display: grid;
+  width: 100%;
+  min-height: 100svh;
+  height: auto;
+  overflow: visible;
+  place-items: center;
+  padding: 20px;
+  background: #f3f7ff;
+}
+.auth-shell:has(.dl-signin) .auth-form-panel {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: auto;
+  overflow: visible;
+  padding: 0;
+  background: transparent;
+}
+.auth-shell:has(.dl-signin) .auth-form-shell {
+  width: 100%;
+  max-width: 460px;
+  margin: auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.auth-shell:has(.dl-signin) .auth-default-brand-row { display: none; }
+.auth-shell:has(.dl-signin) .auth-support-copy {
+  margin: 14px auto 0;
+  color: #52627a;
+  font-size: 10px;
+  text-align: center;
+}
+.dl-signin,
+.dl-signin * { box-sizing: border-box; }
+.dl-signin {
+  display: block;
+  overflow: hidden;
+  color: #11233f;
+  background: #fff;
+  border: 1px solid #dce7fa;
+  border-radius: 24px;
+  box-shadow: 0 24px 70px -45px rgba(1, 51, 147, .42);
+  font-family: var(--font-poppins), sans-serif;
+}
+.dl-signin-main { width: 100%; padding: 24px 28px 26px; }
+.dl-signin a { text-decoration: none; }
+.dl-signin-topbar {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.dl-signin-topbar > span { width: 44px; }
+.dl-signin-back {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: #52627a;
+  background: #f3f7ff;
+  border-radius: 50%;
+}
+.dl-signin-brand { display: block; width: fit-content; margin: auto; }
+.dl-signin-brand img { display: block; width: 132px; height: auto; }
+.dl-signin-main header { margin-bottom: 20px; text-align: center; }
+.dl-signin-main header > p:first-child { margin: 0 0 7px; color: #0255f5; font-size: 11px; }
+.dl-signin-main h1 {
+  margin: 0 0 7px;
+  font-size: clamp(25px, 5vw, 32px);
+  font-weight: 500;
+  letter-spacing: -1px;
+  line-height: 1.25;
+}
+.dl-signin-main header > p:last-child { margin: 0; color: #52627a; font-size: 12px; line-height: 1.7; }
+.dl-signin button,
+.dl-signin input { font: inherit; }
+.dl-signin button { cursor: pointer; transition: background .2s, transform .2s; }
+.dl-signin button:active { transform: scale(.98); }
+.dl-signin-google {
+  display: flex;
+  width: 100%;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #21344f;
+  background: #fff;
+  border: 1px solid #cad8ec;
+  border-radius: 12px;
+  font-size: 13px !important;
+}
+.dl-signin-google svg { flex: 0 0 auto; }
+.dl-signin-google:hover { background: #f3f7ff; }
+.dl-signin-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 18px 0;
+  color: #66768c;
+  font-size: 11px;
+}
+.dl-signin-divider::before,
+.dl-signin-divider::after { content: ""; flex: 1; height: 1px; background: #e3eaf5; }
+.dl-signin form { display: flex; flex-direction: column; }
+.dl-signin label { margin-bottom: 8px; font-size: 12px; font-weight: 500; }
+.dl-signin input {
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  padding: 12px 15px;
+  color: #11233f;
+  background: #fff;
+  border: 1px solid #cad8ec;
+  border-radius: 12px;
+  font-size: 16px;
+}
+.dl-signin input::placeholder { color: #68768a; font-size: 13px; }
+.dl-signin input[type="email"] { margin-bottom: 15px; }
+.dl-signin-password { position: relative; }
+.dl-signin-password input { padding-right: 52px; }
+.dl-signin-password button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  color: #52627a;
+  background: transparent;
+  border: 0;
+  border-radius: 9px;
+}
+.dl-signin-submit {
+  display: flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 19px;
+  color: #fff;
+  background: #0255f5;
+  border: 0;
+  border-radius: 12px;
+  font-size: 14px !important;
+}
+.dl-signin-submit:hover { background: #0347c9; }
+.dl-signin :is(a, button, input):focus-visible { outline: 3px solid #0255f5; outline-offset: 3px; }
+.dl-signin-new {
+  margin: 17px 0 12px;
+  color: #52627a;
+  font-size: 11px;
+  line-height: 1.8;
+  text-align: center;
+}
+.dl-signin-new a,
+.dl-signin-legal a,
+.dl-signin-notice a {
+  color: #0347c9;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.dl-signin-legal { margin: 0; color: #66768c; font-size: 9px; line-height: 1.75; text-align: center; }
+.dl-signin-notice {
+  margin-top: 14px;
+  padding: 12px 14px;
+  color: #21344f;
+  background: #edf4ff;
+  border: 1px solid #c8dcff;
+  border-radius: 12px;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.dl-signin-notice p { margin: 0 0 6px; }
+.dl-signin-notice a { display: inline-flex; align-items: center; gap: 8px; }
+
+@media (max-width: 480px) {
+  main.auth-shell:has(.dl-signin) { display: block; padding: 8px 12px; background: #fff; }
+  .dl-signin { border: 0; border-radius: 0; box-shadow: none; }
+  .dl-signin-main { padding: 10px 6px 18px; }
+  .auth-shell:has(.dl-signin) .auth-support-copy { margin-top: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dl-signin button { transition: none; }
+}

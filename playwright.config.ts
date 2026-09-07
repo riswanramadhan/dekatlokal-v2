@@ -9,6 +9,7 @@ export default defineConfig({
   },
   use: {
     baseURL: "http://localhost:3000",
+    channel: process.env.PLAYWRIGHT_CHANNEL,
     trace: "retain-on-failure",
   },
   webServer: {

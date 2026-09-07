@@ -1,0 +1,44 @@
+{"version":8,"type":"context-options","origin":"library","browserName":"","playwrightVersion":"1.61.1","options":{},"platform":"win32","wallTime":1788722172298,"monotonicTime":25086.888,"sdkLanguage":"javascript","contextId":"request-context@75f4833fa78cb3b2b61f682f0fbfe16c","title":"landing-brand.pw.ts:82 › PWA manifest, icons, and safe offline fallback"}
+{"type":"before","callId":"call@43","startTime":25119.452,"class":"APIRequestContext","method":"fetch","params":{"url":"/manifest.webmanifest","method":"GET","timeout":0},"stepId":"pw:api@28"}
+{"type":"log","callId":"call@43","time":25143.503,"message":"→ GET http://localhost:3000/manifest.webmanifest"}
+{"type":"log","callId":"call@43","time":25143.536,"message":"  user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36"}
+{"type":"log","callId":"call@43","time":25143.67,"message":"  accept: */*"}
+{"type":"log","callId":"call@43","time":25143.684,"message":"  accept-encoding: gzip,deflate,br"}
+{"type":"log","callId":"call@43","time":25445.351,"message":"← 200 OK"}
+{"type":"log","callId":"call@43","time":25445.38,"message":"  vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch"}
+{"type":"log","callId":"call@43","time":25445.389,"message":"  x-nextjs-cache: HIT"}
+{"type":"log","callId":"call@43","time":25445.395,"message":"  cache-control: public, max-age=0, must-revalidate"}
+{"type":"log","callId":"call@43","time":25445.401,"message":"  content-type: application/manifest+json"}
+{"type":"log","callId":"call@43","time":25445.407,"message":"  date: Sun, 06 Sep 2026 19:16:12 GMT"}
+{"type":"log","callId":"call@43","time":25445.414,"message":"  connection: keep-alive"}
+{"type":"log","callId":"call@43","time":25445.42,"message":"  keep-alive: timeout=5"}
+{"type":"log","callId":"call@43","time":25445.436,"message":"  transfer-encoding: chunked"}
+{"type":"after","callId":"call@43","endTime":25455.042,"result":{"response":{"url":"http://localhost:3000/manifest.webmanifest","status":200,"statusText":"OK","headers":[{"name":"vary","value":"rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch"},{"name":"x-nextjs-cache","value":"HIT"},{"name":"cache-control","value":"public, max-age=0, must-revalidate"},{"name":"content-type","value":"application/manifest+json"},{"name":"Date","value":"Sun, 06 Sep 2026 19:16:12 GMT"},{"name":"Connection","value":"keep-alive"},{"name":"Keep-Alive","value":"timeout=5"},{"name":"Transfer-Encoding","value":"chunked"}],"serverAddr":{"ipAddress":"::1","port":3000},"fetchUid":"0ef0c0ba819c8635c88da4093c7de1e1"}}}
+{"type":"before","callId":"call@46","startTime":25464.48,"class":"APIRequestContext","method":"fetch","params":{"url":"/pwa-icon/192","method":"GET","timeout":0},"stepId":"pw:api@32"}
+{"type":"log","callId":"call@46","time":25465.465,"message":"→ GET http://localhost:3000/pwa-icon/192"}
+{"type":"log","callId":"call@46","time":25465.492,"message":"  user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36"}
+{"type":"log","callId":"call@46","time":25465.5,"message":"  accept: */*"}
+{"type":"log","callId":"call@46","time":25465.506,"message":"  accept-encoding: gzip,deflate,br"}
+{"type":"log","callId":"call@46","time":27302.554,"message":"← 200 OK"}
+{"type":"log","callId":"call@46","time":27302.587,"message":"  vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch"}
+{"type":"log","callId":"call@46","time":27302.598,"message":"  cache-control: public, max-age=86400"}
+{"type":"log","callId":"call@46","time":27302.808,"message":"  content-type: image/png"}
+{"type":"log","callId":"call@46","time":27302.827,"message":"  date: Sun, 06 Sep 2026 19:16:14 GMT"}
+{"type":"log","callId":"call@46","time":27302.839,"message":"  connection: keep-alive"}
+{"type":"log","callId":"call@46","time":27302.85,"message":"  keep-alive: timeout=5"}
+{"type":"log","callId":"call@46","time":27302.861,"message":"  transfer-encoding: chunked"}
+{"type":"after","callId":"call@46","endTime":27305.508,"result":{"response":{"url":"http://localhost:3000/pwa-icon/192","status":200,"statusText":"OK","headers":[{"name":"vary","value":"rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch"},{"name":"cache-control","value":"public, max-age=86400"},{"name":"content-type","value":"image/png"},{"name":"Date","value":"Sun, 06 Sep 2026 19:16:14 GMT"},{"name":"Connection","value":"keep-alive"},{"name":"Keep-Alive","value":"timeout=5"},{"name":"Transfer-Encoding","value":"chunked"}],"serverAddr":{"ipAddress":"::1","port":3000},"fetchUid":"cc4d51d1791e3e2eb08ed2b1876fc5ff"}}}
+{"type":"before","callId":"call@49","startTime":27315.438,"class":"APIRequestContext","method":"fetch","params":{"url":"/pwa-icon/512","method":"GET","timeout":0},"stepId":"pw:api@37"}
+{"type":"log","callId":"call@49","time":27316.448,"message":"→ GET http://localhost:3000/pwa-icon/512"}
+{"type":"log","callId":"call@49","time":27316.485,"message":"  user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Safari/537.36"}
+{"type":"log","callId":"call@49","time":27316.498,"message":"  accept: */*"}
+{"type":"log","callId":"call@49","time":27316.508,"message":"  accept-encoding: gzip,deflate,br"}
+{"type":"log","callId":"call@49","time":27383.789,"message":"← 200 OK"}
+{"type":"log","callId":"call@49","time":27383.826,"message":"  vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch"}
+{"type":"log","callId":"call@49","time":27384.413,"message":"  cache-control: public, max-age=86400"}
+{"type":"log","callId":"call@49","time":27384.465,"message":"  content-type: image/png"}
+{"type":"log","callId":"call@49","time":27384.478,"message":"  date: Sun, 06 Sep 2026 19:16:14 GMT"}
+{"type":"log","callId":"call@49","time":27384.491,"message":"  connection: keep-alive"}
+{"type":"log","callId":"call@49","time":27384.951,"message":"  keep-alive: timeout=5"}
+{"type":"log","callId":"call@49","time":27384.966,"message":"  transfer-encoding: chunked"}
+{"type":"after","callId":"call@49","endTime":27388.223,"result":{"response":{"url":"http://localhost:3000/pwa-icon/512","status":200,"statusText":"OK","headers":[{"name":"vary","value":"rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch"},{"name":"cache-control","value":"public, max-age=86400"},{"name":"content-type","value":"image/png"},{"name":"Date","value":"Sun, 06 Sep 2026 19:16:14 GMT"},{"name":"Connection","value":"keep-alive"},{"name":"Keep-Alive","value":"timeout=5"},{"name":"Transfer-Encoding","value":"chunked"}],"serverAddr":{"ipAddress":"::1","port":3000},"fetchUid":"8020bf5a99551ea386512faa8a1a3b9c"}}}

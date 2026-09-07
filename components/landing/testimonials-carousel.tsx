@@ -28,7 +28,9 @@ function getVisibleCount() {
 export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
-  const [isInteracting, setIsInteracting] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
+  const isInteracting = isHovered || hasFocus;
   const [announcement, setAnnouncement] = useState("");
   const reduceMotion = useReducedMotion();
   const maxIndex = Math.max(0, stories.length - visibleCount);
@@ -69,11 +71,11 @@ export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
       data-reveal-item
       data-testid="story-carousel"
       onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsInteracting(false);
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setHasFocus(false);
       }}
-      onFocusCapture={() => setIsInteracting(true)}
-      onMouseEnter={() => setIsInteracting(true)}
-      onMouseLeave={() => setIsInteracting(false)}
+      onFocusCapture={() => setHasFocus(true)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div aria-atomic="true" aria-live="polite" className="dl-story-live-region">{announcement}</div>
 
@@ -103,7 +105,7 @@ export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
                 </div>
 
                 <div className="dl-story-content">
-                  <p>“{story.summary}”</p>
+                  <p>{story.summary}</p>
                   <footer>
                     <span className="dl-story-logo">
                       <Image alt={`Logo ${story.business}`} fill sizes="72px" src={story.logo} unoptimized />

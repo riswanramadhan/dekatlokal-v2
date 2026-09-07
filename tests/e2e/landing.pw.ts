@@ -1,6 +1,9 @@
-import { expect, test } from "@playwright/test";
+import { expect as baseExpect, test } from "@playwright/test";
+
+const expect = baseExpect.configure({ timeout: 10_000 });
 
 test.describe("landing page", () => {
+  test.setTimeout(90_000);
   test("desktop navigation, carousel, and legal links work", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/");

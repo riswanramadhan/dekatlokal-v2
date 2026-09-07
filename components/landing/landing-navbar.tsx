@@ -2,172 +2,98 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowRight, Sparkles, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Menu, X } from "lucide-react";
 
-const navItems = [
-  ["Beranda", "#beranda"],
-  ["Cara Kerja", "#akses-belajar"],
-  ["Cerita", "#pengalaman"],
-  ["Course", "#course"],
-  ["Harga", "#paket"],
-  ["FAQ", "#faq"],
-] as const;
+const navItems = [["Beranda", "#beranda"], ["Cara Kerja", "#akses-belajar"], ["Cerita", "#pengalaman"], ["Kelas", "#course"], ["Harga", "#paket"], ["Tanya Jawab", "#faq"]] as const;
 
 export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [activeHref, setActiveHref] = useState("#beranda");
-  const mobileMenuRef = useRef<HTMLElement>(null);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const menuFocusTimerRef = useRef<number | null>(null);
-  const returnFocusRef = useRef<HTMLElement | null>(null);
-
-  const closeMenu = useCallback((restoreFocus = true) => {
-    if (menuFocusTimerRef.current !== null) window.clearTimeout(menuFocusTimerRef.current);
-    menuFocusTimerRef.current = null;
-    if (!restoreFocus) returnFocusRef.current = null;
-    setIsOpen(false);
-  }, []);
-
-  const openMenu = useCallback(() => {
-    returnFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : menuButtonRef.current;
-    setIsOpen(true);
-    menuFocusTimerRef.current = window.setTimeout(() => {
-      closeButtonRef.current?.focus();
-      menuFocusTimerRef.current = null;
-    }, 50);
-  }, []);
+  const [activeHref, setActiveHref] = useState<string>("#beranda");
+  const dialog = useRef<HTMLDialogElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const updateNavigation = () => {
+    let frame = 0;
+    const update = () => {
       setIsScrolled(window.scrollY > 24);
-      const marker = window.scrollY + Math.max(120, window.innerHeight * 0.34);
-      let nextHref: (typeof navItems)[number][1] = navItems[0][1];
+      let active: string = "#beranda";
       navItems.forEach(([, href]) => {
-        const section = document.querySelector<HTMLElement>(href);
-        if (section && section.offsetTop <= marker) nextHref = href;
+        if ((document.querySelector(href)?.getBoundingClientRect().top ?? Infinity) <= 160) active = href;
       });
-      setActiveHref(nextHref);
+      setActiveHref(active);
+      frame = 0;
     };
-
-    updateNavigation();
-    window.addEventListener("scroll", updateNavigation, { passive: true });
-    window.addEventListener("resize", updateNavigation, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", updateNavigation);
-      window.removeEventListener("resize", updateNavigation);
-    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", schedule); };
   }, []);
 
   useEffect(() => {
-    document.body.classList.toggle("dl-menu-is-open", isOpen);
-    if (!isOpen) return () => document.body.classList.remove("dl-menu-is-open");
+    const previous = document.body.style.overflow;
+    if (isOpen) document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previous; };
+  }, [isOpen]);
 
-    const handleKeydown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        closeMenu();
-        return;
-      }
-      if (event.key !== "Tab") return;
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = () => { if (media.matches) dialog.current?.close(); };
+    media.addEventListener("change", closeOnDesktop);
+    return () => media.removeEventListener("change", closeOnDesktop);
+  }, []);
 
-      const focusable = Array.from(
-        mobileMenuRef.current?.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        ) ?? [],
-      );
-      if (!focusable.length) {
-        event.preventDefault();
-        mobileMenuRef.current?.focus();
-        return;
-      }
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeydown);
-    return () => {
-      document.body.classList.remove("dl-menu-is-open");
-      document.removeEventListener("keydown", handleKeydown);
-      const returnFocus = returnFocusRef.current;
-      returnFocusRef.current = null;
-      if (returnFocus?.isConnected) window.requestAnimationFrame(() => returnFocus.focus());
-    };
-  }, [closeMenu, isOpen]);
+  const close = () => dialog.current?.close();
 
   return (
     <>
-      <header
-        className={`dl-navbar${isScrolled ? " is-scrolled" : ""}`}
-        data-scrolled={String(isScrolled)}
-      >
+      <header className={`dl-navbar${isScrolled ? " is-scrolled" : ""}`} data-scrolled={String(isScrolled)}>
         <Link aria-label="Ke beranda DekatLokal" className="dl-navbar-logo" href="#beranda">
           <Image alt="DekatLokal" height={44} priority src="/brand/dekat-lokal.png" unoptimized width={143} />
         </Link>
-
         <nav aria-label="Navigasi landing page" className="dl-navbar-links">
-          {navItems.map(([label, href]) => {
-            const isActive = activeHref === href;
-            return (
-              <Link aria-current={isActive ? "location" : undefined} className={isActive ? "is-active" : undefined} href={href} key={href}>
-                {label}
-              </Link>
-            );
-          })}
+          {navItems.map(([label, href]) => <Link aria-current={activeHref === href ? "location" : undefined} className={activeHref === href ? "is-active" : undefined} href={href} key={href}>{label}</Link>)}
         </nav>
-
         <div className="dl-navbar-actions">
           <Link className="dl-navbar-login" href="/masuk">Masuk</Link>
           <Link className="dl-navbar-checkup" href={checkupHref}>Mulai Cek <ArrowRight aria-hidden="true" size={16} /></Link>
         </div>
-
-        <button
-          aria-controls="landing-mobile-menu"
-          aria-expanded={isOpen}
-          aria-label={isOpen ? "Tutup menu utama" : "Buka menu utama"}
-          className="dl-navbar-menu-button"
-          onClick={() => (isOpen ? closeMenu() : openMenu())}
-          ref={menuButtonRef}
-          type="button"
-        >
-          <span aria-hidden="true" className="dl-menu-button-glyph"><i /><i /><i /></span>
+        <button aria-controls="landing-mobile-menu" aria-expanded={isOpen} aria-label="Buka menu utama" className="dl-navbar-menu-button" ref={trigger} onClick={() => { dialog.current?.showModal(); setIsOpen(true); }} type="button">
+          <Menu aria-hidden="true" size={22} />
         </button>
       </header>
-
-      <button aria-hidden="true" className={`dl-mobile-overlay${isOpen ? " is-open" : ""}`} onClick={() => closeMenu()} tabIndex={-1} type="button" />
-      <aside aria-hidden={!isOpen} aria-labelledby="landing-mobile-menu-title" aria-modal="true" className={`dl-mobile-menu${isOpen ? " is-open" : ""}`} id="landing-mobile-menu" inert={!isOpen} ref={mobileMenuRef} role="dialog" tabIndex={-1}>
-        <div className="dl-mobile-menu-head">
-          <Link aria-label="Ke beranda DekatLokal" className="dl-mobile-menu-brand" href="#beranda" onClick={() => closeMenu(false)}>
-            <Image alt="" aria-hidden="true" height={38} src="/brand/dekat-lokal-icon.png" unoptimized width={38} />
-            <span><strong id="landing-mobile-menu-title">DekatLokal</strong><small>Ruang tumbuh UMKM</small></span>
-          </Link>
-          <button aria-label="Tutup menu utama" data-menu-close onClick={() => closeMenu()} ref={closeButtonRef} type="button"><X aria-hidden="true" size={22} /></button>
+      <dialog className="dl-nav-dialog" id="landing-mobile-menu" aria-label="DekatLokal" ref={dialog}
+        onClose={() => { setIsOpen(false); trigger.current?.focus({ preventScroll: true }); }}
+        onKeyDown={(event) => {
+          if (event.key !== "Tab") return;
+          const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("a[href], button:not(:disabled)"));
+          const first = controls[0];
+          const last = controls[controls.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last?.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first?.focus();
+          }
+        }}
+        onClick={(event) => { if (event.target === event.currentTarget) close(); }}>
+        <div className="dl-nav-dialog-content">
+          <header>
+            <Link aria-label="Ke beranda DekatLokal" href="#beranda" onClick={close}><Image alt="DekatLokal" width={143} height={44} src="/brand/dekat-lokal.png" unoptimized /></Link>
+            <button aria-label="Tutup menu utama" type="button" onClick={close} autoFocus><X aria-hidden="true" size={22} /></button>
+          </header>
+          <nav aria-label="Navigasi landing page mobile">
+            {navItems.map(([label, href], index) => <Link href={href} key={href} onClick={close} aria-current={activeHref === href ? "location" : undefined} style={{ animationDelay: `${index * 35}ms` }}>{label}<ArrowRight aria-hidden="true" size={18} /></Link>)}
+          </nav>
+          <footer>
+            <Link href="/masuk" onClick={close}>Masuk</Link>
+            <Link href={checkupHref} onClick={close}>Mulai Cek Gratis <ArrowRight aria-hidden="true" size={18} /></Link>
+            <p>Cuma 5–7 menit. Mulai dari usahamu.</p>
+          </footer>
         </div>
-
-        <div className="dl-mobile-menu-intro"><span><Sparkles aria-hidden="true" size={14} /> Menu utama</span><p>Temukan langkah yang paling relevan untuk usahamu sekarang.</p></div>
-        <nav aria-label="Navigasi landing page mobile" className="dl-mobile-menu-links">
-          {navItems.map(([label, href], index) => (
-            <Link aria-current={activeHref === href ? "location" : undefined} className={activeHref === href ? "is-active" : undefined} href={href} key={href} onClick={() => closeMenu(false)}>
-              <span>0{index + 1}</span><strong>{label}</strong><ArrowRight aria-hidden="true" size={18} />
-            </Link>
-          ))}
-        </nav>
-        <div className="dl-mobile-menu-footer">
-          <Link className="dl-mobile-menu-login" href="/masuk" onClick={() => closeMenu(false)}>Masuk ke Ruang Tumbuh</Link>
-          <Link className="dl-mobile-menu-checkup" href={checkupHref} onClick={() => closeMenu(false)}>Mulai Cek Gratis <ArrowRight aria-hidden="true" size={17} /></Link>
-          <small>Gratis • 5–7 menit • Hasil langsung</small>
-        </div>
-      </aside>
+      </dialog>
     </>
   );
 }

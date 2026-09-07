@@ -1,7 +1,8 @@
 "use client";
 
 import { useId, useState } from "react";
-import { Check, LockKeyhole } from "lucide-react";
+import Link from "next/link";
+import { Check, ArrowRight } from "lucide-react";
 
 const pricingPlans = [
   {
@@ -9,28 +10,28 @@ const pricingPlans = [
     price: "Rp0",
     description: "Mulai dari kondisi usaha dan tuntaskan tiga fokus paling penting.",
     features: [
-      "Digital Checkup delapan aspek",
-      "Tiga course fondasi personal",
+      "Cek delapan bagian penting usahamu",
+      "Tiga kelas dasar sesuai kebutuhanmu",
       "Kuis dan tugas praktik usaha",
-      "Aset Usaha dan Jejak Tumbuh",
+      "Simpan hasil praktik dan perkembangan belajar",
     ],
     cta: "Mulai Gratis",
     hrefType: "checkup",
-    status: "Aktivasi paket dijeda",
-    statusDetail: "Informasi fondasi tetap dapat dilihat, tetapi tombol paket dinonaktifkan sementara.",
+    status: "Mulai tanpa biaya",
+    statusDetail: "Cek usahamu dulu. Pilih langkah berikutnya setelah melihat hasilnya.",
     featured: false,
   },
   {
     name: "Tumbuh Terarah",
     price: "Rp249.000",
-    description: "Pendalaman mandiri untuk menguatkan hasil setelah fondasi selesai.",
+    description: "Lanjut belajar dan bangun tampilan online usahamu.",
     features: [
       "Semua manfaat Fondasi Gratis",
-      "Empat course lanjutan",
-      "Website company profile satu halaman siap tayang",
+      "Empat kelas lanjutan",
+      "Website pengenalan usaha satu halaman",
       "Pengelolaan media sosial dasar selama 30 hari",
-      "Setup Google Business Profile dan katalog digital",
-      "Jalur tindakan 90 hari, workbook, dan template premium",
+      "Bantu daftarkan usaha di Google dan buat katalog produk",
+      "Rencana kerja 90 hari, lembar latihan, dan contoh siap pakai",
     ],
     cta: "Aktifkan Paket",
     hrefType: "premium",
@@ -41,15 +42,15 @@ const pricingPlans = [
   {
     name: "Pendampingan Naik Kelas",
     price: "Rp799.000",
-    description: "Belajar lebih terarah dengan klinik usaha dan review aset prioritas.",
+    description: "Dapatkan masukan untuk promosi, website, dan rencana usahamu.",
     features: [
       "Semua manfaat Tumbuh Terarah",
-      "Website company profile custom dengan beberapa section",
-      "Pengelolaan media sosial 30 hari, termasuk 12 konten dan caption",
-      "Optimasi Google Business Profile serta katalog produk",
-      "Dua klinik usaha kelompok",
-      "Review tiga Aset Usaha",
-      "Laporan performa dan rencana aksi personal 30 hari",
+      "Website pengenalan usaha dengan tampilan sesuai kebutuhan",
+      "Kelola media sosial 30 hari, termasuk 12 konten dan teks postingan",
+      "Rapikan profil usaha di Google dan katalog produk",
+      "Dua sesi diskusi usaha bersama",
+      "Masukan untuk tiga hasil praktik usahamu",
+      "Ringkasan hasil dan rencana kerja 30 hari untuk usahamu",
     ],
     cta: "Pilih Pendampingan",
     hrefType: "interest",
@@ -61,7 +62,7 @@ const pricingPlans = [
 
 function resolveHref(type: (typeof pricingPlans)[number]["hrefType"], checkupHref: string) {
   if (type === "checkup") return checkupHref;
-  if (type === "premium") return "/app/premium";
+  if (type === "premium") return "mailto:hello@dekatlokal.com?subject=Tanya%20Paket%20Tumbuh%20Terarah";
   return "mailto:hello@dekatlokal.com?subject=Minat%20Pendampingan%20Naik%20Kelas";
 }
 
@@ -121,25 +122,18 @@ export function LandingPricingSelector({ checkupHref }: { checkupHref: string })
               <span>Paket {String(selectedPlanIndex + 1).padStart(2, "0")}</span>
               <h3>{selectedPlan.name}</h3>
             </div>
-            {selectedPlan.featured ? <span className="dl-pricing-popular">Paling relevan</span> : null}
+            {selectedPlan.featured ? <span className="dl-pricing-popular">Pilihan lanjutan</span> : null}
           </div>
 
           <div className="dl-pricing-detail-price">
             <strong>{selectedPlan.price}</strong>
-            <span>sekali bayar</span>
+            <span>{selectedPlan.hrefType === "checkup" ? "tanpa biaya" : "sekali bayar"}</span>
           </div>
 
-          <button
-            aria-label={`${selectedPlan.cta}, segera tersedia`}
-            className="dl-pricing-detail-cta"
-            data-intended-href={resolveHref(selectedPlan.hrefType, checkupHref)}
-            disabled
-            type="button"
-          >
-            <LockKeyhole aria-hidden="true" size={16} />
-            <span>{selectedPlan.cta}</span>
-            <small>Segera tersedia</small>
-          </button>
+          <Link className="dl-pricing-detail-cta" href={resolveHref(selectedPlan.hrefType, checkupHref)}>
+            <span>{selectedPlan.hrefType === "checkup" ? "Mulai Gratis" : "Tanya Paket Ini"}</span>
+            <ArrowRight aria-hidden="true" size={18} />
+          </Link>
 
           <p className="dl-pricing-detail-description">{selectedPlan.description}</p>
 
@@ -168,8 +162,7 @@ export function LandingPricingSelector({ checkupHref }: { checkupHref: string })
       </div>
 
       <p className="dl-pricing-note">
-        Semua tombol aktivasi paket dinonaktifkan sementara. Kamu tetap dapat membandingkan manfaat
-        setiap paket untuk menentukan kebutuhan usahamu.
+        Mulai dari yang gratis dulu. Paket berbayar belum dibuka; kamu bisa tanya tim kami sebelum memilih.
       </p>
     </>
   );
