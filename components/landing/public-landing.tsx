@@ -131,7 +131,7 @@ function Hero({ checkupHref }: { checkupHref: string }) {
           <HeroHeadline />
           <p className="dl-hero-description">Usaha mau maju, tapi bingung mulai dari mana? Cek kondisinya dulu, lalu temukan langkah yang bisa kamu coba hari ini.</p>
           <div className="dl-hero-actions">
-            <Link className="dl-primary-button" href={checkupHref}>Cek Usahaku Gratis <ArrowUpRight aria-hidden="true" size={18} /></Link>
+            <Link className="dl-primary-button" href={checkupHref}>Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} /></Link>
             <Link className="dl-secondary-button" href="#akses-belajar">Lihat cara kerjanya</Link>
           </div>
           <ul className="dl-hero-trust" aria-label="Informasi Digital Checkup">
@@ -159,7 +159,7 @@ function Hero({ checkupHref }: { checkupHref: string }) {
 }
 
 const accessSteps = [
-  { number: "01", label: "Cek Usahaku Gratis", title: "Ceritakan kondisi usahamu", description: "Jawab pertanyaan sederhana dalam 5-7 menit.", image: "/platform-v2/access/checkup.webp", imageAlt: "Pemilik UMKM memulai Digital Checkup melalui ponsel", icon: ScanSearch },
+  { number: "01", label: "Mulai Checkup Gratis", title: "Ceritakan kondisi usahamu", description: "Jawab pertanyaan sederhana dalam 5–7 menit.", image: "/platform-v2/access/checkup.webp", imageAlt: "Pemilik UMKM memulai Digital Checkup melalui ponsel", icon: ScanSearch },
   { number: "02", label: "Pahami hasil", title: "Lihat tiga fokus utama", description: "Temukan apa yang perlu dikerjakan lebih dahulu dan alasannya.", image: "/platform-v2/access/analysis.webp", imageAlt: "Pemilik usaha meninjau hasil analisis usahanya", icon: BarChart3 },
   { number: "03", label: "Langsung praktik", title: "Kerjakan langsung di usaha", description: "Coba latihan sederhana untuk produk, promosi, atau catatan usahamu.", image: "/platform-v2/access/action.webp", imageAlt: "Pelaku UMKM menerapkan aksi pada produk usahanya", icon: Target },
   { number: "04", label: "Lanjut belajar", title: "Belajar dari mana saja", description: "Belajar sebentar dulu, lanjut lagi saat ada waktu.", image: "/platform-v2/access/course.webp", imageAlt: "Pemilik UMKM belajar course menggunakan laptop", icon: BookOpenCheck },

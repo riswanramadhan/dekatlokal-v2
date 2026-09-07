@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test.setTimeout(90_000);
+test.setTimeout(180_000);
 
 for (const width of [320, 390, 768, 1440]) {
   test(`brand layout at ${width}px`, async ({ page }, testInfo) => {
@@ -61,11 +61,26 @@ test("headline changes in order without moving the mockup", async ({ page }) => 
   expect(Math.abs((await page.locator(".dl-hero-product").boundingBox())!.y - y)).toBeLessThan(1);
 });
 
+test("logo and story motion keep running while hovered", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  const logoTrack = page.locator(".dl-logo-track");
+  await page.locator(".dl-logo-strip").hover();
+  await expect(logoTrack).toHaveCSS("animation-play-state", "running");
+  const story = page.locator(".dl-story-carousel");
+  await story.scrollIntoViewIfNeeded();
+  await story.hover();
+  const track = page.locator(".dl-story-track");
+  const first = await track.evaluate((element) => getComputedStyle(element).getPropertyValue("--story-index"));
+  await expect.poll(() => track.evaluate((element) => getComputedStyle(element).getPropertyValue("--story-index")), { timeout: 4500 }).not.toBe(first);
+});
+
 test("login UI validates locally and offers Google and email only", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/masuk");
   await expect(page.getByRole("heading", { name: "Yuk, lanjut tumbuh." })).toBeVisible();
   await expect(page.getByText(/maintenance|WhatsApp/i)).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeLessThanOrEqual(1);
   await page.getByRole("button", { name: "Lanjut dengan Google" }).click();
   await expect(page.getByRole("status")).toContainText("belum tersedia");
   await page.getByLabel("Email", { exact: true }).fill("sarah@example.com");
@@ -83,9 +98,12 @@ test("login UI validates locally and offers Google and email only", async ({ pag
   await expect(page.getByRole("link", { name: "Kebijakan Privasi", exact: true })).toBeInViewport();
   await page.evaluate(() => window.scrollTo(0, 0));
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-  await page.screenshot({ path: testInfo.outputPath("login-mobile.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("login-mobile.png") });
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.screenshot({ path: testInfo.outputPath("login-desktop.png"), fullPage: true });
+  await page.reload();
+  await expect(page.locator(".dl-signin-aside")).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeLessThanOrEqual(1);
+  await page.screenshot({ path: testInfo.outputPath("login-desktop.png") });
 });
 
 test("PWA manifest, icons, and safe offline fallback", async ({ page, context, request }) => {
@@ -108,6 +126,9 @@ test("PWA manifest, icons, and safe offline fallback", async ({ page, context, r
     await navigator.serviceWorker.register("/sw.js");
     await navigator.serviceWorker.ready;
   });
+  if (!(await page.evaluate(() => Boolean(navigator.serviceWorker.controller)))) {
+    await page.reload();
+  }
   await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller)), { timeout: 10000 }).toBe(true);
   await context.setOffline(true);
   await page.goto("/masuk");

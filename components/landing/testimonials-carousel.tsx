@@ -28,9 +28,6 @@ function getVisibleCount() {
 export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
-  const [isHovered, setIsHovered] = useState(false);
-  const [hasFocus, setHasFocus] = useState(false);
-  const isInteracting = isHovered || hasFocus;
   const [announcement, setAnnouncement] = useState("");
   const reduceMotion = useReducedMotion();
   const maxIndex = Math.max(0, stories.length - visibleCount);
@@ -54,12 +51,12 @@ export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
   }, [stories.length]);
 
   useEffect(() => {
-    if (reduceMotion || maxIndex === 0 || isInteracting) return;
+    if (reduceMotion || maxIndex === 0) return;
     const timer = window.setTimeout(() => {
       setActiveIndex((current) => (current >= maxIndex ? 0 : current + 1));
     }, AUTOPLAY_DELAY);
     return () => window.clearTimeout(timer);
-  }, [activeIndex, isInteracting, maxIndex, reduceMotion]);
+  }, [activeIndex, maxIndex, reduceMotion]);
 
   if (!stories.length) return null;
 
@@ -70,12 +67,6 @@ export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
       className="dl-story-carousel"
       data-reveal-item
       data-testid="story-carousel"
-      onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setHasFocus(false);
-      }}
-      onFocusCapture={() => setHasFocus(true)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <div aria-atomic="true" aria-live="polite" className="dl-story-live-region">{announcement}</div>
 

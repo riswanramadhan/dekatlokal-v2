@@ -11,7 +11,7 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeHref, setActiveHref] = useState<string>("#beranda");
-  const dialog = useRef<HTMLDialogElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -32,23 +32,38 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
   }, []);
 
   useEffect(() => {
+    if (!isOpen) return;
     const previous = document.body.style.overflow;
-    if (isOpen) document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = previous; };
+    document.body.style.overflow = "hidden";
+    panel.current?.querySelector<HTMLElement>("a[href]")?.focus({ preventScroll: true });
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        requestAnimationFrame(() => trigger.current?.focus({ preventScroll: true }));
+      }
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", closeOnEscape);
+    };
   }, [isOpen]);
 
   useEffect(() => {
     const media = window.matchMedia("(min-width: 1024px)");
-    const closeOnDesktop = () => { if (media.matches) dialog.current?.close(); };
+    const closeOnDesktop = () => { if (media.matches) setIsOpen(false); };
     media.addEventListener("change", closeOnDesktop);
     return () => media.removeEventListener("change", closeOnDesktop);
   }, []);
 
-  const close = () => dialog.current?.close();
+  const close = () => {
+    setIsOpen(false);
+    requestAnimationFrame(() => trigger.current?.focus({ preventScroll: true }));
+  };
 
   return (
     <>
-      <header className={`dl-navbar${isScrolled ? " is-scrolled" : ""}`} data-scrolled={String(isScrolled)}>
+      <header className={`dl-navbar${isScrolled ? " is-scrolled" : ""}${isOpen ? " is-menu-open" : ""}`} data-scrolled={String(isScrolled)}>
         <Link aria-label="Ke beranda DekatLokal" className="dl-navbar-logo" href="#beranda">
           <Image alt="DekatLokal" height={44} priority src="/brand/dekat-lokal.png" unoptimized width={143} />
         </Link>
@@ -57,43 +72,60 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
         </nav>
         <div className="dl-navbar-actions">
           <Link className="dl-navbar-login" href="/masuk">Masuk</Link>
-          <Link className="dl-navbar-checkup" href={checkupHref}>Mulai Cek <ArrowRight aria-hidden="true" size={16} /></Link>
+          <Link className="dl-navbar-checkup" href={checkupHref}>Mulai Checkup <ArrowRight aria-hidden="true" size={16} /></Link>
         </div>
-        <button aria-controls="landing-mobile-menu" aria-expanded={isOpen} aria-label="Buka menu utama" className="dl-navbar-menu-button" ref={trigger} onClick={() => { dialog.current?.showModal(); setIsOpen(true); }} type="button">
-          <Menu aria-hidden="true" size={22} />
+        <button
+          aria-controls="landing-mobile-menu"
+          aria-expanded={isOpen}
+          aria-label={isOpen ? "Tutup menu utama" : "Buka menu utama"}
+          className="dl-navbar-menu-button"
+          ref={trigger}
+          onClick={() => setIsOpen((current) => !current)}
+          type="button"
+        >
+          {isOpen ? <X aria-hidden="true" size={22} /> : <Menu aria-hidden="true" size={22} />}
         </button>
       </header>
-      <dialog className="dl-nav-dialog" id="landing-mobile-menu" aria-label="DekatLokal" ref={dialog}
-        onClose={() => { setIsOpen(false); trigger.current?.focus({ preventScroll: true }); }}
-        onKeyDown={(event) => {
-          if (event.key !== "Tab") return;
-          const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("a[href], button:not(:disabled)"));
-          const first = controls[0];
-          const last = controls[controls.length - 1];
-          if (event.shiftKey && document.activeElement === first) {
-            event.preventDefault();
-            last?.focus();
-          } else if (!event.shiftKey && document.activeElement === last) {
-            event.preventDefault();
-            first?.focus();
-          }
-        }}
-        onClick={(event) => { if (event.target === event.currentTarget) close(); }}>
-        <div className="dl-nav-dialog-content">
-          <header>
-            <Link aria-label="Ke beranda DekatLokal" href="#beranda" onClick={close}><Image alt="DekatLokal" width={143} height={44} src="/brand/dekat-lokal.png" unoptimized /></Link>
-            <button aria-label="Tutup menu utama" type="button" onClick={close} autoFocus><X aria-hidden="true" size={22} /></button>
-          </header>
-          <nav aria-label="Navigasi landing page mobile">
-            {navItems.map(([label, href], index) => <Link href={href} key={href} onClick={close} aria-current={activeHref === href ? "location" : undefined} style={{ animationDelay: `${index * 35}ms` }}>{label}<ArrowRight aria-hidden="true" size={18} /></Link>)}
-          </nav>
-          <footer>
-            <Link href="/masuk" onClick={close}>Masuk</Link>
-            <Link href={checkupHref} onClick={close}>Mulai Cek Gratis <ArrowRight aria-hidden="true" size={18} /></Link>
-            <p>Cuma 5–7 menit. Mulai dari usahamu.</p>
-          </footer>
+
+      {isOpen ? (
+        <div className="dl-nav-mobile-overlay" data-nav-scrolled={String(isScrolled)} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
+          <div
+            aria-label="Menu utama DekatLokal"
+            aria-modal="true"
+            className="dl-nav-mobile-panel"
+            id="landing-mobile-menu"
+            onKeyDown={(event) => {
+              if (event.key !== "Tab") return;
+              const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("a[href], button:not(:disabled)"));
+              const first = controls[0];
+              const last = controls[controls.length - 1];
+              if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last?.focus();
+              } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first?.focus();
+              }
+            }}
+            ref={panel}
+            role="dialog"
+          >
+            <nav aria-label="Navigasi landing page mobile">
+              {navItems.map(([label, href], index) => (
+                <Link href={href} key={href} onClick={close} aria-current={activeHref === href ? "location" : undefined} style={{ animationDelay: `${index * 35}ms` }}>
+                  <span><small>0{index + 1}</small>{label}</span>
+                  <ArrowRight aria-hidden="true" size={18} />
+                </Link>
+              ))}
+            </nav>
+            <footer>
+              <Link href="/masuk" onClick={close}>Masuk</Link>
+              <Link href={checkupHref} onClick={close}>Mulai Checkup Gratis <ArrowRight aria-hidden="true" size={18} /></Link>
+              <p>Cuma 5–7 menit. Hasilnya langsung kelihatan.</p>
+            </footer>
+          </div>
         </div>
-      </dialog>
+      ) : null}
     </>
   );
 }

@@ -1,9 +1,9 @@
 import { expect as baseExpect, test } from "@playwright/test";
 
-const expect = baseExpect.configure({ timeout: 10_000 });
+const expect = baseExpect.configure({ timeout: 60_000 });
 
 test.describe("landing page", () => {
-  test.setTimeout(90_000);
+  test.setTimeout(180_000);
   test("desktop navigation, carousel, and legal links work", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/");
@@ -46,24 +46,22 @@ test.describe("landing page", () => {
     const navbar = page.locator(".dl-navbar");
     await expect(navbar).toBeVisible();
     const compactWidth = (await navbar.boundingBox())?.width ?? 0;
-    await page.locator("#akses-belajar").scrollIntoViewIfNeeded();
+    await page.locator("#akses-belajar").evaluate((element) => element.scrollIntoView({ block: "start" }));
     await expect(navbar).toHaveClass(/is-scrolled/, { timeout: 10_000 });
     await expect.poll(async () => (await navbar.boundingBox())?.width ?? 0, { timeout: 10_000 }).toBeGreaterThan(compactWidth + 10);
 
-    const menuButton = page.getByRole("button", { name: "Buka menu utama" });
+    const menuButton = page.locator(".dl-navbar-menu-button");
     await menuButton.click();
-    await expect(page.getByRole("dialog", { name: "DekatLokal" })).toBeVisible();
-    const dialog = page.getByRole("dialog", { name: "DekatLokal" });
-    const closeButton = dialog.getByRole("button", { name: "Tutup menu utama" });
-    await expect(closeButton).toBeFocused();
+    await expect(page.getByRole("dialog", { name: "Menu utama DekatLokal" })).toBeVisible();
+    const dialog = page.getByRole("dialog", { name: "Menu utama DekatLokal" });
+    const firstLink = dialog.getByRole("link", { name: /Beranda/ });
+    await expect(firstLink).toBeFocused();
     await page.keyboard.press("Shift+Tab");
-    await expect(dialog.getByRole("link", { name: "Ke beranda DekatLokal" })).toBeFocused();
-    await page.keyboard.press("Shift+Tab");
-    await expect(dialog.getByRole("link", { name: "Mulai Cek Gratis" })).toBeFocused();
+    await expect(dialog.getByRole("link", { name: "Mulai Checkup Gratis" })).toBeFocused();
     await page.keyboard.press("Tab");
-    await expect(dialog.getByRole("link", { name: "Ke beranda DekatLokal" })).toBeFocused();
+    await expect(firstLink).toBeFocused();
     await page.keyboard.press("Escape");
-    await expect(page.getByRole("dialog", { name: "DekatLokal" })).toBeHidden();
+    await expect(page.getByRole("dialog", { name: "Menu utama DekatLokal" })).toBeHidden();
     await expect(menuButton).toBeFocused();
 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);

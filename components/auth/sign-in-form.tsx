@@ -12,6 +12,17 @@ export function SignInForm() {
 
   return (
     <article className="dl-signin" aria-labelledby="login-title">
+      <aside className="dl-signin-aside">
+        <div>
+          <span>RUANG TUMBUH DEKATLOKAL</span>
+          <h2>Hai, langkah kecilmu tetap berarti.</h2>
+          <p>Lanjut belajar, coba langsung, dan lihat usahamu bergerak sedikit demi sedikit.</p>
+        </div>
+        <div className="dl-signin-aside-note">
+          <strong>Mulai dari yang kamu butuhkan.</strong>
+          <p>Nggak perlu serba bisa hari ini.</p>
+        </div>
+      </aside>
       <div className="dl-signin-main">
         <div className="dl-signin-topbar">
           <Link className="dl-signin-back" href="/" aria-label="Kembali ke beranda"><ArrowLeft aria-hidden="true" size={18} /></Link>
