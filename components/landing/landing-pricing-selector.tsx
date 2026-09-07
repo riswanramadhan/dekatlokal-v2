@@ -6,8 +6,10 @@ import { Check, ArrowRight } from "lucide-react";
 
 const pricingPlans = [
   {
-    name: "Fondasi Gratis",
+    name: "Mulai",
     price: "Rp0",
+    originalPrice: null,
+    saving: null,
     description: "Mulai dari kondisi usaha dan tuntaskan tiga fokus paling penting.",
     features: [
       "Cek delapan bagian penting usahamu",
@@ -22,15 +24,18 @@ const pricingPlans = [
     featured: false,
   },
   {
-    name: "Tumbuh Terarah",
-    price: "Rp249.000",
+    name: "Tumbuh",
+    price: "Rp499.000",
+    originalPrice: "Rp1.000.000",
+    saving: "Hemat Rp501.000",
     description: "Lanjut belajar dan bangun tampilan online usahamu.",
     features: [
-      "Semua manfaat Fondasi Gratis",
+      "Semua manfaat paket Mulai",
       "Empat kelas lanjutan",
       "Website pengenalan usaha satu halaman",
       "Pengelolaan media sosial dasar selama 30 hari",
       "Bantu daftarkan usaha di Google dan buat katalog produk",
+      "Monitoring usaha one-on-one bersama pendamping",
       "Rencana kerja 90 hari, lembar latihan, dan contoh siap pakai",
     ],
     cta: "Aktifkan Paket",
@@ -40,14 +45,18 @@ const pricingPlans = [
     featured: true,
   },
   {
-    name: "Pendampingan Naik Kelas",
+    name: "Melesat",
     price: "Rp799.000",
+    originalPrice: "Rp1.500.000",
+    saving: "Hemat Rp701.000",
     description: "Dapatkan masukan untuk promosi, website, dan rencana usahamu.",
     features: [
-      "Semua manfaat Tumbuh Terarah",
+      "Semua manfaat paket Tumbuh",
       "Website pengenalan usaha dengan tampilan sesuai kebutuhan",
       "Kelola media sosial 30 hari, termasuk 12 konten dan teks postingan",
       "Rapikan profil usaha di Google dan katalog produk",
+      "Usaha pasti tampil di Google melalui Google Business Profile",
+      "Belajar Meta Ads dan dasar beriklan",
       "Dua sesi diskusi usaha bersama",
       "Masukan untuk tiga hasil praktik usahamu",
       "Ringkasan hasil dan rencana kerja 30 hari untuk usahamu",
@@ -62,8 +71,8 @@ const pricingPlans = [
 
 function resolveHref(type: (typeof pricingPlans)[number]["hrefType"], checkupHref: string) {
   if (type === "checkup") return checkupHref;
-  if (type === "premium") return "mailto:hello@dekatlokal.com?subject=Tanya%20Paket%20Tumbuh%20Terarah";
-  return "mailto:hello@dekatlokal.com?subject=Minat%20Pendampingan%20Naik%20Kelas";
+  if (type === "premium") return "mailto:hello@dekatlokal.com?subject=Tanya%20Paket%20Tumbuh";
+  return "mailto:hello@dekatlokal.com?subject=Minat%20Paket%20Melesat";
 }
 
 export function LandingPricingSelector({ checkupHref }: { checkupHref: string }) {
@@ -103,7 +112,10 @@ export function LandingPricingSelector({ checkupHref }: { checkupHref: string })
                     <strong>{plan.name}</strong>
                     <small>{plan.description}</small>
                   </span>
-                  <span className="dl-pricing-option-price">{plan.price}</span>
+                  <span className="dl-pricing-option-price">
+                    {plan.originalPrice ? <del>{plan.originalPrice}</del> : null}
+                    <strong>{plan.price}</strong>
+                  </span>
                 </button>
               );
             })}
@@ -126,9 +138,11 @@ export function LandingPricingSelector({ checkupHref }: { checkupHref: string })
           </div>
 
           <div className="dl-pricing-detail-price">
+            {selectedPlan.originalPrice ? <del>{selectedPlan.originalPrice}</del> : null}
             <strong>{selectedPlan.price}</strong>
             <span>{selectedPlan.hrefType === "checkup" ? "tanpa biaya" : "sekali bayar"}</span>
           </div>
+          {selectedPlan.saving ? <span className="dl-pricing-discount">{selectedPlan.saving}</span> : null}
 
           <Link className="dl-pricing-detail-cta" href={resolveHref(selectedPlan.hrefType, checkupHref)}>
             <span>{selectedPlan.hrefType === "checkup" ? "Mulai Gratis" : "Tanya Paket Ini"}</span>

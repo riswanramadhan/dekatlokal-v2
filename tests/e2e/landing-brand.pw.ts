@@ -43,10 +43,56 @@ for (const width of [320, 390, 768, 1440]) {
     }
     await page.screenshot({ path: testInfo.outputPath("courses.png") });
     await page.locator("#mulai").scrollIntoViewIfNeeded();
-    await expect.poll(() => page.locator(".dl-final-visual img").evaluate((element) => (element as HTMLImageElement).naturalWidth), { timeout: 20000 }).toBeGreaterThan(0);
+    await expect(page.locator(".dl-final-visual")).toHaveCount(0);
+    await expect(page.locator(".dl-final-copy")).toHaveCSS("text-align", "center");
     await page.screenshot({ path: testInfo.outputPath("cta.png") });
   });
 }
+
+test("mobile menu expands as one navbar and latest sections stay compact", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+
+  const navbar = page.locator(".dl-navbar");
+  const trigger = page.getByRole("button", { name: "Buka menu utama" });
+  const closed = await navbar.boundingBox();
+  await expect(trigger).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(navbar).toHaveCSS("transition-duration", "0.55s, 0.4s, 0.5s, 0.35s");
+  await trigger.click();
+  await expect(page.locator(".dl-navbar-menu-button")).toHaveAttribute("aria-expanded", "true");
+  await page.waitForTimeout(600);
+  const opened = await navbar.boundingBox();
+  expect(opened!.height).toBeGreaterThan(closed!.height);
+  expect(opened!.height).toBeGreaterThan(380);
+  expect(Math.abs(opened!.x - closed!.x)).toBeLessThan(1);
+  expect(Math.abs(opened!.width - closed!.width)).toBeLessThan(1);
+  await expect(navbar.locator("#landing-mobile-menu")).toBeVisible();
+  await page.getByRole("button", { name: "Tutup menu utama" }).first().click();
+
+  await page.locator("#pengalaman").scrollIntoViewIfNeeded();
+  await expect(page.locator(".dl-story-arrows")).toBeHidden();
+  await expect(page.locator(".dl-story-controls")).toBeHidden();
+  await expect(page.locator(".dl-story-viewport")).toHaveCSS("overflow-x", "auto");
+  await expect(page.locator(".dl-story-image img").first()).toHaveCSS("object-position", "50% 0%");
+
+  const sectionFlow = await page.evaluate(() => {
+    const ids = ["pengalaman", "course", "paket"];
+    return ids.map((id) => {
+      const node = document.getElementById(id)!;
+      const box = node.getBoundingClientRect();
+      return { id, height: box.height, minHeight: getComputedStyle(node).minHeight };
+    });
+  });
+  for (const section of sectionFlow) {
+    expect(section.height, section.id).toBeGreaterThan(0);
+    expect(section.minHeight, section.id).toBe("0px");
+  }
+
+  await page.locator("#paket").scrollIntoViewIfNeeded();
+  await expect(page.getByRole("button", { name: /Tumbuh/ })).toContainText("Rp499.000");
+  await expect(page.getByRole("button", { name: /Melesat/ })).toContainText("Rp799.000");
+});
 
 test("headline changes in order without moving the mockup", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });

@@ -63,6 +63,7 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
 
   return (
     <>
+      {isOpen ? <button aria-label="Tutup menu utama" className="dl-nav-mobile-backdrop" onClick={close} type="button" /> : null}
       <header className={`dl-navbar${isScrolled ? " is-scrolled" : ""}${isOpen ? " is-menu-open" : ""}`} data-scrolled={String(isScrolled)}>
         <Link aria-label="Ke beranda DekatLokal" className="dl-navbar-logo" href="#beranda">
           <Image alt="DekatLokal" height={44} priority src="/brand/dekat-lokal.png" unoptimized width={143} />
@@ -85,47 +86,49 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
         >
           {isOpen ? <X aria-hidden="true" size={22} /> : <Menu aria-hidden="true" size={22} />}
         </button>
-      </header>
 
-      {isOpen ? (
-        <div className="dl-nav-mobile-overlay" data-nav-scrolled={String(isScrolled)} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
-          <div
-            aria-label="Menu utama DekatLokal"
-            aria-modal="true"
-            className="dl-nav-mobile-panel"
-            id="landing-mobile-menu"
-            onKeyDown={(event) => {
-              if (event.key !== "Tab") return;
-              const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("a[href], button:not(:disabled)"));
-              const first = controls[0];
-              const last = controls[controls.length - 1];
-              if (event.shiftKey && document.activeElement === first) {
-                event.preventDefault();
-                last?.focus();
-              } else if (!event.shiftKey && document.activeElement === last) {
-                event.preventDefault();
-                first?.focus();
-              }
-            }}
-            ref={panel}
-            role="dialog"
-          >
-            <nav aria-label="Navigasi landing page mobile">
-              {navItems.map(([label, href], index) => (
-                <Link href={href} key={href} onClick={close} aria-current={activeHref === href ? "location" : undefined} style={{ animationDelay: `${index * 35}ms` }}>
-                  <span><small>0{index + 1}</small>{label}</span>
-                  <ArrowRight aria-hidden="true" size={18} />
-                </Link>
-              ))}
-            </nav>
-            <footer>
-              <Link href="/masuk" onClick={close}>Masuk</Link>
-              <Link href={checkupHref} onClick={close}>Mulai Checkup Gratis <ArrowRight aria-hidden="true" size={18} /></Link>
-              <p>Cuma 5–7 menit. Hasilnya langsung kelihatan.</p>
-            </footer>
-          </div>
+        <div
+          aria-hidden={!isOpen}
+          aria-label="Menu utama DekatLokal"
+          className="dl-nav-mobile-expand"
+          id="landing-mobile-menu"
+          onKeyDown={(event) => {
+            if (!isOpen || event.key !== "Tab") return;
+            const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("a[href]"));
+            const first = controls[0];
+            const last = controls[controls.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+              event.preventDefault();
+              trigger.current?.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+              event.preventDefault();
+              trigger.current?.focus();
+            }
+          }}
+          ref={panel}
+        >
+          <nav aria-label="Navigasi landing page mobile">
+            {navItems.map(([label, href], index) => (
+              <Link
+                aria-current={activeHref === href ? "location" : undefined}
+                href={href}
+                key={href}
+                onClick={close}
+                style={{ animationDelay: `${index * 28}ms` }}
+                tabIndex={isOpen ? undefined : -1}
+              >
+                <span><small>0{index + 1}</small>{label}</span>
+                <ArrowRight aria-hidden="true" size={18} />
+              </Link>
+            ))}
+          </nav>
+          <footer>
+            <Link href="/masuk" onClick={close} tabIndex={isOpen ? undefined : -1}>Masuk</Link>
+            <Link href={checkupHref} onClick={close} tabIndex={isOpen ? undefined : -1}>Mulai Checkup Gratis <ArrowRight aria-hidden="true" size={18} /></Link>
+            <p>Cuma 5–7 menit. Hasilnya langsung kelihatan.</p>
+          </footer>
         </div>
-      ) : null}
+      </header>
     </>
   );
 }

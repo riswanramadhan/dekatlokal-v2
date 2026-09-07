@@ -286,10 +286,7 @@ function FinalCta({ checkupHref }: { checkupHref: string }) {
           <p className="dl-section-kicker">Langkah kecil, mulai hari ini</p>
           <h2 id="start-title">Usahamu punya peluang. Yuk, cari langkah berikutnya.</h2>
           <p>Luangkan 5–7 menit untuk cek usahamu. Lihat yang perlu dibenahi, lalu mulai dari yang paling mudah.</p>
-          <div><Link className="dl-final-primary" href={checkupHref}>Cek Usahaku Sekarang <ArrowUpRight aria-hidden="true" size={18} /></Link></div>
-        </div>
-        <div aria-hidden="true" className="dl-final-visual" data-reveal-item>
-          <Image alt="" height={1050} src="/platform-v2/hero/owner-cutout.webp" unoptimized width={820} />
+          <div><Link className="dl-final-primary" href={checkupHref}>Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} /></Link></div>
         </div>
       </div>
     </section>
