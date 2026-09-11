@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Masuk ke DekatLokal", robots: { inde
 export default async function MasukPage({ searchParams }: {
   searchParams: Promise<{ claim?: string; status?: string }>;
 }) {
-  const { claim } = await searchParams;
+  const { claim, status } = await searchParams;
   if (claim) redirect(`/mulai?claim=${encodeURIComponent(claim)}`);
-  return <SignInForm />;
+  return <SignInForm initialNotice={status === "tautan-kedaluwarsa" ? "Tautan masuk sudah tidak berlaku atau belum bisa diverifikasi. Minta tautan baru lewat email di bawah ini." : ""} />;
 }

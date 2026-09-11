@@ -12,6 +12,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "source-ui/**",
+    "referensi-ui-dekatlokal/**",
     "next-env.d.ts",
   ]),
 ]);
