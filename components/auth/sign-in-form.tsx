@@ -4,11 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { api } from "@/components/digital-checkup/api";
 
-export function SignInForm() {
+export function SignInForm({ initialNotice = "" }: { initialNotice?: string }) {
   const [showPassword, setShowPassword] = useState(false);
-  const [notice, setNotice] = useState("");
-  const unavailable = () => setNotice("Pilihan masuk ini belum tersedia. Kamu tetap bisa cek usaha gratis tanpa akun.");
+  const [notice, setNotice] = useState(initialNotice);
+  const [busy, setBusy] = useState(false);
+  const login = async (mode: "password" | "google" | "magic", email?: string, password?: string) => {
+    setBusy(true); setNotice("");
+    try {
+      const result = await api<{ next?: string; message?: string }>("auth", "POST", { mode, email, password });
+      if (result.next) window.location.assign(result.next);
+      else setNotice(result.message ?? "Cek emailmu untuk melanjutkan.");
+    } catch (error) { setNotice((error as Error).message); } finally { setBusy(false); }
+  };
 
   return (
     <article className="dl-signin" aria-labelledby="login-title">
@@ -36,7 +45,7 @@ export function SignInForm() {
           <p>Masuk dan lanjutkan langkah usahamu.</p>
         </header>
 
-        <button className="dl-signin-google" type="button" onClick={unavailable}>
+        <button className="dl-signin-google" type="button" disabled={busy} onClick={() => void login("google")}>
           <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
             <path fill="#4285F4" d="M21.56 12.23c0-.71-.06-1.4-.18-2.06H12v3.9h5.36a4.6 4.6 0 0 1-1.99 2.93v2.53h3.23c1.9-1.75 2.96-4.32 2.96-7.3Z" />
             <path fill="#34A853" d="M12 22c2.7 0 4.97-.9 6.63-2.43l-3.23-2.53c-.9.6-2.04.96-3.4.96-2.61 0-4.82-1.76-5.61-4.13H3.05v2.6A10 10 0 0 0 12 22Z" />
@@ -47,7 +56,7 @@ export function SignInForm() {
         </button>
 
         <div className="dl-signin-divider"><span>atau pakai email</span></div>
-        <form onSubmit={(event) => { event.preventDefault(); unavailable(); }}>
+        <form onSubmit={(event) => { event.preventDefault(); const data = new FormData(event.currentTarget); void login("password", String(data.get("email")), String(data.get("password"))); }}>
           <label htmlFor="signin-email">Email</label>
           <input id="signin-email" name="email" type="email" autoComplete="email" placeholder="nama@email.com" required maxLength={254} />
           <label htmlFor="signin-password">Kata sandi</label>
@@ -57,8 +66,9 @@ export function SignInForm() {
               {showPassword ? <EyeOff aria-hidden="true" size={19} /> : <Eye aria-hidden="true" size={19} />}
             </button>
           </div>
-          <button className="dl-signin-submit" type="submit">Masuk <ArrowRight aria-hidden="true" size={18} /></button>
+          <button className="dl-signin-submit" type="submit" disabled={busy}>{busy ? "Menghubungkan…" : "Masuk"} <ArrowRight aria-hidden="true" size={18} /></button>
         </form>
+        <button className="dl-signin-magic" type="button" disabled={busy} onClick={() => void login("magic", (document.getElementById("signin-email") as HTMLInputElement).value)}>Kirim tautan masuk ke email</button>
 
         {notice && <div className="dl-signin-notice" role="status"><p>{notice}</p><Link href="/mulai">Cek usahaku dulu <ArrowRight aria-hidden="true" size={16} /></Link></div>}
         <p className="dl-signin-new">Belum punya akun? <Link href="/mulai">Mulai dari cek usaha gratis</Link></p>
