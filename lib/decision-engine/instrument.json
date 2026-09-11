@@ -1,0 +1,971 @@
+{
+  "version": "DC-INSTRUMEN-1.1",
+  "modelVersion": "DC-MODEL-1.1",
+  "dimensions": [
+    {
+      "code": "C1",
+      "title": "Kenal usaha sendiri",
+      "internalTitle": "Profil usaha",
+      "definition": "kejelasan pelanggan, informasi usaha, nilai penawaran, dan sasaran yang sudah digunakan."
+    },
+    {
+      "code": "C2",
+      "title": "Legalitas dan administrasi",
+      "internalTitle": "Legalitas",
+      "definition": "kesiapan memetakan, menindaklanjuti, mengarsipkan, dan memantau administrasi yang relevan. Ini bukan pemeriksaan hukum."
+    },
+    {
+      "code": "C3",
+      "title": "Produk atau layanan",
+      "internalTitle": "Produk",
+      "definition": "standar, pemeriksaan kualitas, informasi penawaran, dan pemakaian masukan pelanggan."
+    },
+    {
+      "code": "C4",
+      "title": "Merek dan tampilan",
+      "internalTitle": "Branding",
+      "definition": "identitas, pesan, materi visual, dan konsistensi merek pada kanal usaha."
+    },
+    {
+      "code": "C5",
+      "title": "Pemakaian digital",
+      "internalTitle": "Digitalisasi",
+      "definition": "kanal digital, alur pesanan, pengukuran hasil, serta pengelolaan akses dan informasi."
+    },
+    {
+      "code": "C6",
+      "title": "Konsisten menjalankan rencana",
+      "internalTitle": "Konsistensi",
+      "definition": "keteraturan pemasaran, tindak lanjut, pekerjaan, dan evaluasi selama 30 hari terakhir."
+    },
+    {
+      "code": "C7",
+      "title": "Cara usaha berjalan",
+      "internalTitle": "Operasional",
+      "definition": "pencatatan transaksi, pemisahan uang, stok atau kapasitas, dan pembagian kerja."
+    },
+    {
+      "code": "C8",
+      "title": "Siap ikut pendampingan",
+      "internalTitle": "Komitmen",
+      "definition": "kesiapan waktu, penanggung jawab, bukti, dan tindakan perbaikan selama 30 hari mendatang."
+    }
+  ],
+  "questions": [
+    {
+      "code": "Q01",
+      "dimension": "C1",
+      "text": "Kamu sudah tahu siapa yang paling cocok jadi pembeli?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum kepikiran siapa pembeli utamanya."
+        },
+        {
+          "score": 1,
+          "label": "Baru punya gambaran umum, misalnya “semua orang”."
+        },
+        {
+          "score": 2,
+          "label": "Sudah memilih kelompok pembeli dan menulis kebutuhan mereka."
+        },
+        {
+          "score": 3,
+          "label": "Sudah ngobrol dengan beberapa pembeli untuk memastikan kebutuhannya."
+        },
+        {
+          "score": 4,
+          "label": "Hasil obrolan itu sudah dipakai untuk menentukan produk atau penawaran."
+        }
+      ]
+    },
+    {
+      "code": "Q02",
+      "dimension": "C1",
+      "text": "Info dasar usahamu sudah tercatat selengkap apa?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum dicatat."
+        },
+        {
+          "score": 1,
+          "label": "Baru nama usaha dan kontak."
+        },
+        {
+          "score": 2,
+          "label": "Nama, kontak, jenis usaha, dan lokasi sudah tercatat."
+        },
+        {
+          "score": 3,
+          "label": "Sudah ditambah orang yang bertanggung jawab dan tempat jualan."
+        },
+        {
+          "score": 4,
+          "label": "Semua info rutin diperbarui dan mudah ditemukan saat dibutuhkan."
+        }
+      ]
+    },
+    {
+      "code": "Q03",
+      "dimension": "C1",
+      "text": "Kamu bisa menjelaskan alasan orang perlu pilih produkmu?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum bisa menjelaskannya."
+        },
+        {
+          "score": 1,
+          "label": "Baru bisa menyebut jenis produknya."
+        },
+        {
+          "score": 2,
+          "label": "Manfaat dan bedanya dari pilihan lain sudah ditulis."
+        },
+        {
+          "score": 3,
+          "label": "Sudah mengecek pembeda itu lewat tanggapan pelanggan."
+        },
+        {
+          "score": 4,
+          "label": "Pembeda itu dipakai konsisten saat menawarkan produk dan rutin ditinjau."
+        }
+      ]
+    },
+    {
+      "code": "Q04",
+      "dimension": "C1",
+      "text": "Target usahamu untuk 30 hari ke depan sudah sejelas apa?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum punya target."
+        },
+        {
+          "score": 1,
+          "label": "Targetnya masih umum, misalnya “ingin lebih maju”."
+        },
+        {
+          "score": 2,
+          "label": "Sudah ada satu target 30 hari yang ditulis."
+        },
+        {
+          "score": 3,
+          "label": "Target punya angka atau tanda selesai dan ada penanggung jawab."
+        },
+        {
+          "score": 4,
+          "label": "Perkembangannya rutin dicek dan rencananya diperbarui."
+        }
+      ]
+    },
+    {
+      "code": "Q05",
+      "dimension": "C2",
+      "text": "Kamu sudah tahu dokumen usaha apa saja yang memang dibutuhkan?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum tahu."
+        },
+        {
+          "score": 1,
+          "label": "Baru tahu sebagian dari cerita orang."
+        },
+        {
+          "score": 2,
+          "label": "Sudah membuat daftar sesuai kegiatan usaha."
+        },
+        {
+          "score": 3,
+          "label": "Daftarnya sudah dikonfirmasi ke pendamping atau kanal resmi."
+        },
+        {
+          "score": 4,
+          "label": "Daftar sudah dikonfirmasi dan setiap dokumen punya rencana tindak lanjut."
+        }
+      ]
+    },
+    {
+      "code": "Q06",
+      "dimension": "C2",
+      "text": "Dokumen yang dibutuhkan tadi sudah sampai tahap mana?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum mulai diurus."
+        },
+        {
+          "score": 1,
+          "label": "Baru mulai mengumpulkan berkas dasar."
+        },
+        {
+          "score": 2,
+          "label": "Pengajuan yang memang dibutuhkan sudah mulai diproses."
+        },
+        {
+          "score": 3,
+          "label": "Dokumen utama yang dibutuhkan sudah tersedia dan datanya sesuai."
+        },
+        {
+          "score": 4,
+          "label": "Semua kebutuhan yang ditemukan sudah ditindaklanjuti dan statusnya dipantau."
+        }
+      ]
+    },
+    {
+      "code": "Q07",
+      "dimension": "C2",
+      "text": "Dokumen usahamu gampang ditemukan saat dibutuhkan?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum punya tempat penyimpanan."
+        },
+        {
+          "score": 1,
+          "label": "Dokumennya masih tersebar."
+        },
+        {
+          "score": 2,
+          "label": "Semua dokumen sudah dikumpulkan di satu tempat."
+        },
+        {
+          "score": 3,
+          "label": "Sudah ada salinan cadangan dan orang yang menjaganya."
+        },
+        {
+          "score": 4,
+          "label": "Arsip lengkap, salinannya aman, dan jadwal cek pembaruan tercatat."
+        }
+      ]
+    },
+    {
+      "code": "Q08",
+      "dimension": "C2",
+      "text": "Jadwal kewajiban administrasi usahamu sudah terpantau?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum tahu apa yang perlu dipantau."
+        },
+        {
+          "score": 1,
+          "label": "Baru ingat sebagian kewajiban."
+        },
+        {
+          "score": 2,
+          "label": "Sudah ada daftar kewajiban dan tanggal penting."
+        },
+        {
+          "score": 3,
+          "label": "Sudah ada pengingat dan orang yang bertanggung jawab."
+        },
+        {
+          "score": 4,
+          "label": "Tindak lanjut dan bukti penyelesaiannya diperiksa rutin."
+        }
+      ]
+    },
+    {
+      "code": "Q09",
+      "dimension": "C3",
+      "text": "Produk atau layananmu sudah punya standar yang jelas?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum ada standar."
+        },
+        {
+          "score": 1,
+          "label": "Standarnya masih diingat oleh pemilik saja."
+        },
+        {
+          "score": 2,
+          "label": "Ukuran, bahan, langkah, atau hasil yang diharapkan sudah ditulis."
+        },
+        {
+          "score": 3,
+          "label": "Standar itu dipakai dalam pekerjaan sehari-hari."
+        },
+        {
+          "score": 4,
+          "label": "Standar rutin dicek dan diperbaiki dari masalah yang ditemukan."
+        }
+      ]
+    },
+    {
+      "code": "Q10",
+      "dimension": "C3",
+      "text": "Kualitas produk atau layananmu dicek dengan cara apa?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum pernah dicek."
+        },
+        {
+          "score": 1,
+          "label": "Baru dicek kalau ada komplain."
+        },
+        {
+          "score": 2,
+          "label": "Sudah punya daftar pengecekan sederhana."
+        },
+        {
+          "score": 3,
+          "label": "Pengecekan dilakukan rutin dan hasilnya dicatat."
+        },
+        {
+          "score": 4,
+          "label": "Catatan masalah dipakai untuk mencegah masalah yang sama terulang."
+        }
+      ]
+    },
+    {
+      "code": "Q11",
+      "dimension": "C3",
+      "text": "Pembeli sudah mendapat info produk yang lengkap dan sama di semua tempat?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum ada info yang jelas."
+        },
+        {
+          "score": 1,
+          "label": "Info masih disampaikan lisan dan sering berbeda."
+        },
+        {
+          "score": 2,
+          "label": "Manfaat, harga, dan cara membeli sudah tersedia."
+        },
+        {
+          "score": 3,
+          "label": "Info yang sama dipakai di semua tempat jualan yang aktif."
+        },
+        {
+          "score": 4,
+          "label": "Info rutin dicek kejelasannya dan diperbarui saat produk berubah."
+        }
+      ]
+    },
+    {
+      "code": "Q12",
+      "dimension": "C3",
+      "text": "Masukan pelanggan sudah dipakai untuk memperbaiki produk?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum pernah dikumpulkan."
+        },
+        {
+          "score": 1,
+          "label": "Baru ditanggapi saat ada keluhan."
+        },
+        {
+          "score": 2,
+          "label": "Masukan pelanggan sudah dicatat."
+        },
+        {
+          "score": 3,
+          "label": "Sudah ada perbaikan yang dibuat dari catatan itu."
+        },
+        {
+          "score": 4,
+          "label": "Hasil perbaikannya dicek lagi ke pelanggan."
+        }
+      ]
+    },
+    {
+      "code": "Q13",
+      "dimension": "C4",
+      "text": "Nama dan tampilan merekmu sudah dipakai dengan konsisten?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum punya identitas merek."
+        },
+        {
+          "score": 1,
+          "label": "Sudah ada nama, tetapi warna atau tampilannya sering berubah."
+        },
+        {
+          "score": 2,
+          "label": "Nama, warna, logo atau tampilan utama sudah tersedia."
+        },
+        {
+          "score": 3,
+          "label": "Identitas itu dipakai konsisten di tempat jualan yang aktif."
+        },
+        {
+          "score": 4,
+          "label": "Sudah ada panduan singkat dan penerapannya rutin dicek."
+        }
+      ]
+    },
+    {
+      "code": "Q14",
+      "dimension": "C4",
+      "text": "Pesan usahamu sudah bikin orang paham apa bedanya?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum punya pesan utama."
+        },
+        {
+          "score": 1,
+          "label": "Pesannya masih umum dan mirip usaha lain."
+        },
+        {
+          "score": 2,
+          "label": "Satu pesan utama dan manfaat produk sudah ditulis."
+        },
+        {
+          "score": 3,
+          "label": "Pesan itu dipakai konsisten di materi promosi."
+        },
+        {
+          "score": 4,
+          "label": "Pesan sudah diuji ke pelanggan dan diperbaiki dari tanggapan mereka."
+        }
+      ]
+    },
+    {
+      "code": "Q15",
+      "dimension": "C4",
+      "text": "Foto produk atau contoh hasil kerjamu sudah meyakinkan?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum punya foto atau contoh hasil."
+        },
+        {
+          "score": 1,
+          "label": "Sudah ada, tetapi kurang jelas."
+        },
+        {
+          "score": 2,
+          "label": "Foto atau contoh cukup jelas dan sesuai dengan yang dijual."
+        },
+        {
+          "score": 3,
+          "label": "Tampilannya seragam, terbaru, dan mewakili produk."
+        },
+        {
+          "score": 4,
+          "label": "Sudah ada cara kerja untuk membuat dan mengecek kualitas materi."
+        }
+      ]
+    },
+    {
+      "code": "Q16",
+      "dimension": "C4",
+      "text": "Orang bisa menemukan nama, kontak, dan produkmu dengan mudah?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Nama atau kontak usaha belum jelas."
+        },
+        {
+          "score": 1,
+          "label": "Nama dan kontak baru ada di satu tempat."
+        },
+        {
+          "score": 2,
+          "label": "Nama dan kontak sudah sama di kanal utama."
+        },
+        {
+          "score": 3,
+          "label": "Identitas, kontak, dan produk sudah selaras di semua kanal aktif."
+        },
+        {
+          "score": 4,
+          "label": "Semua kanal rutin dicek dan info yang berbeda langsung diperbaiki."
+        }
+      ]
+    },
+    {
+      "code": "Q17",
+      "dimension": "C5",
+      "text": "Akun digital usahamu sudah siap membantu orang membeli?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum punya akun digital usaha."
+        },
+        {
+          "score": 1,
+          "label": "Sudah punya akun, tetapi infonya belum lengkap."
+        },
+        {
+          "score": 2,
+          "label": "Profil, daftar produk, dan kontak sudah tersedia."
+        },
+        {
+          "score": 3,
+          "label": "Akun aktif, rutin diperbarui, dan mudah dipakai untuk bertanya."
+        },
+        {
+          "score": 4,
+          "label": "Kunjungan atau pertanyaan masuk dicatat untuk memperbaiki akun."
+        }
+      ]
+    },
+    {
+      "code": "Q18",
+      "dimension": "C5",
+      "text": "Pesanan dari chat atau internet sudah punya alur yang rapi?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum menerima pesanan digital."
+        },
+        {
+          "score": 1,
+          "label": "Pesanan ditangani tanpa alur yang jelas."
+        },
+        {
+          "score": 2,
+          "label": "Sudah ada cara mencatat dan mengonfirmasi pesanan."
+        },
+        {
+          "score": 3,
+          "label": "Status setiap pesanan bisa dicek sampai selesai."
+        },
+        {
+          "score": 4,
+          "label": "Waktu balas dan pesanan bermasalah rutin dievaluasi."
+        }
+      ]
+    },
+    {
+      "code": "Q19",
+      "dimension": "C5",
+      "text": "Kamu sudah mengukur apakah aktivitas online benar-benar membantu jualan?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum mengukur apa pun."
+        },
+        {
+          "score": 1,
+          "label": "Baru melihat jumlah pengikut."
+        },
+        {
+          "score": 2,
+          "label": "Sudah mencatat jangkauan atau pertanyaan masuk."
+        },
+        {
+          "score": 3,
+          "label": "Sudah menghubungkan aktivitas online dengan pesanan."
+        },
+        {
+          "score": 4,
+          "label": "Datanya dipakai memilih perbaikan dan hasil perbaikannya dicek lagi."
+        }
+      ]
+    },
+    {
+      "code": "Q20",
+      "dimension": "C5",
+      "text": "Akses akun dan data penting usahamu sudah aman serta bisa dipulihkan?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Akses akun belum terkontrol."
+        },
+        {
+          "score": 1,
+          "label": "Hanya satu orang yang tahu aksesnya."
+        },
+        {
+          "score": 2,
+          "label": "Pemilik akun dan cara memulihkan akses sudah jelas."
+        },
+        {
+          "score": 3,
+          "label": "Akses dikelola dan data penting punya salinan cadangan."
+        },
+        {
+          "score": 4,
+          "label": "Akses, cadangan, dan cara pemulihan rutin diperiksa."
+        }
+      ]
+    },
+    {
+      "code": "Q21",
+      "dimension": "C6",
+      "text": "Selama 30 hari terakhir, jadwal promosi benar-benar dijalankan?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum ada kegiatan yang direncanakan."
+        },
+        {
+          "score": 1,
+          "label": "Promosi masih dilakukan saat sempat."
+        },
+        {
+          "score": 2,
+          "label": "Sudah ada jadwal, tetapi sering tidak jalan."
+        },
+        {
+          "score": 3,
+          "label": "Sebagian besar jadwal dijalankan dan dicatat."
+        },
+        {
+          "score": 4,
+          "label": "Jadwal dijalankan, lalu hasilnya dipakai menyusun jadwal berikutnya."
+        }
+      ]
+    },
+    {
+      "code": "Q22",
+      "dimension": "C6",
+      "text": "Selama 30 hari terakhir, calon pembeli rutin ditindaklanjuti?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum ada tindak lanjut."
+        },
+        {
+          "score": 1,
+          "label": "Baru dilakukan kalau teringat."
+        },
+        {
+          "score": 2,
+          "label": "Sudah ada daftar orang yang perlu dihubungi lagi."
+        },
+        {
+          "score": 3,
+          "label": "Daftar dikerjakan rutin dan hasilnya dicatat."
+        },
+        {
+          "score": 4,
+          "label": "Catatan hasil dipakai memperbaiki cara tindak lanjut."
+        }
+      ]
+    },
+    {
+      "code": "Q23",
+      "dimension": "C6",
+      "text": "Selama 30 hari terakhir, pekerjaan usaha selesai sesuai rencana?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum ada rencana kerja."
+        },
+        {
+          "score": 1,
+          "label": "Rencana masih lisan dan tidak dipantau."
+        },
+        {
+          "score": 2,
+          "label": "Sudah ada rencana tertulis, tetapi penyelesaiannya belum stabil."
+        },
+        {
+          "score": 3,
+          "label": "Sebagian besar pekerjaan selesai dan keterlambatan dicatat."
+        },
+        {
+          "score": 4,
+          "label": "Penyebab keterlambatan dicari dan cara kerjanya diperbaiki."
+        }
+      ]
+    },
+    {
+      "code": "Q24",
+      "dimension": "C6",
+      "text": "Selama 30 hari terakhir, usahamu punya waktu khusus untuk evaluasi?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum pernah evaluasi."
+        },
+        {
+          "score": 1,
+          "label": "Evaluasi baru dilakukan saat ada masalah besar."
+        },
+        {
+          "score": 2,
+          "label": "Waktu evaluasi sudah dijadwalkan."
+        },
+        {
+          "score": 3,
+          "label": "Evaluasi dilakukan dan tindakan berikutnya dicatat."
+        },
+        {
+          "score": 4,
+          "label": "Tindakan itu dicek lagi pada evaluasi berikutnya."
+        }
+      ]
+    },
+    {
+      "code": "Q25",
+      "dimension": "C7",
+      "text": "Uang masuk dan keluar usaha sudah tercatat dengan rapi?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum dicatat."
+        },
+        {
+          "score": 1,
+          "label": "Baru sebagian transaksi yang dicatat."
+        },
+        {
+          "score": 2,
+          "label": "Semua transaksi dicatat dengan bukti sederhana."
+        },
+        {
+          "score": 3,
+          "label": "Catatan rutin dicocokkan dengan uang yang ada."
+        },
+        {
+          "score": 4,
+          "label": "Catatan dipakai untuk mengambil keputusan soal arus kas."
+        }
+      ]
+    },
+    {
+      "code": "Q26",
+      "dimension": "C7",
+      "text": "Uang usaha sudah dipisahkan dari uang pribadi?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Masih bercampur dan tidak ada catatan pemisahan."
+        },
+        {
+          "score": 1,
+          "label": "Baru sebagian transaksi usaha yang ditandai."
+        },
+        {
+          "score": 2,
+          "label": "Sudah ada catatan terpisah untuk uang usaha dan pribadi."
+        },
+        {
+          "score": 3,
+          "label": "Pemisahan dilakukan rutin dan pengambilan pribadi ikut dicatat."
+        },
+        {
+          "score": 4,
+          "label": "Catatan pemisahan diperiksa rutin dan selisihnya ditindaklanjuti."
+        }
+      ]
+    },
+    {
+      "code": "Q27",
+      "dimension": "C7",
+      "text": "Stok barang atau kemampuan melayani pesanan sudah terpantau?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum dipantau."
+        },
+        {
+          "score": 1,
+          "label": "Baru diperkirakan tanpa catatan."
+        },
+        {
+          "score": 2,
+          "label": "Stok atau kapasitas layanan sudah dicatat."
+        },
+        {
+          "score": 3,
+          "label": "Catatan dipakai untuk merencanakan pesanan."
+        },
+        {
+          "score": 4,
+          "label": "Kekurangan, kelebihan, atau keterlambatan dianalisis dan diperbaiki."
+        }
+      ]
+    },
+    {
+      "code": "Q28",
+      "dimension": "C7",
+      "text": "Cara kerja dan tugas setiap orang sudah jelas?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum ada alur kerja."
+        },
+        {
+          "score": 1,
+          "label": "Cara kerja hanya diingat oleh satu orang."
+        },
+        {
+          "score": 2,
+          "label": "Langkah kerja dan penanggung jawab sudah ditulis."
+        },
+        {
+          "score": 3,
+          "label": "Cara kerja dipakai dan masalah yang muncul dicatat."
+        },
+        {
+          "score": 4,
+          "label": "Cara kerja diperbaiki dari catatan masalah dan penerapannya dicek."
+        }
+      ]
+    },
+    {
+      "code": "Q29",
+      "dimension": "C8",
+      "text": "Kamu sudah menyiapkan waktu untuk pendampingan 30 hari ke depan?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum bersedia menyiapkan waktu."
+        },
+        {
+          "score": 1,
+          "label": "Bersedia, tetapi belum punya jadwal."
+        },
+        {
+          "score": 2,
+          "label": "Waktu khusus sudah dipilih."
+        },
+        {
+          "score": 3,
+          "label": "Jadwal sudah disepakati dengan orang yang terlibat."
+        },
+        {
+          "score": 4,
+          "label": "Jadwal, pengingat, dan waktu pengganti sudah disiapkan."
+        }
+      ]
+    },
+    {
+      "code": "Q30",
+      "dimension": "C8",
+      "text": "Sudah ada orang yang siap menjalankan tugas dari pendampingan?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum ada penanggung jawab."
+        },
+        {
+          "score": 1,
+          "label": "Baru ada nama, tetapi orangnya belum menyatakan siap."
+        },
+        {
+          "score": 2,
+          "label": "Penanggung jawab sudah menyatakan bersedia."
+        },
+        {
+          "score": 3,
+          "label": "Peran dan tugasnya sudah disepakati."
+        },
+        {
+          "score": 4,
+          "label": "Peran, tugas, dan cara melaporkan hasil sudah disepakati."
+        }
+      ]
+    },
+    {
+      "code": "Q31",
+      "dimension": "C8",
+      "text": "Kamu siap menunjukkan catatan atau contoh yang dibutuhkan saat pendampingan?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum bersedia."
+        },
+        {
+          "score": 1,
+          "label": "Bersedia secara umum, tetapi belum tahu apa yang aman dibagikan."
+        },
+        {
+          "score": 2,
+          "label": "Jenis bukti yang aman dibagikan sudah disepakati."
+        },
+        {
+          "score": 3,
+          "label": "Bukti awal yang dibutuhkan sudah disiapkan."
+        },
+        {
+          "score": 4,
+          "label": "Bukti awal dan jadwal pembaruannya sudah siap."
+        }
+      ]
+    },
+    {
+      "code": "Q32",
+      "dimension": "C8",
+      "text": "Kamu siap mencoba satu perbaikan yang hasilnya bisa dicek?",
+      "options": [
+        {
+          "score": 0,
+          "label": "Belum bersedia mencoba."
+        },
+        {
+          "score": 1,
+          "label": "Bersedia, tetapi belum memilih tindakan."
+        },
+        {
+          "score": 2,
+          "label": "Satu tindakan dan target sudah dipilih."
+        },
+        {
+          "score": 3,
+          "label": "Tindakan, target, dan kebutuhan pelaksanaannya sudah disiapkan."
+        },
+        {
+          "score": 4,
+          "label": "Cara menjalankan dan mengevaluasi tindakan sudah disepakati."
+        }
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "code": "A1",
+      "name": "Website",
+      "scope": "Profil, katalog, kontak, dan alur pertanyaan atau pesanan.",
+      "initialAction": "Kumpulkan info usaha, foto produk, dan kontak yang aktif.",
+      "output": "Satu halaman usaha dengan katalog dan cara menghubungi."
+    },
+    {
+      "code": "A2",
+      "name": "Branding",
+      "scope": "Identitas merek, pesan pembeda, dan panduan materi visual.",
+      "initialAction": "Tulis manfaat utama produk dan pilih tampilan yang konsisten.",
+      "output": "Panduan singkat merek dan contoh materi promosi."
+    },
+    {
+      "code": "A3",
+      "name": "Legalitas usaha",
+      "scope": "Pemetaan kebutuhan, arsip, dan tindak lanjut administrasi yang sesuai. Bukan jaminan izin terbit.",
+      "initialAction": "Buat daftar dokumen yang relevan bersama pendamping.",
+      "output": "Daftar kebutuhan, arsip, dan status tindak lanjut administrasi."
+    },
+    {
+      "code": "A4",
+      "name": "Digital marketing",
+      "scope": "Konten, kampanye, tindak lanjut calon pelanggan, dan pengukuran kanal.",
+      "initialAction": "Pilih satu kanal dan satu tujuan promosi yang bisa diukur.",
+      "output": "Jadwal promosi, catatan tindak lanjut, dan evaluasi hasil."
+    },
+    {
+      "code": "A5",
+      "name": "Marketplace onboarding",
+      "scope": "Akun toko, katalog, serta alur penerimaan dan pemenuhan pesanan.",
+      "initialAction": "Pilih marketplace yang sesuai dan siapkan informasi produk.",
+      "output": "Toko dengan katalog serta alur pesanan yang siap dipakai."
+    },
+    {
+      "code": "A6",
+      "name": "Pelatihan keuangan",
+      "scope": "Catatan transaksi, pemisahan uang, biaya, dan ringkasan keuangan.",
+      "initialAction": "Mulai catat uang masuk dan keluar setiap hari.",
+      "output": "Catatan transaksi, pemisahan uang, dan ringkasan bulanan."
+    },
+    {
+      "code": "A7",
+      "name": "Mentoring bisnis",
+      "scope": "Sasaran, penawaran, penanggung jawab, rutinitas eksekusi, dan evaluasi.",
+      "initialAction": "Sepakati satu target 30 hari dan siapa yang menjalankannya.",
+      "output": "Rencana kerja, catatan pelaksanaan, dan evaluasi bersama."
+    }
+  ]
+}

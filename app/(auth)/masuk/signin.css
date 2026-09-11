@@ -224,3 +224,4 @@ main.auth-shell:has(.dl-signin) {
 @media (prefers-reduced-motion: reduce) {
   .dl-signin button { transition: none; }
 }
+.dl-signin-magic { border:0; background:transparent; color:#0255f5; font:inherit; font-size:11px; padding:8px; cursor:pointer; }

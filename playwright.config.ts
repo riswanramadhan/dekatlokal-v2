@@ -2,6 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  outputDir: ".test-artifacts",
   testMatch: "**/*.pw.ts",
   timeout: 600_000,
   expect: {
@@ -13,7 +14,7 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "npm run dev -- --webpack",
+    command: process.env.PLAYWRIGHT_USE_PRODUCTION === "1" ? "npm run start" : "npm run dev -- --webpack",
     port: 3000,
     reuseExistingServer: true,
     timeout: 180_000,

@@ -33,7 +33,12 @@ tmp-next-*.log
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.local
 !.env.example
+!.env.supabase.example
+/test-results/
+/playwright-report/
+/.test-artifacts/
 
 # vercel
 .vercel

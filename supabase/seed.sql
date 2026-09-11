@@ -1,0 +1,3 @@
+-- Content is installed by migration 202609100002_instrument.sql.
+-- Auth seed uses scripts/seed-research-admin.mjs and environment credentials.
+-- No simulated research answers are seeded.
