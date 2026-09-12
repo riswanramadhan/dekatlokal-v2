@@ -2,7 +2,7 @@ import "server-only";
 import { randomBytes, randomUUID } from "node:crypto";
 import { cookies } from "next/headers";
 import { buildModel, conditionScores, instrument, sensitivity, topsis, type Answers, type ExpertInput, type Model, type Decision } from "@/lib/decision-engine";
-import { currentActor, serviceClient } from "@/lib/supabase/server";
+import { currentActor, serviceClient, supabaseConfigured } from "@/lib/supabase/server";
 import { inputHash, tokenHash } from "./canonical";
 import { dbError } from "./http";
 import { publicResult } from "./public-result";
@@ -18,11 +18,29 @@ export async function currentInstrument() {
   dbError(error); if (!data) throw new Error("Instrumen belum tersedia."); return data;
 }
 export async function guestAssessment(id?: string) {
+  if (!supabaseConfigured()) return null;
   const cookie = (await cookies()).get(COOKIE)?.value;
-  if (!cookie || !/^[a-f0-9]{64}$/.test(cookie)) return null;
-  let query = serviceClient().from("dc_assessment_sessions").select("*").eq("token_hash", tokenHash(cookie)).gt("expires_at", new Date().toISOString()).order("revision_number", { ascending: false }).limit(1);
+  const actor = await currentActor(), db = serviceClient();
+  if (actor && actor.role !== "umkm") return null;
+  if (cookie && /^[a-f0-9]{64}$/.test(cookie)) {
+    let query = db.from("dc_assessment_sessions").select("*").eq("token_hash", tokenHash(cookie)).gt("expires_at", new Date().toISOString()).order("revision_number", { ascending: false }).limit(1);
+    if (id) query = query.eq("id", id);
+    const { data, error } = await query.maybeSingle(); dbError(error);
+    if (data) {
+      const { data: owner, error: oe } = await db.from("dc_umkm_profiles").select("owner_id").eq("id", data.umkm_id).single(); dbError(oe);
+      if (owner && (!owner.owner_id || owner.owner_id === actor?.id)) return data as AssessmentRow;
+    }
+  }
+  if (!actor) return null;
+  const { data: businesses, error: be } = await db.from("dc_umkm_profiles").select("id").eq("owner_id", actor.id); dbError(be);
+  if (!businesses?.length) return null;
+  let query = db.from("dc_assessment_sessions").select("*").in("umkm_id", businesses.map((b) => b.id)).order("started_at", { ascending: false }).limit(1);
   if (id) query = query.eq("id", id);
   const { data, error } = await query.maybeSingle(); dbError(error);
+  if (data?.status === "draft" && new Date(data.expires_at).getTime() <= Date.now()) {
+    // Only a verified owner can resume an expired draft; submitted snapshots stay immutable.
+    const { error: renewError } = await db.from("dc_assessment_sessions").update({ expires_at: new Date(Date.now() + 30 * 86400_000).toISOString() }).eq("id", data.id).eq("status", "draft"); dbError(renewError);
+  }
   return data as AssessmentRow | null;
 }
 export async function startAssessment(profile: BusinessProfile, parent?: AssessmentRow) {
@@ -39,10 +57,12 @@ export async function startAssessment(profile: BusinessProfile, parent?: Assessm
   (await cookies()).set(COOKIE, token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 30 * 86400 });
   return data as AssessmentRow;
 }
-export async function runAssessment(assessment: AssessmentRow) {
+export async function runAssessment(assessment: AssessmentRow, modelInputId?: string) {
   if (assessment.status !== "submitted") return null;
   const db = serviceClient();
-  const { data: versions, error: ve } = await db.from("dc_decision_model_versions").select("id,code").eq("instrument_id", assessment.instrument_id).not("frozen_at", "is", null).order("created_at", { ascending: false }).limit(1);
+  let versionQuery = db.from("dc_decision_model_versions").select("id,code").eq("instrument_id", assessment.instrument_id).not("frozen_at", "is", null).order("created_at", { ascending: false }).limit(1);
+  if (modelInputId) { const { data, error } = await db.from("dc_decision_model_inputs").select("model_version_id").eq("id", modelInputId).single(); dbError(error); versionQuery = versionQuery.eq("id", data!.model_version_id); }
+  const { data: versions, error: ve } = await versionQuery;
   dbError(ve); if (!versions?.length) return null;
   const { data: model, error: me } = await db.from("dc_decision_model_inputs").select("*").eq("model_version_id", versions[0].id).single(); dbError(me);
   const { data: previous, error: pe } = await db.from("dc_decision_runs").select("*").eq("assessment_id", assessment.id).eq("model_input_id", model!.id).maybeSingle(); dbError(pe);
@@ -56,12 +76,18 @@ export async function runAssessment(assessment: AssessmentRow) {
   const { data: saved, error: re } = await db.from("dc_decision_runs").select("*").eq("id", id).single(); dbError(re); return saved as RunRow;
 }
 export async function publicAssessment(assessment: AssessmentRow) {
-  const { data: business } = await serviceClient().from("dc_umkm_profiles").select("code").eq("id", assessment.umkm_id).single();
+  const { data: business } = await serviceClient().from("dc_umkm_profiles").select("code,owner_id").eq("id", assessment.umkm_id).single();
   let run: RunRow | null = null;
   if (assessment.status === "submitted") {
-    const { data, error } = await serviceClient().from("dc_decision_runs").select("*").eq("assessment_id", assessment.id).order("created_at", { ascending: false }).limit(1).maybeSingle(); dbError(error); run = data as RunRow | null;
+    const db = serviceClient();
+    const { data: version, error: ve } = await db.from("dc_decision_model_versions").select("id").eq("instrument_id", assessment.instrument_id).not("frozen_at", "is", null).order("created_at", { ascending: false }).limit(1).maybeSingle(); dbError(ve);
+    if (version) {
+      const { data: model, error: me } = await db.from("dc_decision_model_inputs").select("id").eq("model_version_id", version.id).single(); dbError(me);
+      // A late retry of an older model must not replace the current recommendation.
+      const { data, error } = await db.from("dc_decision_runs").select("*").eq("assessment_id", assessment.id).eq("model_input_id", model!.id).maybeSingle(); dbError(error); run = data as RunRow | null;
+    }
   }
-  return { id: assessment.id, code: business?.code, status: assessment.status, revision: assessment.revision, revisionNumber: assessment.revision_number, submittedAt: assessment.submitted_at, payload: assessment.payload, scores: assessment.status === "submitted" ? conditionScores(assessment.payload.answers) : null, run: run ? { id: run.id, ...publicResult(run.trace), createdAt: run.created_at, instrumentVersion: run.canonical_input.instrumentVersion, modelVersion: run.canonical_input.modelVersion } : null };
+  return { id: assessment.id, code: business?.code, linked: Boolean(business?.owner_id), status: assessment.status, revision: assessment.revision, revisionNumber: assessment.revision_number, submittedAt: assessment.submitted_at, payload: assessment.payload, scores: assessment.status === "submitted" ? conditionScores(assessment.payload.answers) : null, run: run ? { id: run.id, ...publicResult(run.trace), createdAt: run.created_at, instrumentVersion: run.canonical_input.instrumentVersion, modelVersion: run.canonical_input.modelVersion } : null };
 }
 export type PublicAssessment = Awaited<ReturnType<typeof publicAssessment>>;
 export async function freezeModel(versionId: string, ids: string[], actorId: string) {

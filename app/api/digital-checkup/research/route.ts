@@ -1,4 +1,7 @@
 import { randomBytes } from "node:crypto";
+import { after } from "next/server";
+import { processRecommendationJobs } from "@/lib/digital-checkup/jobs";
+import { AUTH_CALLBACK } from "@/lib/digital-checkup/site";
 import { z } from "zod";
 import { requireActor, serviceClient } from "@/lib/supabase/server";
 import { dbError, failure, json, readBody } from "@/lib/digital-checkup/http";
@@ -78,7 +81,11 @@ export async function POST(request: Request) {
       z.object({ action: z.literal("usability"), payload: usabilitySchema }),
       z.object({ action: z.literal("version"), sourceId: z.string().uuid(), code: z.string().regex(/^DC-MODEL-[A-Za-z0-9.-]{1,40}$/) }),
     ]).parse(await readBody(request));
-    if (input.action === "freeze") return json({ id: await freezeModel(input.versionId, input.expertIds, actor.id) });
+    if (input.action === "freeze") {
+      const id = await freezeModel(input.versionId, input.expertIds, actor.id);
+      after(async () => { try { await processRecommendationJobs(); } catch { /* Scheduled worker retries. */ } });
+      return json({ id });
+    }
     if (input.action === "compute") {
       const { data, error } = await db.from("dc_assessment_sessions").select("*").eq("id", input.assessmentId).eq("status", "submitted").single(); dbError(error);
       const run = await runAssessment(data as AssessmentRow); if (!run) throw new Error("Bekukan model dengan tiga ahli final lebih dulu."); return json({ id: run.id });
@@ -86,7 +93,7 @@ export async function POST(request: Request) {
     if (input.action === "invite") {
       const { data: instrument, error: ie } = await db.from("dc_instrument_versions").select("id,status").eq("id", input.instrumentId).single(); dbError(ie);
       if (!["draft", "review"].includes(instrument!.status)) throw new Error("Versi ini sudah dikunci.");
-      const { data, error } = await db.auth.admin.inviteUserByEmail(input.email, { redirectTo: `${new URL(process.env.NEXT_PUBLIC_APP_URL || request.url).origin}/auth/callback` });
+      const { data, error } = await db.auth.admin.inviteUserByEmail(input.email, { redirectTo: AUTH_CALLBACK });
       if (error || !data.user) throw new Error("Undangan belum terkirim. Periksa alamat email dan konfigurasi email Supabase.");
       const { error: pe } = await db.from("dc_profiles").insert({ user_id: data.user.id, role: "expert", display_name: "Ahli" }); dbError(pe);
       const { error: ae } = await db.from("dc_expert_assignments").insert({ expert_user_id: data.user.id, instrument_id: input.instrumentId, code: `AHLI-${randomBytes(4).toString("hex").toUpperCase()}` }); dbError(ae);

@@ -10,5 +10,5 @@ export default async function MasukPage({ searchParams }: {
 }) {
   const { claim, status } = await searchParams;
   if (claim) redirect(`/mulai?claim=${encodeURIComponent(claim)}`);
-  return <SignInForm initialNotice={status === "tautan-kedaluwarsa" ? "Tautan masuk sudah tidak berlaku atau belum bisa diverifikasi. Minta tautan baru lewat email di bawah ini." : ""} />;
+  return <SignInForm initialNotice={status === "tautan-kedaluwarsa" ? "Tautan sudah tidak berlaku atau belum bisa diverifikasi. Minta kode baru lewat email di bawah ini." : ""} />;
 }

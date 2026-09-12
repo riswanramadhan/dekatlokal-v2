@@ -1,8 +1,11 @@
 import { z } from "zod";
+import { after } from "next/server";
+import { processRecommendationJobs } from "@/lib/digital-checkup/jobs";
 import { assessmentSchema, profileSchema } from "@/lib/digital-checkup/validation";
 import { guestAssessment, publicAssessment, runAssessment, startAssessment, type AssessmentRow } from "@/lib/digital-checkup/service";
 import { dbError, failure, json, readBody } from "@/lib/digital-checkup/http";
 import { currentActor, serviceClient, supabaseConfigured } from "@/lib/supabase/server";
+export const maxDuration = 60;
 
 async function requireUmkmAccess() {
   if (supabaseConfigured() && (await currentActor())?.role === "expert") throw new Error("Gunakan ruang ahli untuk penilaian kasus. Akun ahli tidak membuka hasil UMKM.");
@@ -29,7 +32,8 @@ export async function PATCH(request: Request) {
     const { data, error } = await serviceClient().rpc("dc_save_assessment", { p_id: assessment.id, p_token_hash: assessment.token_hash, p_payload: { profile: input.profile, answers: input.answers }, p_revision: input.revision, p_final: input.final }); dbError(error);
     const saved = data as AssessmentRow;
     if (input.final) {
-      // Snapshot is already committed. Failed compute is retryable by researcher; never lose answers.
+      after(async () => { try { await processRecommendationJobs(); } catch { /* Scheduled worker retries persisted jobs. */ } });
+      // Snapshot is committed; a persisted background job retries failures automatically.
       try { await runAssessment(saved); } catch { return json({ ...await publicAssessment(saved), notice: "Jawabanmu sudah tersimpan. Rekomendasi sedang disiapkan." }); }
     }
     return json(await publicAssessment(saved));

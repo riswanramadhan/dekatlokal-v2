@@ -24,7 +24,8 @@ export async function currentActor() {
   const client = await authClient();
   const { data: { user }, error } = await client.auth.getUser();
   if (error || !user) return null;
-  const { data: profile } = await client.from("dc_profiles").select("role,display_name").eq("user_id", user.id).maybeSingle();
+  const { data: profile, error: profileError } = await client.from("dc_profiles").select("role,display_name").eq("user_id", user.id).maybeSingle();
+  if (profileError) throw new Error("Profil akun belum bisa dibaca. Coba masuk lagi sebentar.");
   return { id: user.id, role: (profile?.role ?? "umkm") as "umkm" | "expert" | "admin" | "researcher", name: String(profile?.display_name ?? "") };
 }
 export async function requireActor(roles: string[]) {

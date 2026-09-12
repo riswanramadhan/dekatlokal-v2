@@ -1,28 +1,6 @@
-import type { ReactNode } from "react";
-import { AppShell } from "@/components/app-shell";
-import {
-  getDashboardView,
-  getScenarioOptions,
-} from "@/domain/services/app-service";
+import { redirect } from "next/navigation";
 
-export default async function SignedInAppLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  const [dashboard, scenarios] = await Promise.all([
-    getDashboardView(),
-    getScenarioOptions(),
-  ]);
-
-  return (
-    <AppShell
-      appView={dashboard}
-      nextActionHref={dashboard.activePlan?.nextBestAction.href}
-      nextActionLabel={dashboard.activePlan?.nextBestAction.ctaLabel}
-      scenarios={scenarios}
-    >
-      {children}
-    </AppShell>
-  );
+export default function SignedInAppLayout() {
+  // Legacy prototype routes never expose simulated account data in the live journey.
+  redirect("/dashboard");
 }
