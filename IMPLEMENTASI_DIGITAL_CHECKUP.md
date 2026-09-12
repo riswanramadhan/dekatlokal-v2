@@ -1,5 +1,7 @@
 # Implementasi Digital Checkup
 
+> Pembaruan produksi 12 September 2026: gunakan [panduan aktivasi terbaru](AKTIVASI_PRODUKSI_DIGITAL_CHECKUP.md) untuk login Google/OTP, klaim hasil, rekomendasi otomatis, dan dashboard belajar gratis. Petunjuk magic-link/manual compute di bawah merupakan catatan implementasi sebelumnya, bukan alur rilis terbaru.
+
 ## Status dan batas aktivasi
 
 Halaman `/mulai` bukan lagi placeholder maintenance. Tersedia wizard UMKM, ruang ahli `/ahli`, dashboard penelitian `/admin`, login Supabase dan engine keputusan server-side. Tidak ada bobot ahli, jawaban UMKM atau hasil penelitian rekaan yang di-seed.

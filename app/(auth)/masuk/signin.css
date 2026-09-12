@@ -166,6 +166,9 @@ main.auth-shell:has(.dl-signin) {
   text-underline-offset: 3px;
 }
 .dl-signin-legal { margin: 0; color: #66768c; font-size: 9px; line-height: 1.75; text-align: center; }
+.dl-otp-actions { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.dl-otp-actions .dl-signin-magic { width:auto; margin:8px 0; min-height:36px; }
+.dl-signin-otp { letter-spacing:.12em; }
 .dl-signin-notice {
   margin-top: 14px;
   padding: 12px 14px;
@@ -224,4 +227,6 @@ main.auth-shell:has(.dl-signin) {
 @media (prefers-reduced-motion: reduce) {
   .dl-signin button { transition: none; }
 }
-.dl-signin-magic { border:0; background:transparent; color:#0255f5; font:inherit; font-size:11px; padding:8px; cursor:pointer; }
+.dl-signin .dl-signin-magic { display:inline-flex; align-items:center; justify-content:center; border:0; background:transparent; color:#0255f5; font:inherit; font-size:11px!important; line-height:1.5; min-height:40px; padding:8px; cursor:pointer; }
+.dl-signin .dl-signin-magic:disabled { color:#62738a; cursor:not-allowed; }
+.dl-signin-main > .dl-signin-magic { margin:6px 0; }

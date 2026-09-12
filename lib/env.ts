@@ -28,7 +28,7 @@ const envSchema = z
       .enum(["development", "test", "production"])
       .default("development"),
     NEXT_PUBLIC_MAIN_SITE_URL: urlSchema.default("https://dekatlokal.com"),
-    NEXT_PUBLIC_APP_URL: urlSchema.default("http://localhost:3000"),
+    NEXT_PUBLIC_APP_URL: urlSchema.default("https://digitalcheckup.dekatlokal.com"),
     NEXT_PUBLIC_DATA_SOURCE: publicDataSourceSchema,
     DATA_SOURCE: z.enum(["mock", "neon"]).default("mock"),
     NEXT_PUBLIC_DEMO_SCENARIO: scenarioKeySchema.default("culinary-new-user"),

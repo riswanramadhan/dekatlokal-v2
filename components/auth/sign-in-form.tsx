@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { api } from "@/components/digital-checkup/api";
 
@@ -10,12 +10,15 @@ export function SignInForm({ initialNotice = "" }: { initialNotice?: string }) {
   const [showPassword, setShowPassword] = useState(false);
   const [notice, setNotice] = useState(initialNotice);
   const [busy, setBusy] = useState(false);
-  const login = async (mode: "password" | "google" | "magic", email?: string, password?: string) => {
+  const [sent, setSent] = useState(false), [cooldown, setCooldown] = useState(0), [staff, setStaff] = useState(false);
+  const [email, setEmail] = useState(""), [token, setToken] = useState("");
+  useEffect(() => { if (!cooldown) return; const timer = setTimeout(() => setCooldown(cooldown - 1), 1000); return () => clearTimeout(timer); }, [cooldown]);
+  const login = async (mode: "password" | "google" | "otp_request" | "otp_verify", email?: string, password?: string) => {
     setBusy(true); setNotice("");
     try {
-      const result = await api<{ next?: string; message?: string }>("auth", "POST", { mode, email, password });
+      const result = await api<{ next?: string; message?: string }>("auth", "POST", { mode, email, password, token: mode === "otp_verify" ? token : undefined });
       if (result.next) window.location.assign(result.next);
-      else setNotice(result.message ?? "Cek emailmu untuk melanjutkan.");
+      else { if (mode === "otp_request") { setSent(true); setCooldown(60); } setNotice(result.message ?? "Cek emailmu untuk melanjutkan."); }
     } catch (error) { setNotice((error as Error).message); } finally { setBusy(false); }
   };
 
@@ -24,12 +27,12 @@ export function SignInForm({ initialNotice = "" }: { initialNotice?: string }) {
       <aside className="dl-signin-aside">
         <div>
           <span>RUANG TUMBUH DEKATLOKAL</span>
-          <h2>Hai, langkah kecilmu tetap berarti.</h2>
-          <p>Lanjut belajar, coba langsung, dan lihat usahamu bergerak sedikit demi sedikit.</p>
+          <h2>Checkup selesai. Langkahmu baru mulai.</h2>
+          <p>Simpan hasil checkup, pilih modul yang kamu butuhkan, dan coba langsung di usahamu.</p>
         </div>
         <div className="dl-signin-aside-note">
-          <strong>Mulai dari yang kamu butuhkan.</strong>
-          <p>Nggak perlu serba bisa hari ini.</p>
+          <strong>7 modul. Gratis buat kamu.</strong>
+          <p>Materi singkat, latihan nyata, progres tersimpan.</p>
         </div>
       </aside>
       <div className="dl-signin-main">
@@ -42,7 +45,7 @@ export function SignInForm({ initialNotice = "" }: { initialNotice?: string }) {
         <header>
           <p>Senang kamu di sini</p>
           <h1 id="login-title">Yuk, lanjut tumbuh.</h1>
-          <p>Masuk dan lanjutkan langkah usahamu.</p>
+          <p>Masuk atau buat akun. Hasil checkup ikut tersimpan.</p>
         </header>
 
         <button className="dl-signin-google" type="button" disabled={busy} onClick={() => void login("google")}>
@@ -55,23 +58,24 @@ export function SignInForm({ initialNotice = "" }: { initialNotice?: string }) {
           Lanjut dengan Google
         </button>
 
-        <div className="dl-signin-divider"><span>atau pakai email</span></div>
-        <form onSubmit={(event) => { event.preventDefault(); const data = new FormData(event.currentTarget); void login("password", String(data.get("email")), String(data.get("password"))); }}>
+        <div className="dl-signin-divider"><span>atau pakai kode email</span></div>
+        <form onSubmit={(event) => { event.preventDefault(); const data = new FormData(event.currentTarget); void login(staff ? "password" : sent ? "otp_verify" : "otp_request", email, staff ? String(data.get("password")) : undefined); }}>
           <label htmlFor="signin-email">Email</label>
-          <input id="signin-email" name="email" type="email" autoComplete="email" placeholder="nama@email.com" required maxLength={254} />
-          <label htmlFor="signin-password">Kata sandi</label>
+          <input id="signin-email" name="email" type="email" autoComplete="email" placeholder="nama@email.com" required maxLength={254} value={email} readOnly={sent && !staff} onChange={(e) => setEmail(e.target.value)} />
+          {staff && <><label htmlFor="signin-password">Kata sandi admin / ahli</label>
           <div className="dl-signin-password">
             <input id="signin-password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" placeholder="Masukkan kata sandimu" required maxLength={256} />
             <button type="button" aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"} aria-pressed={showPassword} onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? <EyeOff aria-hidden="true" size={19} /> : <Eye aria-hidden="true" size={19} />}
             </button>
-          </div>
-          <button className="dl-signin-submit" type="submit" disabled={busy}>{busy ? "Menghubungkan…" : "Masuk"} <ArrowRight aria-hidden="true" size={18} /></button>
+          </div></>}
+          {!staff && sent && <><label htmlFor="signin-token">Kode dari email</label><input id="signin-token" className="dl-signin-otp" autoComplete="one-time-code" inputMode="numeric" pattern="[0-9]{6,10}" minLength={6} maxLength={10} required value={token} onChange={(e) => setToken(e.target.value.replace(/\D/g, ""))} placeholder="Masukkan kode OTP" /></>}
+          <button className="dl-signin-submit" type="submit" disabled={busy}>{busy ? "Sebentar, ya…" : staff ? "Masuk" : sent ? "Verifikasi & lanjut" : "Kirim kode masuk"} <ArrowRight aria-hidden="true" size={18} /></button>
         </form>
-        <button className="dl-signin-magic" type="button" disabled={busy} onClick={() => void login("magic", (document.getElementById("signin-email") as HTMLInputElement).value)}>Kirim tautan masuk ke email</button>
+        {sent && !staff && <div className="dl-otp-actions"><button className="dl-signin-magic" type="button" disabled={busy || cooldown > 0} onClick={() => void login("otp_request", email)}>{cooldown ? `Kirim ulang dalam ${cooldown} dtk` : "Kirim ulang kode"}</button><button className="dl-signin-magic" disabled={busy} onClick={() => { setSent(false); setToken(""); setNotice(""); }}>Ubah email</button></div>}
+        <button className="dl-signin-magic" disabled={busy} onClick={() => { setStaff(!staff); setNotice(""); }}>{staff ? "Kembali ke kode email" : "Masuk sebagai admin / ahli"}</button>
 
-        {notice && <div className="dl-signin-notice" role="status"><p>{notice}</p><Link href="/mulai">Cek usahaku dulu <ArrowRight aria-hidden="true" size={16} /></Link></div>}
-        <p className="dl-signin-new">Belum punya akun? <Link href="/mulai">Mulai dari cek usaha gratis</Link></p>
+        {notice && <div className="dl-signin-notice" role="status"><p>{notice}</p></div>}
         <p className="dl-signin-legal">Dengan melanjutkan, kamu menyetujui <a href="https://dekatlokal.com/terms-of-service" target="_blank" rel="noopener noreferrer">Syarat &amp; Ketentuan</a> dan <a href="https://dekatlokal.com/privacy-policy" target="_blank" rel="noopener noreferrer">Kebijakan Privasi</a> DekatLokal.</p>
       </div>
     </article>
