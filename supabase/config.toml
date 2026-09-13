@@ -17,18 +17,21 @@ enabled = true
 port = 54323
 [auth]
 enabled = true
-site_url = "http://localhost:3000"
-additional_redirect_urls = ["http://localhost:3000/auth/callback"]
+site_url = "https://digitalcheckup.dekatlokal.com"
+additional_redirect_urls = ["https://digitalcheckup.dekatlokal.com/auth/callback"]
 jwt_expiry = 3600
-enable_signup = false
+enable_signup = true
 
 [auth.email.template.invite]
 subject = "Undangan penilaian ahli Digital Checkup"
 content_path = "./supabase/templates/invite.html"
 
 [auth.email.template.magic_link]
-subject = "Tautan masuk Digital Checkup"
-content_path = "./supabase/templates/magic-link.html"
+subject = "Kode masuk Digital Checkup"
+content_path = "./supabase/templates/otp.html"
+[auth.email.template.confirmation]
+subject = "Kode verifikasi Digital Checkup"
+content_path = "./supabase/templates/otp.html"
 [auth.email]
-enable_signup = false
+enable_signup = true
 enable_confirmations = true

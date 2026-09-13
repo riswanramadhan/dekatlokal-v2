@@ -1,1 +1,3 @@
-export default function Loading() { return <main aria-busy="true" style={{ padding: "80px 24px", textAlign: "center" }}><p role="status">Menyiapkan Digital Checkup…</p></main>; }
+import { ContentLoading } from "@/components/digital-checkup/content-loading";
+import "@/app/digital-checkup.css";
+export default function Loading() {return <main className="dc-page dc-loading-page" aria-busy="true"><ContentLoading title="Menyiapkan Digital Checkup" description="Sebentar, ruang checkup Anda sedang dimuat."/></main>;}

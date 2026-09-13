@@ -1,5 +1,7 @@
 # Implementasi Digital Checkup
 
+> Pembaruan produksi 12 September 2026: gunakan [panduan aktivasi terbaru](AKTIVASI_PRODUKSI_DIGITAL_CHECKUP.md) untuk login Google/OTP, klaim hasil, rekomendasi otomatis, dan dashboard belajar gratis. Petunjuk magic-link/manual compute di bawah merupakan catatan implementasi sebelumnya, bukan alur rilis terbaru.
+
 ## Status dan batas aktivasi
 
 Halaman `/mulai` bukan lagi placeholder maintenance. Tersedia wizard UMKM, ruang ahli `/ahli`, dashboard penelitian `/admin`, login Supabase dan engine keputusan server-side. Tidak ada bobot ahli, jawaban UMKM atau hasil penelitian rekaan yang di-seed.
@@ -111,3 +113,6 @@ Screenshot yang telah diperiksa secara visual:
 Uji pertama sempat gagal karena selector `role=alert` juga menangkap route announcer Next.js; selector sudah dipersempit dan pengujian diulang sampai lulus. Development browser juga sempat terkendala memori rendah. Dua berkas tipe cache `.next/dev/types` yang tidak utuh dihapus dan digenerasi ulang lewat build; tidak ada kode aplikasi/data pengguna dihapus. Pengujian selanjutnya dijalankan bergantian memakai server produksi. Artefak lama yang tracked di `test-results` dikembalikan setelah output Playwright dipindahkan ke `.test-artifacts`.
 
 Migration berhasil dijalankan pada database PostgreSQL pengujian sementara, **bukan** pada proyek Supabase pengguna. Akun admin belum diklaim tersedia sebelum script seed benar-benar dijalankan terhadap proyek pengembangan yang terkonfigurasi.
+# Pembaruan hasil dan akses
+
+Lihat [HASIL_CHECKUP_DAN_AKSES_7_HARI.md](HASIL_CHECKUP_DAN_AKSES_7_HARI.md) untuk alur insight pengguna, model otomatis dari tiga ahli final, login admin terpisah, akses modul tujuh hari, dan ekspor Google Colab.

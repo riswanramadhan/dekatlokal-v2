@@ -33,7 +33,6 @@ tmp-next-*.log
 
 # env files (can opt-in for committing if needed)
 .env*
-!.env.local
 !.env.example
 !.env.supabase.example
 /test-results/

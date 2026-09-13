@@ -1,3 +1,4 @@
+import { adminWhatsApp } from "@/lib/digital-checkup/contact";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -37,7 +38,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
           <p className="auth-support-copy">
             Butuh bantuan?{" "}
-            <a href="mailto:hello@dekatlokal.com">Hubungi tim DekatLokal</a>
+            <a href={adminWhatsApp()} target="_blank" rel="noopener noreferrer">Hubungi tim DekatLokal</a>
           </p>
         </div>
       </section>

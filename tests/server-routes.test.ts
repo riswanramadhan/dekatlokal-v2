@@ -3,6 +3,7 @@ import { instrument } from '@/lib/decision-engine';
 const mocks=vi.hoisted(()=>({actor:vi.fn(),client:vi.fn()}));
 vi.mock('server-only',()=>({}));
 vi.mock('@/lib/supabase/server',()=>({requireActor:mocks.actor,serviceClient:mocks.client}));
+vi.mock('@/lib/digital-checkup/expert-access',()=>({requireExpertActor:()=>mocks.actor(["expert"]),expertRoster:()=>[],expertEntry:async()=>null}));
 import { GET as expertGet } from '@/app/api/digital-checkup/expert/route';
 import { GET as researchGet } from '@/app/api/digital-checkup/research/route';
 import { readBody, sameOrigin } from '@/lib/digital-checkup/http';
@@ -35,6 +36,20 @@ it('research exports exclude tokens, contacts, identity and free-text notes',asy
   mocks.client.mockReturnValue({from:(t:string)=>builder(rows[t]??[])});
   const response=await researchGet(new Request('http://localhost/api/digital-checkup/research?format=json'));
   expect(response.status).toBe(200);const text=await response.text();expect(text).toContain('UMKM-SIMULATION');expect(text).not.toMatch(/PRIVATE|SECRET_TOKEN|token_hash|email/);
+});
+it('provides an anonymized Colab-ready result file for authorized admins',async()=>{
+  mocks.actor.mockResolvedValue({id:'admin',role:'admin'});
+  const rows:Record<string,unknown[]>={dc_assessment_sessions:[{id:'assessment',umkm_id:'business',instrument_id:'instrument',status:'submitted',revision_number:1,submitted_at:'2026-09-14T00:00:00Z',payload:{answers,profile:{sector:'Test',district:'Test',businessAgeMonths:12,peopleCount:1,respondentRole:'Pemilik',salesChannels:['WhatsApp'],email:'PRIVATE',whatsapp:'PRIVATE'}}}],dc_umkm_profiles:[{id:'business',code:'UMKM-SIMULATION'}]};
+  mocks.client.mockReturnValue({from:(t:string)=>builder(rows[t]??[])});
+  const response=await researchGet(new Request('http://localhost/api/digital-checkup/research?format=colab'));
+  expect(response.status).toBe(200);
+  expect(response.headers.get('content-disposition')).toContain('digital-checkup-colab.json');
+  const body=await response.json();
+  expect(body).toMatchObject({schemaVersion:'DL-COLAB-1.0',records:[{umkmCode:'UMKM-SIMULATION'}]});
+  expect(body.records[0].dimensionScores).toHaveLength(8);
+  const serialized=JSON.stringify(body);
+  expect(serialized).not.toContain('PRIVATE');
+  expect(serialized).not.toMatch(/"(?:email|whatsapp)":/i);
 });
 it('rejects cross-site and missing Origin writes',()=>{
   expect(()=>sameOrigin(new Request('http://localhost/api/test',{headers:{Origin:'https://attacker.invalid'}}))).toThrow();

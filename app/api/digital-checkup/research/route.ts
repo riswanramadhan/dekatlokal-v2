@@ -1,10 +1,13 @@
 import { randomBytes } from "node:crypto";
+import { after } from "next/server";
+import { processRecommendationJobs } from "@/lib/digital-checkup/jobs";
+import { AUTH_CALLBACK } from "@/lib/digital-checkup/site";
 import { z } from "zod";
 import { requireActor, serviceClient } from "@/lib/supabase/server";
 import { dbError, failure, json, readBody } from "@/lib/digital-checkup/http";
 import { freezeModel, runAssessment, type AssessmentRow, type RunRow } from "@/lib/digital-checkup/service";
 import { usabilitySchema } from "@/lib/digital-checkup/validation";
-import { compareRankings } from "@/lib/decision-engine";
+import { ALGORITHM, compareRankings, conditionScores, instrument as decisionInstrument } from "@/lib/decision-engine";
 import { canonical, csvCell } from "@/lib/digital-checkup/canonical";
 
 export async function GET(request: Request) {
@@ -59,6 +62,22 @@ export async function GET(request: Request) {
     if (params.get("format")) {
       // Rationale remains available in the authorized dashboard, not in anonymous downloads.
       const anonymous = { ...result, validations: validations.map((v) => ({ id: v.id, assessmentId: v.assessmentId, expertCode: v.expertCode, umkmCode: v.umkmCode, status: v.status, decision: v.decision, ranks: v.ranks, runId: v.runId, metrics: v.metrics })) };
+      if(params.get("format")==="colab"){
+        const content=JSON.stringify({
+          schemaVersion:"DL-COLAB-1.0",
+          algorithm:ALGORITHM,
+          dimensions:decisionInstrument.dimensions.map((item)=>item.code),
+          modules:decisionInstrument.modules.map((item)=>item.code),
+          modelInputs:result.models,
+          experts:anonymous.experts,
+          records:safeAssessments.map((assessment)=>{
+            const assessmentRuns=selectedRuns.filter((item)=>item.assessment_id===assessment.id).sort((a,b)=>b.created_at.localeCompare(a.created_at));
+            const decision=assessmentRuns[0];
+            return {assessmentId:assessment.id,umkmCode:assessment.code,instrumentId:assessment.instrumentId,revision:assessment.revision,submittedAt:assessment.submittedAt,metadata:assessment.metadata,answers:assessment.answers,dimensionScores:conditionScores(assessment.answers),run:decision?{id:decision.id,modelInputId:decision.model_input_id,status:decision.status,ranking:decision.trace.ranking,topSet:decision.trace.topSet,inputHash:decision.input_hash,buildId:decision.build_id,createdAt:decision.created_at}:null};
+          }),
+        },null,2);
+        return new Response(content,{headers:{"Content-Type":"application/json; charset=utf-8","Content-Disposition":"attachment; filename=digital-checkup-colab.json","Cache-Control":"private, no-store"}});
+      }
       const csv = params.get("format") === "csv";
       const content = csv ? "dataset,data\r\n" + Object.entries(anonymous).flatMap(([name, values]) => (Array.isArray(values) ? values : [values]).map((v) => `${csvCell(name)},${csvCell(JSON.stringify(v))}`)).join("\r\n") : JSON.stringify(anonymous, null, 2);
       return new Response(content, { headers: { "Content-Type": csv ? "text/csv; charset=utf-8" : "application/json", "Content-Disposition": `attachment; filename=digital-checkup.${csv ? "csv" : "json"}`, "Cache-Control": "private, no-store" } });
@@ -78,7 +97,11 @@ export async function POST(request: Request) {
       z.object({ action: z.literal("usability"), payload: usabilitySchema }),
       z.object({ action: z.literal("version"), sourceId: z.string().uuid(), code: z.string().regex(/^DC-MODEL-[A-Za-z0-9.-]{1,40}$/) }),
     ]).parse(await readBody(request));
-    if (input.action === "freeze") return json({ id: await freezeModel(input.versionId, input.expertIds, actor.id) });
+    if (input.action === "freeze") {
+      const id = await freezeModel(input.versionId, input.expertIds, actor.id);
+      after(async () => { try { await processRecommendationJobs(); } catch { /* Scheduled worker retries. */ } });
+      return json({ id });
+    }
     if (input.action === "compute") {
       const { data, error } = await db.from("dc_assessment_sessions").select("*").eq("id", input.assessmentId).eq("status", "submitted").single(); dbError(error);
       const run = await runAssessment(data as AssessmentRow); if (!run) throw new Error("Bekukan model dengan tiga ahli final lebih dulu."); return json({ id: run.id });
@@ -86,7 +109,7 @@ export async function POST(request: Request) {
     if (input.action === "invite") {
       const { data: instrument, error: ie } = await db.from("dc_instrument_versions").select("id,status").eq("id", input.instrumentId).single(); dbError(ie);
       if (!["draft", "review"].includes(instrument!.status)) throw new Error("Versi ini sudah dikunci.");
-      const { data, error } = await db.auth.admin.inviteUserByEmail(input.email, { redirectTo: `${new URL(process.env.NEXT_PUBLIC_APP_URL || request.url).origin}/auth/callback` });
+      const { data, error } = await db.auth.admin.inviteUserByEmail(input.email, { redirectTo: AUTH_CALLBACK });
       if (error || !data.user) throw new Error("Undangan belum terkirim. Periksa alamat email dan konfigurasi email Supabase.");
       const { error: pe } = await db.from("dc_profiles").insert({ user_id: data.user.id, role: "expert", display_name: "Ahli" }); dbError(pe);
       const { error: ae } = await db.from("dc_expert_assignments").insert({ expert_user_id: data.user.id, instrument_id: input.instrumentId, code: `AHLI-${randomBytes(4).toString("hex").toUpperCase()}` }); dbError(ae);

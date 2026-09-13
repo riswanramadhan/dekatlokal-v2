@@ -26,9 +26,9 @@ beforeAll(async()=>{
 },180000);
 afterAll(async()=>{await db.close();});
 describe.sequential('real PostgreSQL migrations / transactions / RLS (isolated simulation)',()=>{
-  it('seeds exact instrument counts and enables all 23 table policies',async()=>{
+  it('seeds exact instrument counts and enables all 26 table policies',async()=>{
     for(const [table,count] of [['dc_dimensions',8],['dc_questions',32],['dc_question_options',160],['dc_intervention_modules',7]] as const)expect(Number(await scalar(`select count(*) as value from ${table}`))).toBe(count);
-    expect(Number(await scalar("select count(*) as value from pg_tables where schemaname='public' and tablename like 'dc_%' and rowsecurity"))).toBe(23);
+    expect(Number(await scalar("select count(*) as value from pg_tables where schemaname='public' and tablename like 'dc_%' and rowsecurity"))).toBe(26);
   });
   it('UMKM draft saves zeros, rejects null final, finalizes and retries idempotently',async()=>{
     business=await scalar("insert into dc_umkm_profiles(code,metadata,owner_id) values('SIMULASI-UMKM',$1,$2) returning id as value",[profile,outsider]);
@@ -98,5 +98,70 @@ describe.sequential('real PostgreSQL migrations / transactions / RLS (isolated s
     }finally{await db.exec('reset role');}
     await db.exec('set role anon');
     try{await expect(db.query('select * from dc_assessment_sessions')).rejects.toThrow(/permission denied/);}finally{await db.exec('reset role');}
+  });
+  it('automatically queues submitted assessments when a model is frozen and leases retries',async()=>{
+    expect(Number(await scalar('select count(*) as value from dc_recommendation_jobs where assessment_id=$1 and model_input_id=$2',[session,modelId]))).toBe(1);
+    const job=await scalar('select (dc_take_job()).id as value');
+    expect(job).toBeTruthy();
+    expect(await scalar('select (dc_take_job()).id as value')).toBeNull();
+    await db.query("update dc_recommendation_jobs set lease_until=now()-interval '1 second' where id=$1",[job]);
+    expect(await scalar('select (dc_take_job()).id as value')).toBe(job);
+    expect(Number(await scalar('select attempts as value from dc_recommendation_jobs where id=$1',[job]))).toBe(2);
+  });
+  it('claims guest ownership idempotently, rejects another owner and expert roles',async()=>{
+    const contactProfile={...profile,businessName:'SIMULASI GUEST',email:'simulation@example.org',whatsapp:'081234567890'};
+    const id=await scalar("insert into dc_umkm_profiles(code,metadata) values('SIMULASI-GUEST',$1) returning id as value",[contactProfile]);
+    const a=await scalar("insert into dc_assessment_sessions(umkm_id,instrument_id,token_hash,expires_at) values($1,$2,$3,now()+interval '1 day') returning id as value",[id,version,'c'.repeat(64)]);
+    await db.query('select dc_save_assessment($1,$2,$3,0,true)',[a,'c'.repeat(64),{profile:contactProfile,answers:raw}]);
+    expect(Number(await scalar('select count(*) as value from dc_recommendation_jobs where assessment_id=$1',[a]))).toBe(1);
+    await expect(db.query('select dc_claim_assessment($1,$2)',['c'.repeat(64),users[0]])).rejects.toThrow(/Forbidden/);
+    expect(await scalar('select dc_claim_assessment($1,$2) as value',['c'.repeat(64),outsider])).toBe(a);
+    expect(await scalar('select status as value from dc_assessment_sessions where id=$1',[a])).toBe('submitted');
+    expect(await scalar("select payload->'profile'->>'email' as value from dc_assessment_sessions where id=$1",[a])).toBe('simulation@example.org');
+    expect(await scalar('select owner_id as value from dc_umkm_profiles where id=$1',[id])).toBe(outsider);
+    expect(await scalar('select dc_claim_assessment($1,$2) as value',['c'.repeat(64),outsider])).toBe(a);
+    const other=randomUUID();await db.query('insert into auth.users values($1)',[other]);
+    await expect(db.query('select dc_claim_assessment($1,$2)',['c'.repeat(64),other])).rejects.toThrow(/another account/);
+    await expect(db.query('select dc_claim_assessment($1,$2)',['d'.repeat(64),other])).rejects.toThrow(/expired/);
+    await db.exec('set role authenticated');
+    try{await expect(db.query('select dc_claim_assessment($1,$2)',['c'.repeat(64),outsider])).rejects.toThrow(/permission denied/);}finally{await db.exec('reset role');}
+  });
+  it('learning keeps best completion and scores; other users cannot read or forge progress',async()=>{
+    const first=await scalar("select (dc_ensure_learning_access($1)).starts_at::text as value",[outsider]);
+    const expires=await scalar("select (dc_ensure_learning_access($1)).expires_at::text as value",[outsider]);
+    expect(new Date(expires).getTime()-new Date(first).getTime()).toBe(7*86400_000);
+    expect(await scalar("select (dc_ensure_learning_access($1)).starts_at::text as value",[outsider])).toBe(first);
+    await expect(db.query("select dc_ensure_learning_access($1)",[users[0]])).rejects.toThrow(/Final checkup required/);
+    await db.query("select dc_save_learning($1,'DL-FREE-1.0','A1','__quiz','',true,100)",[outsider]);
+    await db.query("select dc_save_learning($1,'DL-FREE-1.0','A1','__quiz','',false,0)",[outsider]);
+    expect(Number(await scalar('select quiz_score as value from dc_learning_progress where user_id=$1',[outsider]))).toBe(100);
+    expect(await scalar('select completed as value from dc_learning_progress where user_id=$1',[outsider])).toBe(true);
+    await db.exec('set role authenticated');
+    try{
+      await db.query("select set_config('request.jwt.claim.sub',$1,false)",[users[0]]);
+      expect(Number(await scalar('select count(*) as value from dc_learning_progress'))).toBe(0);
+      await db.query("select set_config('request.jwt.claim.sub',$1,false)",[outsider]);
+      expect(Number(await scalar('select count(*) as value from dc_learning_progress'))).toBe(1);
+      await expect(db.query('update dc_learning_progress set quiz_score=100')).rejects.toThrow(/permission denied/);
+      await expect(db.query("select dc_save_learning($1,'DL-FREE-1.0','A1','__quiz','',true,100)",[outsider])).rejects.toThrow(/permission denied/);
+    }finally{await db.exec('reset role');}
+  });
+  it('supports email-free expert assignments without creating Auth users, while keeping final answers immutable',async()=>{
+    const usersBefore=await scalar('select count(*) as value from auth.users');
+    const draft={...blankExpert(),profile:{name:'SIMULASI TANPA EMAIL',institution:'TEST',jobTitle:'TEST',expertise:'TEST',experienceYears:2,consent:true,assessmentDate:'2026-09-10'},decision:'layak_uji_coba',reviews:Object.fromEntries(instrument.questions.map(q=>[q.code,{relevance:4,clarity:4,suggestion:''}])),pairs,relevance};
+    const emailFree:string[]=[];
+    for(let i=0;i<3;i++){
+      const id=await scalar("insert into dc_expert_assignments(instrument_id,code) values($1,$2) returning id as value",[version,`SIMULASI-NO-EMAIL-${i}`]);emailFree.push(id);
+      await db.query('select dc_save_expert($1,null,$2,0,false)',[id,draft]);
+      await expect(db.query('select dc_save_expert($1,$2,$3,1,false)',[id,users[0],draft])).rejects.toThrow(/Forbidden/);
+      await db.query('select dc_save_expert($1,null,$2,1,true)',[id,validateExpertFinal(draft)]);
+      expect(await scalar('select status as value from dc_expert_assignments where id=$1',[id])).toBe('submitted');
+      await expect(db.query("update dc_expert_assignments set payload='{}' where id=$1",[id])).rejects.toThrow(/immutable/);
+    }
+    const emailFreeVersion=await scalar("select dc_clone_model($1,'DC-MODEL-NO-EMAIL',$2) as value",[modelVersion,admin]);
+    expect(await scalar("select dc_freeze_model($1,$2,$3,$4,$5,$6) as value",[emailFreeVersion,emailFree,inputHash({emailFree}),{experts:[input,input,input]},compiled,admin])).toBeTruthy();
+    expect(await scalar('select count(*) as value from auth.users')).toBe(usersBefore);
+    await db.exec('set role anon');
+    try{await expect(db.query('select dc_save_expert($1,null,$2,0,false)',[emailFree[0],draft])).rejects.toThrow(/permission denied/);}finally{await db.exec('reset role');}
   });
 });

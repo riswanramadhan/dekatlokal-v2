@@ -1,5 +1,6 @@
 "use client";
 
+import { adminWhatsApp } from "@/lib/digital-checkup/contact";
 import { useId, useState } from "react";
 import Link from "next/link";
 import { Check, ArrowRight } from "lucide-react";
@@ -71,8 +72,8 @@ const pricingPlans = [
 
 function resolveHref(type: (typeof pricingPlans)[number]["hrefType"], checkupHref: string) {
   if (type === "checkup") return checkupHref;
-  if (type === "premium") return "mailto:hello@dekatlokal.com?subject=Tanya%20Paket%20Tumbuh";
-  return "mailto:hello@dekatlokal.com?subject=Minat%20Paket%20Melesat";
+  if (type === "premium") return adminWhatsApp("Halo Admin DekatLokal, saya ingin bertanya tentang Paket Tumbuh.");
+  return adminWhatsApp("Halo Admin DekatLokal, saya tertarik dengan Paket Melesat.");
 }
 
 export function LandingPricingSelector({ checkupHref }: { checkupHref: string }) {
