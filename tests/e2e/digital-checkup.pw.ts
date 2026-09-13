@@ -7,7 +7,7 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
   await page.route('**/api/digital-checkup/assessment', async route => {
     const request=route.request(), body=request.method()==='GET'?{}:request.postDataJSON();
     if(request.method()==='POST') saved={id:'SIMULATION-ONLY',code:'SIMULASI-UMKM',status:'draft',revision:0,revisionNumber:1,payload:{profile:body.profile,answers:{}},scores:null,run:null};
-    if(request.method()==='PATCH')saved={...saved,status:body.final?'submitted':'draft',revision:body.revision+1,payload:{profile:body.profile,answers:body.answers},scores:body.final?Array(8).fill(0):null,submittedAt:body.final?'2026-09-10T00:00:00Z':null};
+    if(request.method()==='PATCH')saved={...saved,status:body.final?'submitted':'draft',revision:body.revision+1,payload:{profile:body.profile,answers:body.answers},scores:body.final?[75,50,25,50,25,50,50,100]:null,submittedAt:body.final?'2026-09-10T00:00:00Z':null,run:body.final?{id:'SIMULATED-RUN',trace:{status:'RANKED',ranking:['A7','A1','A4','A2','A3','A5','A6'].map((code,index)=>({code,rank:index+1})),topSet:['A7'],uncovered:[]},reasons:{A7:['Siap ikut pendampingan'],A1:['Kenal usaha sendiri'],A4:['Pemakaian digital']},createdAt:'2026-09-10T00:00:00Z',instrumentVersion:'DC-INSTRUMEN-1.1',modelVersion:'DC-MODEL-1.1'}:null};
     if(body.final) await new Promise(resolve=>setTimeout(resolve,800));
     await route.fulfill({json:saved});
   });
@@ -17,7 +17,9 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
   await page.getByRole('checkbox').check();
   await page.getByRole('button',{name:'Mulai Checkup Gratis'}).click();
   await page.getByRole('button',{name:'Lanjut ke pertanyaan'}).click();
-  await expect(page.getByRole('combobox',{name:/^Jenis usaha/})).toBeFocused();
+  await expect(page.getByLabel('Nama bisnis',{exact:true})).toBeFocused();
+  await expect(page.getByLabel('Email',{exact:true})).toHaveAttribute('aria-invalid','true');
+  await expect(page.getByLabel('Nomor WhatsApp',{exact:true})).toHaveAttribute('aria-invalid','true');
   await page.getByLabel('Nama bisnis',{exact:true}).fill('SIMULASI bisnis');
   await page.getByLabel('Email',{exact:true}).fill('simulation@example.org');
   await page.getByLabel('Nomor WhatsApp',{exact:true}).fill('081234567890');
@@ -53,9 +55,12 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
   await page.getByRole('button',{name:'Kirim dan lihat hasil'}).click();
   await expect(page.getByRole('dialog',{name:'Menyiapkan hasil checkup'})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Ini gambaran usahamu hari ini.'})).toBeVisible();
-  await expect(page.getByText('Jawabanmu sudah tersimpan. Rekomendasi sedang disiapkan.')).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Mulai dari 3 modul ini.'})).toBeVisible();
+  await expect(page.getByText('Yang sudah jadi modal')).toBeVisible();
+  await expect(page.getByText('Yang paling perlu dibereskan')).toBeVisible();
+  await expect(page.getByText('Siap masuk tahap verifikasi website gratis')).toBeVisible();
   await expect(page.getByRole('radio')).toHaveCount(0);
-  await expect(page.getByRole('link',{name:'Simpan hasil & mulai belajar'})).toHaveAttribute('href','/masuk');
+  await expect(page.getByRole('link',{name:'Daftar & buka modul gratis'})).toHaveAttribute('href','/masuk');
   await expect(page.getByRole('button',{name:'Perbarui status'})).toHaveCount(0);
   expect(await page.evaluate(()=>Boolean(localStorage.getItem('dekatlokal.checkup.draft.v1')))).toBe(true);
   await page.screenshot({path:info.outputPath('checkup-result-mobile.png'),fullPage:true});

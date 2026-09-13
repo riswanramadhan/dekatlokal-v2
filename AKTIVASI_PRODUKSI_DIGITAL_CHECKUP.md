@@ -13,6 +13,8 @@ Cadangkan database, pastikan proyek Supabase yang dipilih benar, lalu tinjau dan
 2. `202609100002_instrument.sql`
 3. `202609100003_snapshot_guards.sql`
 4. `202609120001_free_learning.sql`
+5. `202609130001_email_free_experts.sql`
+6. `202609140001_results_and_learning_access.sql`
 
 Jangan menjalankan ulang migration lama jika sudah terpasang. Migration baru menambahkan klaim checkup, antrean rekomendasi, dan progres belajar tanpa menghapus jawaban lama. Tidak ada seed jawaban UMKM/penilaian ahli rekaan. Ada 25 tabel `dc_*` dengan RLS.
 
@@ -85,7 +87,7 @@ select cron.schedule(
 
 Batasi akses Vault dan Cron pada operator. Pantau **respons HTTP** di `net._http_response` (bukan hanya keberhasilan SQL Cron), status job, attempts, dan pekerjaan tertua. Worker mengembalikan 401 tanpa bearer yang benar, 503 jika secret belum disiapkan, 200 dengan jumlah selesai saat berhasil. Hosting harus memberi durasi request minimal 60 detik. Secret boleh dirotasi pada hosting dan Vault bersamaan.
 
-Perhitungan memakai versi instrumen/model yang tersimpan. Hasil lama immutable. Pembekuan model tetap keputusan admin setelah tiga ahli final—yang dihapus adalah kebutuhan menjalankan rekomendasi per UMKM secara manual.
+Perhitungan memakai versi instrumen/model yang tersimpan. Hasil lama immutable. Setelah tiga penugasan roster berstatus final dan lolos validasi, worker membekukan model dengan identitas satu admin/peneliti yang sudah ada sebagai jejak persetujuan. Admin masih dapat membekukan model lewat panel sebagai jalur audit/cadangan. Tidak ada kebutuhan menjalankan rekomendasi per UMKM secara manual.
 
 Rujukan: [Supabase Cron](https://supabase.com/docs/guides/cron), [pg_net](https://supabase.com/docs/guides/database/extensions/pg_net).
 
@@ -95,7 +97,7 @@ Admin pertama dibuat melalui Supabase Dashboard Auth, atau gunakan akun milik op
 
 Jangan berikan role admin berdasarkan email dari form publik. Script seed development lama **bukan** alat provisioning produksi.
 
-Masuk admin melalui `https://digitalcheckup.dekatlokal.com/masuk` (OTP, Google yang sesuai, atau tombol kata sandi admin/ahli). Admin diarahkan ke `/admin`; undang ahli dari sana. Pasang template **Invite user** dari `supabase/templates/invite.html`, agar undangan masuk lewat callback aplikasi. Ahli diarahkan ke `/ahli`. Uji akses silang: UMKM tidak boleh masuk admin/ahli, ahli tidak boleh membaca ranking kasus yang sedang dinilai.
+Admin masuk langsung melalui `https://digitalcheckup.dekatlokal.com/admin` memakai email dan kata sandi akun Supabase yang sudah memiliki role `admin` atau `researcher`. Halaman masuk UMKM tetap hanya menyediakan Google dan OTP email serta tidak menampilkan tautan staf. Form admin tidak membuat akun maupun memberikan role berdasarkan email. Ahli tetap masuk langsung melalui `/ahli` dengan memilih penugasan yang tersedia. Uji akses silang: UMKM tidak boleh membuka admin/ahli, dan ahli tidak boleh membaca ranking kasus yang sedang dinilai.
 
 ## 6. Checkup → akun → belajar
 
@@ -103,7 +105,7 @@ Masuk admin melalui `https://digitalcheckup.dekatlokal.com/masuk` (OTP, Google y
 - Setelah login, server menautkan hasil menggunakan hash secret cookie, **bukan ID hasil dalam URL**. Hanya akun UMKM boleh mengklaim; hasil milik akun lain tidak bisa diambil.
 - Draf browser dihapus setelah hasil terkonfirmasi terhubung. Kegagalan klaim tidak menghapus draf; dashboard menyediakan percobaan ulang.
 - Cookie yang dihapus/kedaluwarsa tidak dapat digantikan dengan ID dari localStorage. Draf lokal bisa dipulihkan untuk mengisi checkup baru di `/mulai`; tidak boleh mengambil hasil server tanpa bukti kepemilikan.
-- `/dashboard` adalah dashboard Supabase produksi. Tujuh modul gratis tersedia, 21 materi, latihan tertulis, kuis per modul, dan unduhan catatan/rencana aksi. Dashboard lama berbasis contoh tidak digunakan oleh alur ini.
+- `/dashboard` adalah dashboard Supabase produksi. Setelah hasil final terhubung, satu masa akses gratis tujuh hari dimulai. Tersedia tujuh modul, 21 materi, latihan tertulis, kuis per modul, dan unduhan catatan/rencana aksi. Checkup atau login ulang tidak mereset masa akses; progres tetap tersimpan setelah akses berakhir.
 - Nilai kuis dihitung server; materi dibuka berurutan. Dua dari tiga jawaban benar menuntaskan modul. Skor terbaik dan status tuntas tidak turun saat mencoba lagi.
 - Materi gratis merupakan belajar mandiri, bukan janji pendampingan one-on-one, sertifikasi, atau jaminan hasil usaha. Tanpa ranking ahli, perpustakaan ditampilkan sebagai daftar umum.
 

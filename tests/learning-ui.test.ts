@@ -22,7 +22,7 @@ it("completes a real free-module UI journey with isolated simulated storage", as
       progress.push({ module_code: c.code, lesson_id: "__quiz", completed: true, exercise: "", quiz_score: 100 });
       return { score: 100, passed: true, feedback: c.quiz.map(q => ({ correct: true, explanation: q.explanation })) };
     }
-    return { name: "SIMULASI", assessment: null, claimPending: false, version: "DL-FREE-1.0", progress: [...progress], courses: freeCourses.map(x => ({ ...x, quiz: x.quiz.map(q => ({ question: q.question, options: q.options })) })) };
+    return { name: "SIMULASI", assessment: null, claimPending: false, access: {startsAt:"2026-09-14T00:00:00Z",expiresAt:"2099-09-21T00:00:00Z",active:true,daysLeft:7}, version: "DL-FREE-1.0", progress: [...progress], courses: freeCourses.map(x => ({ ...x, quiz: x.quiz.map(q => ({ question: q.question, options: q.options })) })) };
   });
   render(createElement(LearningDashboard));
   await waitFor(() => expect(screen.getAllByRole("button", { name: "Mulai belajar" })).toHaveLength(7));

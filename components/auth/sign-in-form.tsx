@@ -30,8 +30,8 @@ export function SignInForm({ initialNotice = "" }: { initialNotice?: string }) {
           <p>Simpan hasil checkup, pilih modul yang kamu butuhkan, dan coba langsung di usahamu.</p>
         </div>
         <div className="dl-signin-aside-note">
-          <strong>7 modul. Gratis buat kamu.</strong>
-          <p>Materi singkat, latihan nyata, progres tersimpan.</p>
+          <strong>Akses modul gratis 7 hari.</strong>
+          <p>Materi singkat, latihan nyata, progres tetap tersimpan.</p>
         </div>
       </aside>
       <div className="dl-signin-main">

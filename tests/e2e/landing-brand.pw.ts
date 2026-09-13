@@ -45,6 +45,8 @@ for (const width of [320, 390, 768, 1440]) {
     await page.locator("#mulai").scrollIntoViewIfNeeded();
     await expect(page.locator(".dl-final-visual")).toHaveCount(0);
     await expect(page.locator(".dl-final-copy")).toHaveCSS("text-align", "center");
+    await expect(page.locator("#mulai .dl-section-kicker")).toHaveCSS("text-align", "center");
+    if (width === 1440) expect(await page.locator("#mulai").evaluate((element)=>getComputedStyle(element,"::before").animationName)).toBe("dc-cta-breathe");
     await page.screenshot({ path: testInfo.outputPath("cta.png") });
   });
 }
@@ -68,13 +70,30 @@ test("mobile menu expands as one navbar and latest sections stay compact", async
   expect(Math.abs(opened!.x - closed!.x)).toBeLessThan(1);
   expect(Math.abs(opened!.width - closed!.width)).toBeLessThan(1);
   await expect(navbar.locator("#landing-mobile-menu")).toBeVisible();
-  await page.getByRole("button", { name: "Tutup menu utama" }).first().click();
+  await page.locator(".dl-navbar-menu-button").click();
+  await page.waitForTimeout(120);
+  const closing = await navbar.boundingBox();
+  expect(closing!.height).toBeGreaterThan(closed!.height);
+  expect(closing!.height).toBeLessThan(opened!.height);
+  await page.waitForTimeout(520);
+  const closedAgain = await navbar.boundingBox();
+  expect(Math.abs(closedAgain!.height-closed!.height)).toBeLessThan(2);
+  await expect(page.locator(".dl-navbar-menu-button")).toHaveAttribute("aria-expanded","false");
+  expect(await page.evaluate(()=>document.body.style.overflow)).toBe("");
 
   await page.locator("#pengalaman").scrollIntoViewIfNeeded();
   await expect(page.locator(".dl-story-arrows")).toBeHidden();
   await expect(page.locator(".dl-story-controls")).toBeHidden();
   await expect(page.locator(".dl-story-viewport")).toHaveCSS("overflow-x", "auto");
   await expect(page.locator(".dl-story-image img").first()).toHaveCSS("object-position", "50% 0%");
+  await expect(page.locator(".dl-story-carousel")).toHaveCSS("touch-action","auto");
+  await expect(page.locator(".dl-story-viewport")).toHaveCSS("touch-action","auto");
+  const storyCards=await page.locator(".dl-story-card").evaluateAll(nodes=>nodes.slice(0,2).map(node=>{const box=node.getBoundingClientRect();return {left:box.left,right:box.right}}));
+  expect(storyCards[1].left).toBeLessThan(390);
+  const storyY=await page.evaluate(()=>scrollY);
+  await page.locator(".dl-story-viewport").hover();
+  await page.mouse.wheel(0,320);
+  await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(storyY);
 
   const sectionFlow = await page.evaluate(() => {
     const ids = ["pengalaman", "course", "paket"];
@@ -89,9 +108,21 @@ test("mobile menu expands as one navbar and latest sections stay compact", async
     expect(section.minHeight, section.id).toBe("0px");
   }
 
+  await page.locator("#course").scrollIntoViewIfNeeded();
+  await expect(page.locator("#course .dl-course-grid")).toHaveCSS("touch-action","auto");
+  const courseCards=await page.locator("#course .dl-course-card").evaluateAll(nodes=>nodes.slice(0,2).map(node=>{const box=node.getBoundingClientRect();return {left:box.left,right:box.right}}));
+  expect(courseCards[1].left).toBeLessThan(390);
+  const courseY=await page.evaluate(()=>scrollY);
+  await page.locator("#course .dl-course-grid").hover();
+  await page.mouse.wheel(0,320);
+  await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(courseY);
+
   await page.locator("#paket").scrollIntoViewIfNeeded();
   await expect(page.getByRole("button", { name: /Tumbuh/ })).toContainText("Rp499.000");
   await expect(page.getByRole("button", { name: /Melesat/ })).toContainText("Rp799.000");
+  await page.locator("footer").scrollIntoViewIfNeeded();
+  await expect(page.locator(".dl-footer-grid")).toHaveCSS("text-align","left");
+  expect(parseFloat(await page.locator(".dl-footer-links a").first().evaluate(element=>getComputedStyle(element).fontSize))).toBeLessThanOrEqual(12);
 });
 
 test("headline changes in order without moving the mockup", async ({ page }) => {
@@ -130,16 +161,8 @@ test("login UI validates locally and offers Google and email only", async ({ pag
   await page.getByRole("button", { name: "Lanjut dengan Google" }).click();
   await expect(page.getByRole("status")).toContainText("belum tersedia");
   await page.getByLabel("Email", { exact: true }).fill("sarah@example.com");
-  await page.getByLabel("Kata sandi", { exact: true }).fill("example-password");
-  await page.getByRole("button", { name: "Tampilkan kata sandi" }).click();
-  await expect(page.locator("#signin-password")).toHaveAttribute("type", "text");
-  await page.getByRole("button", { name: "Sembunyikan kata sandi" }).click();
-  await expect(page.locator("#signin-password")).toHaveAttribute("type", "password");
-  const requests: string[] = [];
-  page.on("request", (request) => { if (request.method() === "POST") requests.push(request.url()); });
-  await page.getByRole("button", { name: "Masuk", exact: true }).click();
-  await expect(page).toHaveURL(/\/masuk$/);
-  expect(requests).toEqual([]);
+  await expect(page.getByLabel("Kata sandi", { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button",{name:"Kirim kode masuk"})).toBeVisible();
   await page.getByRole("link", { name: "Kebijakan Privasi", exact: true }).scrollIntoViewIfNeeded();
   await expect(page.getByRole("link", { name: "Kebijakan Privasi", exact: true })).toBeInViewport();
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -150,6 +173,23 @@ test("login UI validates locally and offers Google and email only", async ({ pag
   await expect(page.locator(".dl-signin-aside")).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeLessThanOrEqual(1);
   await page.screenshot({ path: testInfo.outputPath("login-desktop.png") });
+});
+
+test("admin has a separate email and password entry at /admin",async({page},testInfo)=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.route("**/api/digital-checkup/admin-auth",async route=>route.fulfill({status:401,json:{error:"Email atau kata sandi belum cocok."}}));
+  await page.goto("/admin");
+  await expect(page).toHaveURL(/\/admin$/);
+  await expect(page.getByRole("heading",{name:"Masuk admin"})).toBeVisible();
+  await expect(page.getByLabel("Email admin",{exact:true})).toBeVisible();
+  await expect(page.getByLabel("Kata sandi",{exact:true})).toBeVisible();
+  await expect(page.getByRole("button",{name:/Google|kode email/i})).toHaveCount(0);
+  await page.getByLabel("Email admin",{exact:true}).fill("admin@example.org");
+  await page.getByLabel("Kata sandi",{exact:true}).fill("simulation-only");
+  await page.getByRole("button",{name:"Masuk dashboard"}).click();
+  await expect(page.getByRole("alert")).toContainText("belum cocok");
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+  await page.screenshot({path:testInfo.outputPath("admin-login-mobile.png"),fullPage:true});
 });
 
 test("PWA manifest, icons, and safe offline fallback", async ({ page, context, request }) => {

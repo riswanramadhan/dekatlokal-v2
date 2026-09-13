@@ -1,0 +1,14 @@
+import { beforeEach, expect, it, vi } from "vitest";
+const m=vi.hoisted(()=>({login:vi.fn(),logout:vi.fn(),actor:vi.fn(),clear:vi.fn()}));
+vi.mock("server-only",()=>({}));
+vi.mock("@/lib/supabase/server",()=>({authClient:async()=>({auth:{signInWithPassword:m.login,signOut:m.logout}}),currentActor:m.actor}));
+vi.mock("@/lib/digital-checkup/expert-access",()=>({clearExpertEntry:m.clear}));
+import { POST } from "@/app/api/digital-checkup/admin-auth/route";
+const origin="https://digitalcheckup.dekatlokal.com";
+const request=()=>new Request(origin+"/api/digital-checkup/admin-auth",{method:"POST",headers:{origin,"content-type":"application/json"},body:JSON.stringify({email:"admin@example.org",password:"SIMULATION-ONLY"})});
+beforeEach(()=>{vi.resetAllMocks();m.login.mockResolvedValue({error:null});m.logout.mockResolvedValue({error:null});});
+it.each(["admin","researcher"])("allows an existing %s without creating or claiming a user account",async(role)=>{m.actor.mockResolvedValue({role,id:"SIMULATION"});const response=await POST(request());expect(response.status).toBe(200);expect(await response.json()).toEqual({next:"/admin"});expect(m.clear).toHaveBeenCalledOnce();});
+it("rejects a regular user even with valid credentials",async()=>{m.actor.mockResolvedValue({role:"umkm"});expect((await POST(request())).status).toBe(403);expect(m.logout).toHaveBeenCalledOnce();expect(m.clear).not.toHaveBeenCalled();});
+it("does not expose provider errors or grant access after invalid credentials",async()=>{m.login.mockResolvedValue({error:{message:"SECRET PROVIDER DETAIL"}});const response=await POST(request());expect(response.status).toBe(401);expect(await response.text()).not.toContain("SECRET");expect(m.actor).not.toHaveBeenCalled();});
+it("fails closed if the role cannot be read",async()=>{m.actor.mockRejectedValue(new Error("PRIVATE DATABASE DETAIL"));const response=await POST(request());expect(response.status).toBe(400);expect(m.logout).toHaveBeenCalledOnce();expect(await response.text()).not.toContain("PRIVATE");});
+it("rejects cross-origin login requests",async()=>{const response=await POST(new Request(origin+"/api/digital-checkup/admin-auth",{method:"POST",headers:{origin:"https://attacker.invalid"},body:"{}"}));expect(response.status).toBe(400);expect(m.login).not.toHaveBeenCalled();});
