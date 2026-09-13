@@ -13,10 +13,10 @@ report('Identitas release', Boolean(process.env.DC_BUILD_ID || process.env.VERCE
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 let roster = [];
 try {
-  const parsed = JSON.parse(process.env.DC_EXPERT_ROSTER || '[]');
+  const parsed = JSON.parse(process.env.DC_EXPERT_ROSTER || '[{"name":"Ayu Anisela","assignmentId":"723c62f6-af29-43b8-8e9a-32d8923d0f0e"},{"name":"Asluddin","assignmentId":"54938064-c676-46a0-aad3-a43c2f49cb05"},{"name":"Rizky Amelia","assignmentId":"6370bdf5-7e63-45e7-b2b7-c4a6e2f171c3"}]');
   if (Array.isArray(parsed)) roster = parsed;
 } catch { /* Report readiness without exposing names, access codes, or raw configuration. */ }
-const rosterReady = roster.length === 3 && roster.every(x => x && typeof x.name === 'string' && x.name.trim().length >= 2 && x.name.trim().length <= 150 && uuid.test(x.assignmentId) && (x.accessCode === undefined ? process.env.DC_EXPERT_ALLOW_PUBLIC_ENTRY === 'true' : typeof x.accessCode === 'string' && x.accessCode.length >= 12 && x.accessCode.length <= 64)) && new Set(roster.map(x => x.assignmentId)).size === 3 && new Set(roster.map(x => x.name.trim())).size === 3;
+const rosterReady = roster.length === 3 && roster.every(x => x && typeof x.name === 'string' && x.name.trim().length >= 2 && x.name.trim().length <= 150 && uuid.test(x.assignmentId) && (x.accessCode === undefined ? (!process.env.DC_EXPERT_ROSTER?.trim() || process.env.DC_EXPERT_ALLOW_PUBLIC_ENTRY === 'true') : typeof x.accessCode === 'string' && x.accessCode.length >= 12 && x.accessCode.length <= 64)) && new Set(roster.map(x => x.assignmentId)).size === 3 && new Set(roster.map(x => x.name.trim())).size === 3;
 report('Tiga ahli tanpa email dikonfigurasi', rosterReady);
 report('Panel otomatis dikonfigurasi', uuid.test(process.env.DC_AUTO_MODEL_VERSION || '') && uuid.test(process.env.DC_AUTO_MODEL_APPROVER || ''));
 if (rosterReady && roster.some(x => !x.accessCode)) console.log('PERHATIAN: pilih nama tanpa kode tidak memverifikasi identitas ahli.');

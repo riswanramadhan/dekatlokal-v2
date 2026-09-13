@@ -4,10 +4,12 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { currentActor, serviceClient, supabaseConfigured } from "@/lib/supabase/server";
 import { dbError } from "./http";
+import { expertDirectory } from "./expert-directory";
 const COOKIE = "dc_expert_access";
 const rosterSchema = z.array(z.object({ name: z.string().trim().min(2).max(150), assignmentId: z.string().uuid(), accessCode: z.string().min(12).max(64).optional() })).length(3);
 export function expertRoster() {
   try {
+    if (!process.env.DC_EXPERT_ROSTER?.trim()) return rosterSchema.parse(expertDirectory);
     const list = rosterSchema.parse(JSON.parse(process.env.DC_EXPERT_ROSTER ?? "[]"));
     if (new Set(list.map(x => x.assignmentId)).size !== 3 || new Set(list.map(x => x.name)).size !== 3) return [];
     if (list.some(x => !x.accessCode) && process.env.DC_EXPERT_ALLOW_PUBLIC_ENTRY !== "true") return [];

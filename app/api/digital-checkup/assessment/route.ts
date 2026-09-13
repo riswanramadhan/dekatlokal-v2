@@ -22,6 +22,7 @@ export async function POST(request: Request) {
     const input = z.object({ profile: profileSchema, revision: z.boolean().optional() }).parse(await readBody(request));
     const existing = await guestAssessment();
     if (existing && !input.revision) return json(await publicAssessment(existing));
+    if (!existing && input.profile.profileVersion !== 2) throw new Error("Lengkapi nama bisnis, email, dan WhatsApp melalui form terbaru.");
     if (input.revision && (!existing || existing.status !== "submitted")) throw new Error("Kirim asesmen sebelumnya sebelum membuat revisi.");
     return json(await publicAssessment(await startAssessment(input.profile, input.revision ? existing! : undefined)));
   } catch (e) { return failure(e); }

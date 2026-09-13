@@ -109,13 +109,16 @@ describe.sequential('real PostgreSQL migrations / transactions / RLS (isolated s
     expect(Number(await scalar('select attempts as value from dc_recommendation_jobs where id=$1',[job]))).toBe(2);
   });
   it('claims guest ownership idempotently, rejects another owner and expert roles',async()=>{
-    const id=await scalar("insert into dc_umkm_profiles(code,metadata) values('SIMULASI-GUEST',$1) returning id as value",[profile]);
+    const contactProfile={...profile,businessName:'SIMULASI GUEST',email:'simulation@example.org',whatsapp:'081234567890'};
+    const id=await scalar("insert into dc_umkm_profiles(code,metadata) values('SIMULASI-GUEST',$1) returning id as value",[contactProfile]);
     const a=await scalar("insert into dc_assessment_sessions(umkm_id,instrument_id,token_hash,expires_at) values($1,$2,$3,now()+interval '1 day') returning id as value",[id,version,'c'.repeat(64)]);
-    await db.query('select dc_save_assessment($1,$2,$3,0,true)',[a,'c'.repeat(64),{profile,answers:raw}]);
+    await db.query('select dc_save_assessment($1,$2,$3,0,true)',[a,'c'.repeat(64),{profile:contactProfile,answers:raw}]);
     expect(Number(await scalar('select count(*) as value from dc_recommendation_jobs where assessment_id=$1',[a]))).toBe(1);
     await expect(db.query('select dc_claim_assessment($1,$2)',['c'.repeat(64),users[0]])).rejects.toThrow(/Forbidden/);
     expect(await scalar('select dc_claim_assessment($1,$2) as value',['c'.repeat(64),outsider])).toBe(a);
     expect(await scalar('select status as value from dc_assessment_sessions where id=$1',[a])).toBe('submitted');
+    expect(await scalar("select payload->'profile'->>'email' as value from dc_assessment_sessions where id=$1",[a])).toBe('simulation@example.org');
+    expect(await scalar('select owner_id as value from dc_umkm_profiles where id=$1',[id])).toBe(outsider);
     expect(await scalar('select dc_claim_assessment($1,$2) as value',['c'.repeat(64),outsider])).toBe(a);
     const other=randomUUID();await db.query('insert into auth.users values($1)',[other]);
     await expect(db.query('select dc_claim_assessment($1,$2)',['c'.repeat(64),other])).rejects.toThrow(/another account/);

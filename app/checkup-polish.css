@@ -1,0 +1,15 @@
+@layer landing-final {
+html body .dl-landing.dl-landing .dl-final-cta#mulai.dl-cta-refined { display:block!important; min-height:0!important; margin:24px auto 0!important; padding:clamp(40px,6vw,76px) var(--dl-gutter,24px)!important; background:#edf4ff!important; border:0!important; border-radius:0!important; overflow:hidden; }
+html body .dl-landing.dl-landing #mulai.dl-cta-refined::after,html body .dl-landing.dl-landing #mulai.dl-cta-refined .dl-cta-grid { display:none!important; }
+html body .dl-landing.dl-landing #mulai.dl-cta-refined .dl-final-inner { display:block!important; width:100%!important; max-width:1216px!important; min-height:0!important; margin:0 auto!important; padding:0!important; }
+html body .dl-landing.dl-landing #mulai.dl-cta-refined .dl-final-copy { width:100%!important; max-width:760px!important; margin:0 auto!important; padding:0!important; text-align:center!important; }
+html body .dl-landing.dl-landing #mulai.dl-cta-refined .dl-final-copy h2 { max-width:760px!important; margin:0 auto!important; color:#152b49!important; font-size:clamp(28px,4vw,48px)!important; font-weight:500!important; line-height:1.25!important; text-wrap:balance; }
+html body .dl-landing.dl-landing #mulai.dl-cta-refined .dl-final-copy .dl-section-kicker { color:#0255f5!important; margin:0 0 18px!important; justify-content:center!important; }
+html body .dl-landing.dl-landing #mulai.dl-cta-refined .dl-final-copy > p:not(.dl-section-kicker) { max-width:560px!important; margin:20px auto 0!important; color:#536783!important; line-height:1.7!important; }
+html body .dl-landing.dl-landing #mulai.dl-cta-refined .dl-final-copy > div { justify-content:center!important; margin-top:26px!important; }
+html body .dl-landing.dl-landing #mulai.dl-cta-refined .dl-final-primary { width:auto!important; background:#0255f5!important; color:white!important; box-shadow:none!important; white-space:nowrap; }
+html body .dl-landing.dl-landing .dl-footer a { transition:color .18s ease; }
+html body .dl-landing.dl-landing .dl-footer a:hover,html body .dl-landing.dl-landing .dl-footer a:focus-visible { color:#0255f5!important; }
+.dl-signin-first { font-size:12px; line-height:1.6; color:#536783; margin:12px 0 0; }.dl-signin-first a { color:#0255f5; }
+
+}

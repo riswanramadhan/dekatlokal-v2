@@ -116,3 +116,6 @@ Jalankan `npm run check:production` untuk memeriksa environment, keberadaan tabe
 Sesudah deploy, gunakan akun penguji nyata dengan izin: isi checkup → hasil → Google/OTP → dashboard → praktik materi → kuis → keluar/masuk → progres tetap ada. Uji 360px dan desktop, keyboard, OTP salah/kedaluwarsa, koneksi putus, retry kirim final, dua tab, akun lain, dan rekomendasi setelah model dibekukan. Jangan menyebut alur produksi terverifikasi sebelum pengujian ini dilakukan.
 
 Pemeriksaan read-only pada 12 September 2026: instrumen tersedia; model final berjumlah 0; Google belum aktif; email dan signup aktif; tabel learning/jobs belum tersedia; konfigurasi koneksi database dan CRON_SECRET belum ditemukan di environment kerja. Tidak ada data penelitian atau akun baru yang dibuat oleh pemeriksaan ini.
+# Pembaruan terbaru
+
+Lihat [profil usaha dan panel tiga ahli](UPDATE_PROFIL_DAN_PANEL_AHLI.md) untuk nama panel, form kontak, dan perubahan login terbaru.

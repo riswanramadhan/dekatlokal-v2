@@ -5,11 +5,22 @@ import { validRegion } from "./regions";
 const text = (max: number) => z.string().trim().max(max);
 const required = (max: number) => text(max).min(1, "Bagian ini perlu diisi.");
 export const profileSchema = z.object({
+  profileVersion: z.literal(2).optional(),
+  businessName: text(150).optional(), email: text(254).optional(), whatsapp: text(25).optional(),
+  instagram: text(100).optional(), tiktok: text(100).optional(), googleMaps: text(500).optional(),
   sector: required(100), district: required(100), businessAgeMonths: z.number({error:"Isi lama usaha dalam bulan, ya."}).int("Pakai angka bulat.").min(0,"Angkanya tidak boleh negatif.").max(2400,"Cek lagi jumlah bulannya, ya."),
   peopleCount: z.number({error:"Isi jumlah orang yang menjalankan usaha."}).int("Pakai angka bulat.").min(1,"Hitung minimal satu orang, termasuk kamu.").max(100000,"Cek lagi jumlah orangnya, ya."), respondentRole: z.enum(["Pemilik", "Pengelola"]),
-  salesChannels: z.array(required(60)).min(1).max(10), goal: required(500), note: text(1000).default(""), consent: z.literal(true),
+  salesChannels: z.array(required(60)).min(1,"Pilih minimal satu tempat berjualan.").max(10), goal: required(500), note: text(1000).default(""), consent: z.literal(true),
   provinceCode: z.string().optional(), cityCode: z.string().optional(),
 }).superRefine((p, ctx) => {
+  if (p.profileVersion === 2) {
+    if (!p.businessName) ctx.addIssue({code:"custom",path:["businessName"],message:"Isi nama bisnismu."});
+    if (!z.email().safeParse(p.email).success) ctx.addIssue({code:"custom",path:["email"],message:"Masukkan alamat email yang valid."});
+    if (!/^(?:\+?62|0)8\d{7,11}$/.test((p.whatsapp ?? "").replace(/[\s-]/g,""))) ctx.addIssue({code:"custom",path:["whatsapp"],message:"Masukkan nomor WhatsApp aktif, misalnya 081234567890."});
+    if (!validRegion(p.provinceCode ?? "",p.cityCode ?? "")) ctx.addIssue({code:"custom",path:[!p.provinceCode?"provinceCode":"cityCode"],message:"Pilih provinsi dan kota/kabupaten usaha."});
+  }
+  for (const key of ["instagram","tiktok"] as const) if (p[key] && !/^@?[a-zA-Z0-9._]{1,64}$/.test(p[key])) ctx.addIssue({code:"custom",path:[key],message:"Isi nama pengguna saja, misalnya @namabisnis."});
+  if (p.googleMaps) { try { const u=new URL(p.googleMaps); if(u.protocol!=="https:" || !["maps.app.goo.gl","goo.gl","maps.google.com","www.google.com","google.com","maps.google.co.id","www.google.co.id","google.co.id"].includes(u.hostname)) throw new Error(); } catch { ctx.addIssue({code:"custom",path:["googleMaps"],message:"Gunakan tautan HTTPS Google Maps dari tombol Bagikan."}); } }
   if ((p.provinceCode || p.cityCode) && !validRegion(p.provinceCode ?? "", p.cityCode ?? "")) ctx.addIssue({ code: "custom", path: ["cityCode"], message: "Pilih kota atau kabupaten dari provinsi yang sesuai." });
 });
 export type BusinessProfile = z.infer<typeof profileSchema>;

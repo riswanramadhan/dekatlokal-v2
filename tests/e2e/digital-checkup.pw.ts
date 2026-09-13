@@ -8,6 +8,7 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
     const request=route.request(), body=request.method()==='GET'?{}:request.postDataJSON();
     if(request.method()==='POST') saved={id:'SIMULATION-ONLY',code:'SIMULASI-UMKM',status:'draft',revision:0,revisionNumber:1,payload:{profile:body.profile,answers:{}},scores:null,run:null};
     if(request.method()==='PATCH')saved={...saved,status:body.final?'submitted':'draft',revision:body.revision+1,payload:{profile:body.profile,answers:body.answers},scores:body.final?Array(8).fill(0):null,submittedAt:body.final?'2026-09-10T00:00:00Z':null};
+    if(body.final) await new Promise(resolve=>setTimeout(resolve,800));
     await route.fulfill({json:saved});
   });
   await page.goto('/mulai');
@@ -15,7 +16,12 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
   await expect(page.getByRole('button',{name:'Mulai Checkup Gratis'})).toBeDisabled();
   await page.getByRole('checkbox').check();
   await page.getByRole('button',{name:'Mulai Checkup Gratis'}).click();
-  await page.getByLabel('Jenis usaha',{exact:true}).fill('SIMULASI kuliner');
+  await page.getByRole('button',{name:'Lanjut ke pertanyaan'}).click();
+  await expect(page.getByRole('combobox',{name:/^Jenis usaha/})).toBeFocused();
+  await page.getByLabel('Nama bisnis',{exact:true}).fill('SIMULASI bisnis');
+  await page.getByLabel('Email',{exact:true}).fill('simulation@example.org');
+  await page.getByLabel('Nomor WhatsApp',{exact:true}).fill('081234567890');
+  await page.getByRole('combobox',{name:/^Jenis usaha/}).selectOption('Makanan & minuman');
   await page.getByRole('combobox',{name:'Provinsi',exact:true}).fill('Sulawesi Selatan');
   expect(await page.getByRole('combobox',{name:'Provinsi',exact:true}).evaluate(el=>parseFloat(getComputedStyle(el).paddingLeft))).toBeGreaterThanOrEqual(39);
   await page.getByRole('option',{name:'Sulawesi Selatan',exact:true}).click();
@@ -45,6 +51,7 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
   }
   await page.getByRole('checkbox').check();
   await page.getByRole('button',{name:'Kirim dan lihat hasil'}).click();
+  await expect(page.getByRole('dialog',{name:'Menyiapkan hasil checkup'})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Ini gambaran usahamu hari ini.'})).toBeVisible();
   await expect(page.getByText('Jawabanmu sudah tersimpan. Rekomendasi sedang disiapkan.')).toBeVisible();
   await expect(page.getByRole('radio')).toHaveCount(0);
@@ -99,10 +106,35 @@ test('checkup desktop and sign-in remain usable; unauthorized research is reject
   expect(await response.text()).not.toContain('service_role');
   await page.goto('/ahli');
   await expect(page).toHaveURL(/\/ahli$/);
-  await expect(page.getByRole('heading',{name:/Pilih namamu/})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Penilaian Ahli'})).toBeVisible();
   await expect(page.getByRole('textbox',{name:/email/i})).toHaveCount(0);
+  for(const name of ['Ayu Anisela','Asluddin','Rizky Amelia']) await expect(page.getByRole('radio',{name:new RegExp(name)})).toBeVisible();
   await page.screenshot({path:info.outputPath('expert-entry-desktop.png'),fullPage:true});
   await page.setViewportSize({width:360,height:800});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
   await page.screenshot({path:info.outputPath('expert-entry-mobile.png'),fullPage:true});
+  await page.getByRole('radio',{name:/Ayu Anisela/}).check();
+  await page.getByRole('button',{name:'Mulai menilai',exact:true}).click();
+  await expect(page.getByLabel('Nama',{exact:true})).toHaveValue('Ayu Anisela');
+  await expect(page.getByLabel('Instansi',{exact:true})).toHaveValue('Rumah BUMN Makassar');
+  await expect(page.getByLabel('Jabatan',{exact:true})).toHaveValue('CFO');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+  await page.screenshot({path:info.outputPath('expert-workspace-mobile.png'),fullPage:true});
+});
+
+test('landing CTA and support links fit mobile and desktop',async({page},info)=>{
+  await page.setViewportSize({width:1440,height:900});
+  await page.goto('/');
+  const cta=page.locator('.dl-cta-refined');
+  await cta.scrollIntoViewIfNeeded();
+  await expect(cta.getByRole('link',{name:'Mulai Checkup Gratis'})).toBeVisible();
+  await cta.screenshot({path:info.outputPath('cta-desktop.png')});
+  const contact=page.getByRole('link',{name:'Hubungi DekatLokal',exact:true});
+  await expect(contact).toHaveAttribute('href',/wa\.me\/6289516335023\?text=/);
+  await contact.hover();
+  await expect(contact).toHaveCSS('color','rgb(2, 85, 245)');
+  await page.setViewportSize({width:360,height:800});
+  await cta.scrollIntoViewIfNeeded();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+  await cta.screenshot({path:info.outputPath('cta-mobile.png')});
 });
