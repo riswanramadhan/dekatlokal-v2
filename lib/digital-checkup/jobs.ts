@@ -2,7 +2,10 @@ import "server-only";
 import { serviceClient } from "@/lib/supabase/server";
 import { runAssessment, type AssessmentRow } from "./service";
 import { dbError } from "./http";
+import { processExpertPanel } from "./auto-panel";
 export async function processRecommendationJobs() {
+  let panelPending = false;
+  try { await processExpertPanel(); } catch { panelPending = true; }
   const db = serviceClient(), deadline = Date.now() + 40_000;
   let completed = 0;
   for (let i = 0; i < 8 && Date.now() < deadline; i++) {
@@ -17,5 +20,5 @@ export async function processRecommendationJobs() {
       await db.from("dc_recommendation_jobs").update({ status: "queued", lease_until: null, available_at: new Date(Date.now() + Math.min(3600, 30 * 2 ** Math.min(job.attempts, 7)) * 1000).toISOString() }).eq("id", job.id);
     }
   }
-  return { completed };
+  return { completed, panelPending };
 }

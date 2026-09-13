@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { answersSchema, profileSchema } from "./validation";
 export const LOCAL_DRAFT_KEY = "dekatlokal.checkup.draft.v1";
-const schema = z.object({ version: z.literal(1), savedAt: z.number(), sessionId: z.string().nullable(), revision: z.number().int().nonnegative(), step: z.number().int().min(-1).max(9), profile: profileSchema.extend({ sector: z.string().max(100), district: z.string().max(100), goal: z.string().max(500), salesChannels: z.array(z.string().max(60)).max(10) }), answers: answersSchema });
+const draftNumber = z.union([z.number(), z.nan(), z.null()]).transform(value => value ?? NaN);
+const schema = z.object({ version: z.literal(1), savedAt: z.number(), sessionId: z.string().nullable(), revision: z.number().int().nonnegative(), step: z.number().int().min(-1).max(9), profile: z.object({ ...profileSchema.shape, businessAgeMonths: draftNumber, peopleCount: draftNumber, sector: z.string().max(100), district: z.string().max(100), goal: z.string().max(500), salesChannels: z.array(z.string().max(60)).max(10) }), answers: answersSchema });
 export type LocalDraft = z.infer<typeof schema>;
 export function readLocalCheckup(): LocalDraft | null {
   try {

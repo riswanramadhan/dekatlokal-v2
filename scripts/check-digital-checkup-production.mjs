@@ -10,6 +10,16 @@ function report(label, passed, note = '') {
 report('Domain aplikasi', process.env.NEXT_PUBLIC_APP_URL === origin);
 report('Secret scheduler tersedia', (process.env.CRON_SECRET?.length ?? 0) >= 32, 'Tidak memverifikasi apakah jadwal Cron sudah aktif.');
 report('Identitas release', Boolean(process.env.DC_BUILD_ID || process.env.VERCEL_GIT_COMMIT_SHA));
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+let roster = [];
+try {
+  const parsed = JSON.parse(process.env.DC_EXPERT_ROSTER || '[]');
+  if (Array.isArray(parsed)) roster = parsed;
+} catch { /* Report readiness without exposing names, access codes, or raw configuration. */ }
+const rosterReady = roster.length === 3 && roster.every(x => x && typeof x.name === 'string' && x.name.trim().length >= 2 && x.name.trim().length <= 150 && uuid.test(x.assignmentId) && (x.accessCode === undefined ? process.env.DC_EXPERT_ALLOW_PUBLIC_ENTRY === 'true' : typeof x.accessCode === 'string' && x.accessCode.length >= 12 && x.accessCode.length <= 64)) && new Set(roster.map(x => x.assignmentId)).size === 3 && new Set(roster.map(x => x.name.trim())).size === 3;
+report('Tiga ahli tanpa email dikonfigurasi', rosterReady);
+report('Panel otomatis dikonfigurasi', uuid.test(process.env.DC_AUTO_MODEL_VERSION || '') && uuid.test(process.env.DC_AUTO_MODEL_APPROVER || ''));
+if (rosterReady && roster.some(x => !x.accessCode)) console.log('PERHATIAN: pilih nama tanpa kode tidak memverifikasi identitas ahli.');
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const publicKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -19,6 +29,10 @@ report('Konfigurasi Supabase produksi', Boolean(validUrl && publicKey && service
 if (validUrl && publicKey && serviceKey) {
   try {
     const client = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false }, global: { fetch: (input, init) => fetch(input, { ...init, signal: AbortSignal.timeout(15000) }) } });
+    if (rosterReady) {
+      const { data, error } = await client.from('dc_expert_assignments').select('id').in('id', roster.map(x => x.assignmentId));
+      report('Tiga penugasan ahli tersedia', !error && data?.length === 3, 'Migration email-free tetap perlu dipasang oleh operator.');
+    }
     for (const table of ['dc_instrument_versions', 'dc_decision_model_inputs', 'dc_learning_progress', 'dc_recommendation_jobs']) {
       const { data, error } = await client.from(table).select('*').limit(0);
       report(`Migration: ${table}`, !error && Array.isArray(data));

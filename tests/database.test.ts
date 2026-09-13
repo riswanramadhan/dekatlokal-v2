@@ -138,4 +138,17 @@ describe.sequential('real PostgreSQL migrations / transactions / RLS (isolated s
       await expect(db.query("select dc_save_learning($1,'DL-FREE-1.0','A1','__quiz','',true,100)",[outsider])).rejects.toThrow(/permission denied/);
     }finally{await db.exec('reset role');}
   });
+  it('supports email-free expert assignments without creating Auth users, while keeping final answers immutable',async()=>{
+    const usersBefore=await scalar('select count(*) as value from auth.users');
+    const id=await scalar("insert into dc_expert_assignments(instrument_id,code) values($1,'SIMULASI-NO-EMAIL') returning id as value",[version]);
+    const draft={...blankExpert(),profile:{name:'SIMULASI TANPA EMAIL',institution:'TEST',jobTitle:'TEST',expertise:'TEST',experienceYears:2,consent:true,assessmentDate:'2026-09-10'},decision:'layak_uji_coba',reviews:Object.fromEntries(instrument.questions.map(q=>[q.code,{relevance:4,clarity:4,suggestion:''}])),pairs,relevance};
+    await db.query('select dc_save_expert($1,null,$2,0,false)',[id,draft]);
+    await expect(db.query('select dc_save_expert($1,$2,$3,1,false)',[id,users[0],draft])).rejects.toThrow(/Forbidden/);
+    await db.query('select dc_save_expert($1,null,$2,1,true)',[id,validateExpertFinal(draft)]);
+    expect(await scalar('select status as value from dc_expert_assignments where id=$1',[id])).toBe('submitted');
+    expect(await scalar('select count(*) as value from auth.users')).toBe(usersBefore);
+    await expect(db.query("update dc_expert_assignments set payload='{}' where id=$1",[id])).rejects.toThrow(/immutable/);
+    await db.exec('set role anon');
+    try{await expect(db.query('select dc_save_expert($1,null,$2,0,false)',[id,draft])).rejects.toThrow(/permission denied/);}finally{await db.exec('reset role');}
+  });
 });

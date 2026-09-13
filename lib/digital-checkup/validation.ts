@@ -1,12 +1,16 @@
 import { z } from "zod";
 import { conditionScores, crispMatrix, consistency, instrument, relevanceMatrix, MODULES } from "@/lib/decision-engine";
+import { validRegion } from "./regions";
 
 const text = (max: number) => z.string().trim().max(max);
 const required = (max: number) => text(max).min(1, "Bagian ini perlu diisi.");
 export const profileSchema = z.object({
-  sector: required(100), district: required(100), businessAgeMonths: z.number().int().min(0).max(2400),
-  peopleCount: z.number().int().min(1).max(100000), respondentRole: z.enum(["Pemilik", "Pengelola"]),
+  sector: required(100), district: required(100), businessAgeMonths: z.number({error:"Isi lama usaha dalam bulan, ya."}).int("Pakai angka bulat.").min(0,"Angkanya tidak boleh negatif.").max(2400,"Cek lagi jumlah bulannya, ya."),
+  peopleCount: z.number({error:"Isi jumlah orang yang menjalankan usaha."}).int("Pakai angka bulat.").min(1,"Hitung minimal satu orang, termasuk kamu.").max(100000,"Cek lagi jumlah orangnya, ya."), respondentRole: z.enum(["Pemilik", "Pengelola"]),
   salesChannels: z.array(required(60)).min(1).max(10), goal: required(500), note: text(1000).default(""), consent: z.literal(true),
+  provinceCode: z.string().optional(), cityCode: z.string().optional(),
+}).superRefine((p, ctx) => {
+  if ((p.provinceCode || p.cityCode) && !validRegion(p.provinceCode ?? "", p.cityCode ?? "")) ctx.addIssue({ code: "custom", path: ["cityCode"], message: "Pilih kota atau kabupaten dari provinsi yang sesuai." });
 });
 export type BusinessProfile = z.infer<typeof profileSchema>;
 export const answersSchema = z.record(z.string(), z.number().int().min(0).max(4).nullable()).superRefine((v, ctx) => {

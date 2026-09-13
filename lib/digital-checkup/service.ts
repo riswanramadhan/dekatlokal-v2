@@ -6,10 +6,11 @@ import { currentActor, serviceClient, supabaseConfigured } from "@/lib/supabase/
 import { inputHash, tokenHash } from "./canonical";
 import { dbError } from "./http";
 import { publicResult } from "./public-result";
+import { expertEntry } from "./expert-access";
 import type { BusinessProfile, ExpertDraft } from "./validation";
 
 export type AssessmentRow = { id: string; umkm_id: string; instrument_id: string; status: string; revision: number; revision_number: number; submitted_at: string | null; payload: { profile: BusinessProfile; answers: Answers }; token_hash: string; expires_at: string };
-export type ExpertRow = { id: string; code: string; expert_user_id: string; instrument_id: string; status: string; revision: number; payload: ExpertDraft };
+export type ExpertRow = { id: string; code: string; expert_user_id: string | null; instrument_id: string; status: string; revision: number; payload: ExpertDraft };
 export type RunRow = { id: string; assessment_id: string; model_input_id: string; status: string; trace: Decision; canonical_input: CanonicalInput; sensitivity: ReturnType<typeof sensitivity>; created_at: string; input_hash: string; build_id: string };
 export type CanonicalInput = { instrumentVersion: string; modelVersion: string; dimensionCodes: string[]; moduleCodes: string[]; experts: ExpertInput[]; answers: Answers };
 const COOKIE = "dc_session";
@@ -19,6 +20,7 @@ export async function currentInstrument() {
 }
 export async function guestAssessment(id?: string) {
   if (!supabaseConfigured()) return null;
+  if (await expertEntry()) return null;
   const cookie = (await cookies()).get(COOKIE)?.value;
   const actor = await currentActor(), db = serviceClient();
   if (actor && actor.role !== "umkm") return null;

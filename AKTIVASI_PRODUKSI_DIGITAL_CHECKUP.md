@@ -1,5 +1,7 @@
 # Aktivasi Digital Checkup — produksi
 
+> Pembaruan 13 September: lihat [form nasional dan akses ahli tanpa email](PEMBARUAN_FORM_DAN_AHLI.md) untuk migration tambahan, tiga nama ahli, dan pemrosesan panel otomatis. Konfigurasi login UMKM Google/OTP di dokumen ini tetap berlaku.
+
 Domain aplikasi: **https://digitalcheckup.dekatlokal.com**.
 Dokumen ini menggantikan petunjuk login magic-link dan proses rekomendasi manual dalam panduan lama. Perubahan kode bukan bukti aplikasi sudah terdeploy.
 

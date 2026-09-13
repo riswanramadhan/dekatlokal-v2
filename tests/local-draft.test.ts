@@ -15,6 +15,12 @@ it("discards expired or corrupt local data", () => {
   storage.set(LOCAL_DRAFT_KEY, "{broken");
   expect(readLocalCheckup()).toBeNull();
 });
+it("preserves blank number fields and a partially selected location", () => {
+  expect(saveLocalCheckup({ ...draft(), profile:{...draft().profile, businessAgeMonths:NaN, peopleCount:NaN, provinceCode:"73",cityCode:""} })).toBe(true);
+  const restored=readLocalCheckup();
+  expect(Number.isNaN(restored?.profile.businessAgeMonths)).toBe(true);
+  expect(restored?.profile.provinceCode).toBe("73");
+});
 it("does not crash when browser storage is unavailable", () => {
   vi.stubGlobal("localStorage", { getItem: () => { throw Error("denied"); }, setItem: () => { throw Error("denied"); }, removeItem: () => { throw Error("denied"); } });
   expect(readLocalCheckup()).toBeNull(); expect(saveLocalCheckup(draft())).toBe(false); expect(clearLocalCheckup).not.toThrow();
