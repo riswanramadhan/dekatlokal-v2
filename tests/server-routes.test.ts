@@ -3,6 +3,7 @@ import { instrument } from '@/lib/decision-engine';
 const mocks=vi.hoisted(()=>({actor:vi.fn(),client:vi.fn()}));
 vi.mock('server-only',()=>({}));
 vi.mock('@/lib/supabase/server',()=>({requireActor:mocks.actor,serviceClient:mocks.client}));
+vi.mock('@/lib/digital-checkup/expert-access',()=>({requireExpertActor:()=>mocks.actor(["expert"]),expertRoster:()=>[],expertEntry:async()=>null}));
 import { GET as expertGet } from '@/app/api/digital-checkup/expert/route';
 import { GET as researchGet } from '@/app/api/digital-checkup/research/route';
 import { readBody, sameOrigin } from '@/lib/digital-checkup/http';

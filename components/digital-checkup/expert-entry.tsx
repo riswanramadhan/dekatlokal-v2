@@ -1,0 +1,11 @@
+"use client";
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+import { ArrowRight, CheckCircle2, UserRound } from "lucide-react";
+import { api } from "./api";
+export function ExpertEntry({ experts }: { experts:{slot:number;name:string;requiresCode:boolean}[] }) {
+  const [selected,setSelected]=useState<number|null>(null),[code,setCode]=useState(""),[busy,setBusy]=useState(false),[error,setError]=useState("");
+  const member=experts.find(x=>x.slot===selected);
+  return <main className="dc-page"><header className="dc-topbar"><Link href="/"><Image src="/brand/dekat-lokal.png" alt="DekatLokal" width={143} height={44}/></Link><span>Ruang ahli</span></header><section className="dc-panel dc-expert-entry"><p className="dc-eyebrow">Penilaian ahli</p><h1>Pilih namamu.<br/>Lanjut beri penilaian.</h1><p>Tanpa email. Draf tersimpan otomatis, jadi bisa dicicil sesuai waktumu.</p>{experts.length ? <form onSubmit={async e=>{e.preventDefault();if(selected===null)return;setBusy(true);setError("");try{await api("expert-access","POST",{action:"enter",slot:selected,code:member?.requiresCode?code:undefined});window.location.assign("/ahli");}catch(err){setError((err as Error).message);}finally{setBusy(false);}}}><fieldset className="dc-expert-names"><legend>Nama ahli</legend>{experts.map(x=><label key={x.slot} className={selected===x.slot?"is-selected":""}><input type="radio" name="expert" checked={selected===x.slot} onChange={()=>{setSelected(x.slot);setCode("");setError("");}}/><UserRound size={22}/><span>{x.name}</span>{selected===x.slot&&<CheckCircle2 size={18}/>}</label>)}</fieldset>{member?.requiresCode&&<label className="dc-field">Kode akses dari peneliti<input type="password" autoComplete="off" value={code} onChange={e=>setCode(e.target.value)} required minLength={12} maxLength={64} placeholder="Masukkan kode akses"/></label>}{error&&<p role="alert" className="dc-error">{error}</p>}<button className="dc-primary" disabled={busy||selected===null}>{busy?"Sebentar, ya…":"Mulai menilai"}<ArrowRight size={18}/></button><p className="dc-expert-entry-note">Pilih hanya namamu sendiri. Penilaian final akan dikunci dan diproses otomatis.</p></form>:<div className="dc-note">Daftar tiga ahli sedang disiapkan oleh peneliti. Nama asli dan penugasannya perlu ditetapkan terlebih dahulu.</div>}</section></main>;
+}

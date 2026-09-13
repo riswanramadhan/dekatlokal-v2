@@ -5,9 +5,11 @@ import { assessmentSchema, profileSchema } from "@/lib/digital-checkup/validatio
 import { guestAssessment, publicAssessment, runAssessment, startAssessment, type AssessmentRow } from "@/lib/digital-checkup/service";
 import { dbError, failure, json, readBody } from "@/lib/digital-checkup/http";
 import { currentActor, serviceClient, supabaseConfigured } from "@/lib/supabase/server";
+import { expertEntry } from "@/lib/digital-checkup/expert-access";
 export const maxDuration = 60;
 
 async function requireUmkmAccess() {
+  if (await expertEntry()) throw new Error("Selesaikan sesi ahli sebelum membuka checkup UMKM.");
   if (supabaseConfigured() && (await currentActor())?.role === "expert") throw new Error("Gunakan ruang ahli untuk penilaian kasus. Akun ahli tidak membuka hasil UMKM.");
 }
 

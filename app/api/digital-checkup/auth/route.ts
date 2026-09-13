@@ -2,6 +2,7 @@ import { z } from "zod";
 import { authClient } from "@/lib/supabase/server";
 import { finishSignIn } from "@/lib/digital-checkup/account";
 import { AUTH_CALLBACK } from "@/lib/digital-checkup/site";
+import { clearExpertEntry } from "@/lib/digital-checkup/expert-access";
 import { failure, json, readBody } from "@/lib/digital-checkup/http";
 
 export async function POST(request: Request) {
@@ -9,7 +10,7 @@ export async function POST(request: Request) {
     const input = z.object({ mode: z.enum(["password", "otp_request", "otp_verify", "google", "logout"]), email: z.string().email().max(254).optional(), password: z.string().max(256).optional(), token: z.string().regex(/^\d{6,10}$/).optional() }).parse(await readBody(request));
     const client = await authClient();
     const callback = AUTH_CALLBACK;
-    if (input.mode === "logout") { await client.auth.signOut(); return json({ next: "/masuk" }); }
+    if (input.mode === "logout") { await client.auth.signOut(); await clearExpertEntry(); return json({ next: "/masuk" }); }
     if (input.mode === "google") {
       const { data, error } = await client.auth.signInWithOAuth({ provider: "google", options: { redirectTo: callback } });
       if (error || !data.url) throw new Error("Masuk Google belum dapat digunakan. Coba kode OTP lewat email."); return json({ next: data.url });
