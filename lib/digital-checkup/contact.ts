@@ -1,0 +1,2 @@
+export const adminWhatsApp = (message = "Halo Admin DekatLokal, saya ingin bertanya tentang Digital Checkup dan kelas belajar.") => `https://wa.me/6289516335023?text=${encodeURIComponent(message)}`;
+export const businessSectors = ["Makanan & minuman", "Fashion & aksesori", "Toko & perdagangan", "Jasa profesional", "Kecantikan & kesehatan", "Kerajinan & produk kreatif", "Pertanian, peternakan & perikanan", "Penginapan & wisata", "Otomotif & transportasi", "Pendidikan & kursus", "Teknologi & jasa digital", "Lainnya"];

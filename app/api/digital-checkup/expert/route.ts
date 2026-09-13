@@ -1,3 +1,4 @@
+import { expertDirectory } from "@/lib/digital-checkup/expert-directory";
 import { z } from "zod";
 import { after } from "next/server";
 import { processRecommendationJobs } from "@/lib/digital-checkup/jobs";
@@ -17,7 +18,7 @@ export async function GET() {
     const { data, error } = await query; dbError(error);
     const assignments = (data as ExpertRow[]).map((e) => {
       const payload = Object.keys(e.payload).length ? e.payload : blankExpert();
-      return { ...e, payload: actor.assignmentId && e.status !== "submitted" ? { ...payload, profile:{...payload.profile,name:actor.name} } : payload };
+      return { ...e, payload: actor.assignmentId && e.status !== "submitted" ? { ...payload, profile:{...payload.profile,name:actor.name, institution:expertDirectory.find(x=>x.name===actor.name)?.institution ?? payload.profile.institution, jobTitle:expertDirectory.find(x=>x.name===actor.name)?.jobTitle ?? payload.profile.jobTitle} } : payload };
     });
     const ids = assignments.map((e) => e.id);
     if (!ids.length) return json({ assignments: [], cases: [] });

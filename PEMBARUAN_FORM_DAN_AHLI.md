@@ -1,5 +1,7 @@
 # Form nasional dan akses ahli tanpa email
 
+> Pembaruan: ketiga nama dan penugasan sudah ditetapkan. Direktori default kini tersedia; lihat [pembaruan profil dan panel ahli](UPDATE_PROFIL_DAN_PANEL_AHLI.md). Bagian status pemeriksaan di bawah mencatat kondisi sebelum pembaruan tersebut.
+
 ## Perubahan 13 September 2026
 
 Form memakai 38 provinsi dan 514 kota/kabupaten. Snapshot data wilayah berasal dari [Wilayah.id](https://wilayah.id/) (pembaruan 4 Juli 2025, sumber Kemendagri melalui cahyadsn/wilayah), disimpan di `lib/digital-checkup/regions.ts`. Tidak ada pengiriman lokasi pengunjung ke layanan pihak ketiga saat mencari wilayah.

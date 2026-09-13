@@ -9,6 +9,7 @@ import "./landing-commercial-polish.css";
 import "./landing-future.css";
 import "./landing-request-lock.css";
 import "./landing-brand-refresh.css";
+import "./checkup-polish.css";
 import { PwaRegistration } from "@/components/pwa-registration";
 
 const poppins = Poppins({

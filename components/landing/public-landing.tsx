@@ -1,3 +1,4 @@
+import { adminWhatsApp } from "@/lib/digital-checkup/contact";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -279,13 +280,13 @@ function FaqSection() {
 
 function FinalCta({ checkupHref }: { checkupHref: string }) {
   return (
-    <section aria-labelledby="start-title" className="dl-final-cta dl-viewport-section" id="mulai">
+    <section aria-labelledby="start-title" className="dl-final-cta dl-viewport-section dl-cta-refined" id="mulai">
       <div aria-hidden="true" className="dl-cta-grid" />
       <div className="dl-final-inner">
         <div className="dl-final-copy" data-reveal-item>
           <p className="dl-section-kicker">Langkah kecil, mulai hari ini</p>
-          <h2 id="start-title">Usahamu punya peluang. Yuk, cari langkah berikutnya.</h2>
-          <p>Luangkan 5–7 menit untuk cek usahamu. Lihat yang perlu dibenahi, lalu mulai dari yang paling mudah.</p>
+          <h2 id="start-title">Kenali usahamu. Tentukan langkah berikutnya.</h2>
+          <p>Mulai dari checkup gratis. Lihat kondisi usahamu dan lanjut belajar sesuai kebutuhan.</p>
           <div><Link className="dl-final-primary" href={checkupHref}>Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} /></Link></div>
         </div>
       </div>
@@ -295,7 +296,7 @@ function FinalCta({ checkupHref }: { checkupHref: string }) {
 
 function LandingFooter({ checkupHref }: { checkupHref: string }) {
   return (
-    <footer className="dl-footer" data-testid="landing-footer"><div className="dl-footer-grid"><div className="dl-footer-about"><Image alt="DekatLokal" height={64} src="/brand/dekat-lokal.png" width={207} /><p>Teman belajar pemilik usaha. Cek kondisi jualanmu, temukan yang perlu dibenahi, lalu coba langkah kecil setiap hari.</p><a href="mailto:hello@dekatlokal.com">hello@dekatlokal.com</a><span>Indonesia</span></div><FooterColumn title="Platform" links={[["Digital Checkup", checkupHref], ["Cara Kerja", "#akses-belajar"], ["Kelas", "#course"], ["Harga", "#paket"]]} /><FooterColumn title="Ruang Tumbuh" links={[["Mulai Belajar", "/masuk"], ["Perkembangan Belajar", "/masuk"], ["Hasil Praktik", "/masuk"]]} /><FooterColumn title="Dukungan" links={[["Masuk", "/masuk"], ["Bantuan", "mailto:hello@dekatlokal.com"], ["Hubungi Kami", "mailto:hello@dekatlokal.com"]]} /></div><div aria-hidden="true" className="dl-footer-word">DekatLokal</div><div className="dl-footer-bottom"><span>&copy; 2026 DekatLokal. Hak cipta dilindungi.</span><div><a href="https://dekatlokal.com/privacy-policy" rel="noreferrer" target="_blank">Kebijakan Privasi</a><a href="https://dekatlokal.com/terms-of-service" rel="noreferrer" target="_blank">Syarat &amp; Ketentuan</a></div><span>UMKM bertumbuh, satu langkah lebih dekat.</span></div></footer>
+    <footer className="dl-footer" data-testid="landing-footer"><div className="dl-footer-grid"><div className="dl-footer-about"><Image alt="DekatLokal" height={64} src="/brand/dekat-lokal.png" width={207} /><p>Teman belajar pemilik usaha. Cek kondisi jualanmu, temukan yang perlu dibenahi, lalu coba langkah kecil setiap hari.</p><a href={adminWhatsApp()}>Hubungi DekatLokal</a><span>Indonesia</span></div><FooterColumn title="Platform" links={[["Digital Checkup", checkupHref], ["Cara Kerja", "#akses-belajar"], ["Kelas", "#course"], ["Harga", "#paket"]]} /><FooterColumn title="Ruang Tumbuh" links={[["Mulai Belajar", "/masuk"], ["Perkembangan Belajar", "/masuk"], ["Hasil Praktik", "/masuk"]]} /><FooterColumn title="Dukungan" links={[["Masuk", "/masuk"], ["Bantuan", adminWhatsApp()], ["Hubungi Kami", adminWhatsApp()]]} /></div><div aria-hidden="true" className="dl-footer-word">DekatLokal</div><div className="dl-footer-bottom"><span>&copy; 2026 DekatLokal. Hak cipta dilindungi.</span><div><a href="https://dekatlokal.com/privacy-policy" rel="noreferrer" target="_blank">Kebijakan Privasi</a><a href="https://dekatlokal.com/terms-of-service" rel="noreferrer" target="_blank">Syarat &amp; Ketentuan</a></div><span>UMKM bertumbuh, satu langkah lebih dekat.</span></div></footer>
   );
 }
 
