@@ -241,3 +241,5 @@
 @keyframes dc-attention { 25%,75% { transform:translateX(-4px); } 50% { transform:translateX(4px); } }
 @keyframes dc-scan { to { transform:translateY(96px); } } @keyframes dc-scan-progress { to { transform:translateX(190%); } }
 @media(max-width:600px) { .dc-channel-options { grid-template-columns:1fr!important; }.dc-channel-options .dc-check { display:flex!important; align-items:center; min-height:52px; }.dc-actions { display:grid; grid-template-columns:1fr; }.dc-actions > * { width:100%; min-width:0; }.dc-page .dc-primary,.dc-page .dc-secondary { font-size:13px; padding-inline:14px; }.dc-digital-links { padding:16px; }.dc-expert-entry { margin:24px auto; } }
+.dc-submit-issues { padding-left:20px; display:grid; gap:16px; }.dc-submit-issues p { margin-bottom:8px; }
+.dc-pair-guidance { margin-block:24px; }.dc-pair-guidance > button { width:100%; margin-bottom:10px; display:flex; text-align:left; justify-content:flex-start; white-space:normal!important; }.dc-pair-guidance > button span { min-width:0; font-size:12px; }
