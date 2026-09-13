@@ -6,6 +6,7 @@ import { guestAssessment, publicAssessment, runAssessment, startAssessment, type
 import { dbError, failure, json, readBody } from "@/lib/digital-checkup/http";
 import { currentActor, serviceClient, supabaseConfigured } from "@/lib/supabase/server";
 import { expertEntry } from "@/lib/digital-checkup/expert-access";
+import { processExpertPanel } from "@/lib/digital-checkup/auto-panel";
 export const maxDuration = 60;
 
 async function requireUmkmAccess() {
@@ -37,7 +38,7 @@ export async function PATCH(request: Request) {
     if (input.final) {
       after(async () => { try { await processRecommendationJobs(); } catch { /* Scheduled worker retries persisted jobs. */ } });
       // Snapshot is committed; a persisted background job retries failures automatically.
-      try { await runAssessment(saved); } catch { return json({ ...await publicAssessment(saved), notice: "Jawabanmu sudah tersimpan. Rekomendasi sedang disiapkan." }); }
+      try { await processExpertPanel(); await runAssessment(saved); } catch { return json({ ...await publicAssessment(saved), notice: "Jawabanmu sudah tersimpan. Rekomendasi sedang disiapkan." }); }
     }
     return json(await publicAssessment(saved));
   } catch (e) { return failure(e); }

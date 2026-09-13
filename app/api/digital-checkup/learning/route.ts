@@ -4,6 +4,8 @@ import { claimGuest } from "@/lib/digital-checkup/account";
 import { guestAssessment, publicAssessment, runAssessment } from "@/lib/digital-checkup/service";
 import { CURRICULUM_VERSION, freeCourses, gradeQuiz } from "@/lib/digital-checkup/curriculum";
 import { dbError, failure, json, readBody } from "@/lib/digital-checkup/http";
+import { ensureLearningAccess, requireActiveLearning } from "@/lib/digital-checkup/learning-access";
+import { processExpertPanel } from "@/lib/digital-checkup/auto-panel";
 export async function GET() {
   try {
     const actor = await requireActor(["umkm"]), db = serviceClient();
@@ -12,15 +14,17 @@ export async function GET() {
     const row = await guestAssessment();
     let assessment = row ? await publicAssessment(row) : null;
     if (assessment?.linked && row?.status === "submitted" && !assessment.run) {
-      try { await runAssessment(row); assessment = await publicAssessment(row); } catch { /* Worker retries. */ }
+      try { await processExpertPanel(); await runAssessment(row); assessment = await publicAssessment(row); } catch { /* Worker retries. */ }
     }
+    const access = assessment?.linked && assessment.status === "submitted" ? await ensureLearningAccess(actor.id) : null;
     const { data: progress, error } = await db.from("dc_learning_progress").select("module_code,lesson_id,completed,exercise,quiz_score,updated_at").eq("user_id", actor.id).eq("curriculum_version", CURRICULUM_VERSION); dbError(error);
-    return json({ name: actor.name, assessment: assessment?.linked ? assessment : null, claimPending, version: CURRICULUM_VERSION, progress: progress ?? [], courses: freeCourses.map((c) => ({ ...c, quiz: c.quiz.map((q) => ({ question: q.question, options: q.options })) })) });
+    return json({ name: actor.name, assessment: assessment?.linked ? assessment : null, claimPending, access, version: CURRICULUM_VERSION, progress: progress ?? [], courses: freeCourses.map((c) => ({ ...c, quiz: c.quiz.map((q) => ({ question: q.question, options: q.options })) })) });
   } catch (e) { return failure(e); }
 }
 export async function POST(request: Request) {
   try {
     const actor = await requireActor(["umkm"]), db = serviceClient();
+    requireActiveLearning(await ensureLearningAccess(actor.id));
     const input = z.discriminatedUnion("action", [
       z.object({ action: z.literal("lesson"), code: z.string(), lessonId: z.string(), exercise: z.string().trim().min(20, "Tulis hasil praktikmu, minimal 20 karakter.").max(3000), complete: z.boolean() }),
       z.object({ action: z.literal("quiz"), code: z.string(), answers: z.array(z.number().int().min(0).max(2)).length(3) }),

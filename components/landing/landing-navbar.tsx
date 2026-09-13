@@ -63,7 +63,7 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
 
   return (
     <>
-      {isOpen ? <button aria-label="Tutup menu utama" className="dl-nav-mobile-backdrop" onClick={close} type="button" /> : null}
+      <button aria-label="Tutup menu utama" aria-hidden={!isOpen} tabIndex={-1} className={`dl-nav-mobile-backdrop${isOpen ? " is-open" : ""}`} onClick={close} type="button" />
       <header className={`dl-navbar${isScrolled ? " is-scrolled" : ""}${isOpen ? " is-menu-open" : ""}`} data-scrolled={String(isScrolled)}>
         <Link aria-label="Ke beranda DekatLokal" className="dl-navbar-logo" href="#beranda">
           <Image alt="DekatLokal" height={44} priority src="/brand/dekat-lokal.png" unoptimized width={143} />
@@ -89,6 +89,7 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
 
         <div
           aria-hidden={!isOpen}
+          inert={!isOpen}
           aria-label="Menu utama DekatLokal"
           className="dl-nav-mobile-expand"
           id="landing-mobile-menu"
