@@ -54,7 +54,7 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
   await page.getByRole('checkbox').check();
   await page.getByRole('button',{name:'Kirim dan lihat hasil'}).click();
   await expect(page.getByRole('dialog',{name:'Menyiapkan hasil checkup'})).toBeVisible();
-  await expect(page.getByRole('heading',{name:'Ini gambaran usahamu hari ini.'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Ini cerita usahamu hari ini.'})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Mulai dari 3 modul ini.'})).toBeVisible();
   await expect(page.getByText('Yang sudah jadi modal')).toBeVisible();
   await expect(page.getByText('Yang paling perlu dibereskan')).toBeVisible();
