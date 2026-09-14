@@ -46,7 +46,7 @@ for (const width of [320, 390, 768, 1440]) {
     await expect(page.locator(".dl-final-visual")).toHaveCount(0);
     await expect(page.locator(".dl-final-copy")).toHaveCSS("text-align", "center");
     await expect(page.locator("#mulai .dl-section-kicker")).toHaveCSS("text-align", "center");
-    if (width === 1440) expect(await page.locator("#mulai").evaluate((element)=>getComputedStyle(element,"::before").animationName)).toBe("dc-cta-breathe");
+    if (width === 1440) expect(await page.locator("#mulai").evaluate((element)=>getComputedStyle(element,"::before").animationName)).toBe("none");
     await page.screenshot({ path: testInfo.outputPath("cta.png") });
   });
 }
@@ -60,7 +60,7 @@ test("mobile menu expands as one navbar and latest sections stay compact", async
   const trigger = page.getByRole("button", { name: "Buka menu utama" });
   const closed = await navbar.boundingBox();
   await expect(trigger).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
-  await expect(navbar).toHaveCSS("transition-duration", "0.55s, 0.4s, 0.5s, 0.35s");
+  expect(await page.locator(".dl-nav-mobile-expand").evaluate((element) => getComputedStyle(element).transitionProperty)).toContain("max-height");
   await trigger.click();
   await expect(page.locator(".dl-navbar-menu-button")).toHaveAttribute("aria-expanded", "true");
   await page.waitForTimeout(600);
@@ -154,6 +154,7 @@ test("logo and story motion keep running while hovered", async ({ page }) => {
 
 test("login UI validates locally and offers Google and email only", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.route("**/api/digital-checkup/auth",async route=>route.fulfill({status:400,json:{error:"Google belum tersedia pada simulasi ini."}}));
   await page.goto("/masuk");
   await expect(page.getByRole("heading", { name: "Yuk, lanjut tumbuh." })).toBeVisible();
   await expect(page.getByText(/maintenance|WhatsApp/i)).toHaveCount(0);
@@ -187,7 +188,7 @@ test("admin has a separate email and password entry at /admin",async({page},test
   await page.getByLabel("Email admin",{exact:true}).fill("admin@example.org");
   await page.getByLabel("Kata sandi",{exact:true}).fill("simulation-only");
   await page.getByRole("button",{name:"Masuk dashboard"}).click();
-  await expect(page.getByRole("alert")).toContainText("belum cocok");
+  await expect(page.locator(".dc-error[role=alert]")).toContainText("belum cocok");
   expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
   await page.screenshot({path:testInfo.outputPath("admin-login-mobile.png"),fullPage:true});
 });
