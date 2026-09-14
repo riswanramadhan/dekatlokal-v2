@@ -558,7 +558,7 @@
   @media (max-width: 1023px) {
     html body .dl-landing.dl-landing header.dl-navbar {
       display: grid !important;
-      height: 58px !important;
+      height: auto !important;
       min-height: 58px !important;
       max-height: none !important;
       grid-template-columns: minmax(0,1fr) 44px !important;
@@ -568,13 +568,14 @@
       overflow: hidden !important;
       padding: 6px 8px 6px 17px !important;
       border-radius: 28px !important;
-      transition: width .55s cubic-bezier(.22,1,.36,1), top .4s ease, height .5s cubic-bezier(.22,1,.36,1), box-shadow .35s ease !important;
+      transition: width .55s cubic-bezier(.22,1,.36,1), top .4s ease, box-shadow .35s ease !important;
     }
     html body .dl-landing.dl-landing header.dl-navbar[data-scrolled] {
-      transition: width .55s cubic-bezier(.22,1,.36,1), top .4s ease, height .5s cubic-bezier(.22,1,.36,1), box-shadow .35s ease !important;
+      transition: width .55s cubic-bezier(.22,1,.36,1), top .4s ease, box-shadow .35s ease !important;
     }
     html body .dl-landing.dl-landing header.dl-navbar.is-menu-open {
-      height: min(470px, calc(100dvh - 32px)) !important;
+      height: auto !important;
+      max-height: none !important;
       border-radius: 28px !important;
       border-color: #dbe6f7 !important;
       box-shadow: 0 24px 70px -30px rgba(1,51,147,.52) !important;
@@ -611,7 +612,7 @@
       transition: max-height .5s cubic-bezier(.22,1,.36,1), padding .42s cubic-bezier(.22,1,.36,1), border-color .2s ease, opacity .28s ease, transform .42s cubic-bezier(.22,1,.36,1) !important;
     }
     html body .dl-landing.dl-landing header.dl-navbar.is-menu-open .dl-nav-mobile-expand {
-      max-height: none !important;
+      max-height: calc(100dvh - 90px) !important;
       overflow-y: auto !important;
       padding: 11px 6px 10px !important;
       border-color: #e3eaf5 !important;

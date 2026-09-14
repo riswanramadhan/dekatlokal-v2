@@ -89,10 +89,12 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
 
         <div
           aria-hidden={!isOpen}
+          aria-modal={isOpen ? "true" : undefined}
           inert={!isOpen}
           aria-label="Menu utama DekatLokal"
           className="dl-nav-mobile-expand"
           id="landing-mobile-menu"
+          role="dialog"
           onKeyDown={(event) => {
             if (!isOpen || event.key !== "Tab") return;
             const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("a[href]"));
@@ -100,10 +102,10 @@ export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
             const last = controls[controls.length - 1];
             if (event.shiftKey && document.activeElement === first) {
               event.preventDefault();
-              trigger.current?.focus();
+              last?.focus();
             } else if (!event.shiftKey && document.activeElement === last) {
               event.preventDefault();
-              trigger.current?.focus();
+              first?.focus();
             }
           }}
           ref={panel}
