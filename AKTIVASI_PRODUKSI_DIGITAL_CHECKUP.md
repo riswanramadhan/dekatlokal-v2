@@ -5,6 +5,8 @@
 Domain aplikasi: **https://digitalcheckup.dekatlokal.com**.
 Dokumen ini menggantikan petunjuk login magic-link dan proses rekomendasi manual dalam panduan lama. Perubahan kode bukan bukti aplikasi sudah terdeploy.
 
+Untuk langkah Google, SMTP/OTP, worker, dan akun demo terbaru, gunakan [AKTIVASI_LOGIN_DAN_AKUN_DEMO.md](AKTIVASI_LOGIN_DAN_AKUN_DEMO.md).
+
 ## 1. Pasang database dan environment
 
 Cadangkan database, pastikan proyek Supabase yang dipilih benar, lalu tinjau dan jalankan migration berurutan melalui pipeline Supabase atau SQL Editor:
