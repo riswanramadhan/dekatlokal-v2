@@ -14,7 +14,7 @@ const pricingPlans = [
     description: "Mulai dari kondisi usaha dan tuntaskan tiga fokus paling penting.",
     features: [
       "Cek delapan bagian penting usahamu",
-      "Tiga kelas dasar sesuai kebutuhanmu",
+      "Tiga modul dasar sesuai kebutuhanmu",
       "Kuis dan tugas praktik usaha",
       "Simpan hasil praktik dan perkembangan belajar",
     ],
@@ -32,7 +32,7 @@ const pricingPlans = [
     description: "Lanjut belajar dan bangun tampilan online usahamu.",
     features: [
       "Semua manfaat paket Mulai",
-      "Empat kelas lanjutan",
+      "Empat modul lanjutan",
       "Website pengenalan usaha satu halaman",
       "Pengelolaan media sosial dasar selama 30 hari",
       "Bantu daftarkan usaha di Google dan buat katalog produk",

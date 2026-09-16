@@ -48,7 +48,7 @@ const dashboardStats = [
   {
     detail: "Siap dilanjutkan",
     icon: BookOpenCheck,
-    label: "Kelas aktif",
+    label: "Modul aktif",
     value: "3",
   },
   {
@@ -107,7 +107,7 @@ export function HeroDashboardPreview() {
               </span>
               <span>
                 <BookOpenCheck size={16} />
-                Kelas saya
+                Modul saya
               </span>
               <span>
                 <Target size={16} />
@@ -190,7 +190,7 @@ export function HeroDashboardPreview() {
 
               <div className="dl-dashboard-course-heading">
                 <div>
-                  <span>Kelas untukmu</span>
+                  <span>Modul untukmu</span>
                   <h3>Lanjutkan belajar</h3>
                 </div>
                 <span className="dl-dashboard-see-all">

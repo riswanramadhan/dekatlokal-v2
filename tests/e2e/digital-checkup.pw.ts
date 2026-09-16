@@ -51,6 +51,9 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
     }
     await page.getByRole('button',{name:step===7?'Tinjau jawaban':'Lanjut',exact:true}).click();
   }
+  await expect(page.getByRole('heading',{name:'Profil usaha',exact:true})).toBeVisible();
+  await expect(page.getByRole('progressbar',{name:'Analisis Kenal usaha sendiri'})).toHaveAttribute('aria-valuenow','0');
+  await page.getByRole('button',{name:'Lihat tinjauan jawaban',exact:true}).click();
   await page.getByRole('checkbox').check();
   await page.getByRole('button',{name:'Kirim dan lihat hasil'}).click();
   await expect(page.getByRole('dialog',{name:'Menyiapkan hasil checkup'})).toBeVisible();
