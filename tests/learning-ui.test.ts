@@ -41,3 +41,14 @@ it("completes a real free-module UI journey with isolated simulated storage", as
   fireEvent.click(screen.getByRole("button", { name: /Kembali ke modul/ }));
   await screen.findByRole("button", { name: "Lihat kembali" });
 });
+it("orders dashboard courses by the exact TOPSIS ranking",async()=>{
+  vi.spyOn(window,"scrollTo").mockImplementation(()=>undefined);
+  const ranking=["A7","A4","A2","A1","A3","A5","A6"].map((code,index)=>({code,rank:index+1,C:1-index/10,Dplus:index,Dminus:7-index}));
+  m.api.mockResolvedValue({name:"Demo",claimPending:false,access:{startsAt:"2026-09-16T00:00:00Z",expiresAt:"2099-09-23T00:00:00Z",active:true,daysLeft:7},version:"DL-FREE-1.0",progress:[],courses:freeCourses.map(course=>({...course,quiz:course.quiz.map(item=>({question:item.question,options:item.options}))})),assessment:{status:"submitted",linked:true,run:{trace:{ranking,topSet:["A7"],status:"RANKED"}},payload:{profile:{}},scores:Array(8).fill(50)}});
+  const {container}=render(createElement(LearningDashboard));
+  await screen.findByText("Urutan modul dari hasil checkup-mu");
+  const titles=[...container.querySelectorAll(".dl-free-card h3")].map(node=>node.textContent);
+  expect(titles.slice(0,3)).toEqual(["Rencana kecil, jalan terus","Promosi yang punya arah","Merek yang gampang dikenali"]);
+  expect(container.querySelector(".dl-free-card .dc-badge")?.textContent).toBe("Prioritas #1");
+  expect(screen.getByRole("button",{name:/Mulai modul pertama/})).toBeTruthy();
+});

@@ -16,6 +16,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:seed:research": "node scripts/seed-research-admin.mjs",
+    "db:provision:demo-user": "node scripts/provision-demo-umkm.mjs",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
