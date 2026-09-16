@@ -45,6 +45,15 @@ if (validUrl && publicKey && serviceKey) {
     report('Panel otomatis siap', explicitPanel || ((approvers ?? 0) > 0 && (modelVersions ?? 0) > 0), 'ID environment opsional; fallback hanya memilih role admin/peneliti dan versi model yang cocok.');
     const { count, error } = await client.from('dc_decision_model_inputs').select('id', { count: 'exact', head: true });
     report('Model ahli final tersedia', !error && (count ?? 0) > 0, 'Tanpa model, nilai checkup tersedia tetapi ranking personal menunggu.');
+    const { data: modelInput, error: modelError } = await client.from('dc_decision_model_inputs').select('expert_ids,trace').order('created_at',{ascending:false}).limit(1).maybeSingle();
+    const modelTrace=modelInput?.trace;
+    const weights=modelTrace?.w, relevance=modelTrace?.R, consistency=modelTrace?.individualCR;
+    const modelValid=!modelError&&modelInput?.expert_ids?.length===3&&modelTrace?.algorithm==='FAHP_GM_PERSONAL_TOPSIS'&&Array.isArray(weights)&&weights.length===8&&weights.every(x=>Number.isFinite(x)&&x>0)&&Math.abs(weights.reduce((sum,x)=>sum+x,0)-1)<=1e-10&&Array.isArray(relevance)&&relevance.length===7&&relevance.every(row=>Array.isArray(row)&&row.length===8&&row.every(x=>Number.isFinite(x)&&x>=0&&x<=4))&&Array.isArray(consistency)&&consistency.length===3&&consistency.every(item=>item?.consistent===true&&item.CR<=.100000000001);
+    report('Jejak Fuzzy AHP produksi valid',modelValid,'Tepat 3 ahli, CR tiap ahli ≤ 0,10, w berjumlah 1, dan R berukuran 7 × 8.');
+    const {data:latestRun,error:runError}=await client.from('dc_decision_runs').select('status,trace').order('created_at',{ascending:false}).limit(1).maybeSingle();
+    const decision=latestRun?.trace,ranked=latestRun?.status==='RANKED';
+    const runValid=!runError&&Boolean(latestRun)&&Array.isArray(decision?.S)&&decision.S.length===8&&Array.isArray(decision?.g)&&decision.g.length===8&&Array.isArray(decision?.q)&&decision.q.length===8&&Number.isFinite(decision?.H)&&(!ranked||(Array.isArray(decision.C)&&decision.C.length===7&&Array.isArray(decision.rank)&&decision.rank.length===7&&Array.isArray(decision.ranking)&&decision.ranking.length===7&&Math.abs(decision.q.reduce((sum,x)=>sum+x,0)-1)<=1e-10));
+    report('Run TOPSIS produksi dapat ditelusuri',runValid,'Memeriksa S, g, H, q, C, dan tujuh peringkat pada run terbaru.');
     const response = await fetch(url + '/auth/v1/settings', { headers: { apikey: publicKey }, signal: AbortSignal.timeout(15000) });
     const settings = await response.json();
     report('Google provider', response.ok && settings.external?.google === true);
