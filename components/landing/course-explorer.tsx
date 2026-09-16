@@ -74,7 +74,7 @@ export function CourseExplorer({ courses }: { courses: LandingCourse[] }) {
                 </div>
                 <div className="dl-course-body">
                   <div className="dl-course-access-row">
-                    <span>Kelas DekatLokal</span>
+                    <span>Modul DekatLokal</span>
                     <span>{course.category}</span>
                   </div>
                   <h3>{courseCopy[course.slug]?.title ?? course.title}</h3>

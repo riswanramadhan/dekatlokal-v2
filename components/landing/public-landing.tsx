@@ -16,31 +16,9 @@ import { LandingNavbar } from "@/components/landing/landing-navbar";
 import { LandingPricingSelector } from "@/components/landing/landing-pricing-selector";
 import { LandingEffects } from "@/components/landing/landing-effects";
 import { TestimonialsCarousel, type LandingStory } from "@/components/landing/testimonials-carousel";
+import { fallbackModuleVisual, moduleVisualBySlug } from "@/lib/digital-checkup/module-catalog";
 
 type ModuleCardView = { slug: string; title: string; outcome: string; icon: string };
-type CoursePresentation = Pick<LandingCourse, "access" | "category" | "duration" | "image" | "imageAlt" | "prerequisite" | "reason" | "recommended">;
-
-const premiumPrerequisite = "Selesaikan tiga kelas dasar.";
-
-const coursePresentationBySlug: Record<string, CoursePresentation> = {
-  "digitalisasi-umkm": { access: "Gratis", category: "Digitalisasi", duration: "20-30 menit", image: "/platform-v2/courses/digitalisasi.webp", imageAlt: "Pelaku UMKM merapikan tampilan online usahanya", reason: "merapikan tampilan online usaha", recommended: true },
-  "branding-umkm": { access: "Gratis", category: "Branding", duration: "25-35 menit", image: "/platform-v2/courses/branding.webp", imageAlt: "Proses menyusun identitas visual usaha lokal", reason: "membuat identitas lebih konsisten", recommended: true },
-  "produk-dan-kemasan": { access: "Gratis", category: "Penjualan", duration: "25-35 menit", image: "/platform-v2/courses/kemasan.webp", imageAlt: "Pemilik UMKM menata kemasan produk", reason: "memperjelas informasi untuk pelanggan", recommended: true },
-  "konsistensi-promosi": { access: "Gratis", category: "Penjualan", duration: "20-30 menit", image: "/platform-v2/courses/promosi.webp", imageAlt: "Pembuatan konten promosi produk UMKM" },
-  "marketplace-dan-kanal-penjualan": { access: "Premium", category: "Penjualan", duration: "35-45 menit", image: "/platform-v2/courses/marketplace.webp", imageAlt: "Pemilik usaha mengelola pesanan dari tempat jualan", prerequisite: premiumPrerequisite },
-  "operasional-dan-keuangan-dasar": { access: "Premium", category: "Operasional", duration: "35-45 menit", image: "/platform-v2/courses/keuangan.webp", imageAlt: "Pencatatan operasional dan keuangan usaha kecil", prerequisite: premiumPrerequisite },
-  "legalitas-usaha": { access: "Premium", category: "Legalitas", duration: "30-40 menit", image: "/platform-v2/courses/legalitas.webp", imageAlt: "Dokumen legalitas usaha sedang disiapkan", prerequisite: premiumPrerequisite },
-  "komitmen-dan-growth-mindset": { access: "Premium", category: "Pengembangan", duration: "30-40 menit", image: "/platform-v2/courses/growth.webp", imageAlt: "Pemilik UMKM menyusun rencana pertumbuhan", prerequisite: premiumPrerequisite },
-};
-
-const fallbackCoursePresentation: CoursePresentation = {
-  access: "Gratis",
-  category: "Digitalisasi",
-  duration: "20-30 menit",
-  image: "/platform-v2/courses/digitalisasi.webp",
-  imageAlt: "Pelaku UMKM mengembangkan kemampuan digital",
-};
-
 const umkmLogos = [
   ["Aroma Bakery", "/umkm/aroma-bakery.webp"], ["Bakpia Malino", "/umkm/bakpia-malino.webp"],
   ["Banangih", "/umkm/banangih.webp"], ["Bio Atama", "/umkm/bio-atama.webp"],
@@ -100,7 +78,7 @@ const faqItems = [
 ] as const;
 
 export function PublicLanding({ modules, checkupHref }: { modules: ModuleCardView[]; checkupHref: string }) {
-  const courses: LandingCourse[] = modules.map((module) => ({ slug: module.slug, title: module.title, outcome: module.outcome, ...(coursePresentationBySlug[module.slug] ?? fallbackCoursePresentation) }));
+  const courses: LandingCourse[] = modules.map((module) => ({ slug: module.slug, title: module.title, outcome: module.outcome, ...(moduleVisualBySlug[module.slug] ?? fallbackModuleVisual) }));
 
   return (
     <div className="dl-landing">
@@ -296,7 +274,7 @@ function FinalCta({ checkupHref }: { checkupHref: string }) {
 
 function LandingFooter({ checkupHref }: { checkupHref: string }) {
   return (
-    <footer className="dl-footer" data-testid="landing-footer"><div className="dl-footer-grid"><div className="dl-footer-about"><Image alt="DekatLokal" height={64} src="/brand/dekat-lokal.png" width={207} /><p>Teman belajar pemilik usaha. Cek kondisi jualanmu, temukan yang perlu dibenahi, lalu coba langkah kecil setiap hari.</p><a href={adminWhatsApp()}>Hubungi DekatLokal</a><span>Indonesia</span></div><FooterColumn title="Platform" links={[["Digital Checkup", checkupHref], ["Cara Kerja", "#akses-belajar"], ["Kelas", "#course"], ["Harga", "#paket"]]} /><FooterColumn title="Ruang Tumbuh" links={[["Mulai Belajar", "/masuk"], ["Perkembangan Belajar", "/masuk"], ["Hasil Praktik", "/masuk"]]} /><FooterColumn title="Dukungan" links={[["Masuk", "/masuk"], ["Bantuan", adminWhatsApp()], ["Hubungi Kami", adminWhatsApp()]]} /></div><div aria-hidden="true" className="dl-footer-word">DekatLokal</div><div className="dl-footer-bottom"><span>&copy; 2026 DekatLokal. Hak cipta dilindungi.</span><div><a href="https://dekatlokal.com/privacy-policy" rel="noreferrer" target="_blank">Kebijakan Privasi</a><a href="https://dekatlokal.com/terms-of-service" rel="noreferrer" target="_blank">Syarat &amp; Ketentuan</a></div><span>UMKM bertumbuh, satu langkah lebih dekat.</span></div></footer>
+    <footer className="dl-footer" data-testid="landing-footer"><div className="dl-footer-grid"><div className="dl-footer-about"><Image alt="DekatLokal" height={64} src="/brand/dekat-lokal.png" width={207} /><p>Teman belajar pemilik usaha. Cek kondisi jualanmu, temukan yang perlu dibenahi, lalu coba langkah kecil setiap hari.</p><a href={adminWhatsApp()}>Hubungi DekatLokal</a><span>Indonesia</span></div><FooterColumn title="Platform" links={[["Digital Checkup", checkupHref], ["Cara Kerja", "#akses-belajar"], ["Modul", "#course"], ["Harga", "#paket"]]} /><FooterColumn title="Ruang Tumbuh" links={[["Mulai Belajar", "/masuk"], ["Perkembangan Belajar", "/masuk"], ["Hasil Praktik", "/masuk"]]} /><FooterColumn title="Dukungan" links={[["Masuk", "/masuk"], ["Bantuan", adminWhatsApp()], ["Hubungi Kami", adminWhatsApp()]]} /></div><div aria-hidden="true" className="dl-footer-word">DekatLokal</div><div className="dl-footer-bottom"><span>&copy; 2026 DekatLokal. Hak cipta dilindungi.</span><div><a href="https://dekatlokal.com/privacy-policy" rel="noreferrer" target="_blank">Kebijakan Privasi</a><a href="https://dekatlokal.com/terms-of-service" rel="noreferrer" target="_blank">Syarat &amp; Ketentuan</a></div><span>UMKM bertumbuh, satu langkah lebih dekat.</span></div></footer>
   );
 }
 
