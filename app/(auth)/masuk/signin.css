@@ -219,10 +219,15 @@ main.auth-shell:has(.dl-signin) {
 }
 
 @media (max-width: 480px) {
-  main.auth-shell:has(.dl-signin) { display: block; padding: 8px 12px; background: #fff; }
-  .dl-signin { border: 0; border-radius: 0; box-shadow: none; }
-  .dl-signin-main { padding: 10px 6px 18px; }
-  .auth-shell:has(.dl-signin) .auth-support-copy { margin-top: 8px; }
+  main.auth-shell:has(.dl-signin) { display:block; padding:max(8px,env(safe-area-inset-top)) 12px max(10px,env(safe-area-inset-bottom)); background:#f6f9ff; }
+  .dl-signin { border-radius:20px; box-shadow:0 20px 55px -38px rgba(1,51,147,.45); }
+  .dl-signin-main { padding:14px 14px 16px; }
+  .dl-signin-topbar { margin-bottom:14px; }
+  .dl-signin-main header { margin-bottom:14px; }
+  .dl-signin-divider { margin:14px 0; }
+  .dl-signin-new,.dl-signin-first { margin-top:14px; }
+  .dl-signin-legal { margin-top:8px; }
+  .auth-shell:has(.dl-signin) .auth-support-copy { display:none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .dl-signin button { transition: none; }

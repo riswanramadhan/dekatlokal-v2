@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
 
-const navItems = [["Beranda", "#beranda"], ["Cara Kerja", "#akses-belajar"], ["Cerita", "#pengalaman"], ["Kelas", "#course"], ["Harga", "#paket"], ["Tanya Jawab", "#faq"]] as const;
+const navItems = [["Beranda", "#beranda"], ["Cara Kerja", "#akses-belajar"], ["Cerita", "#pengalaman"], ["Modul", "#course"], ["Harga", "#paket"], ["Tanya Jawab", "#faq"]] as const;
 
 export function LandingNavbar({ checkupHref }: { checkupHref: string }) {
   const [isScrolled, setIsScrolled] = useState(false);
