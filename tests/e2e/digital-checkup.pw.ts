@@ -90,6 +90,26 @@ test('mobile email OTP UI requests and verifies a simulated code without sending
   await page.screenshot({path:info.outputPath('signin-otp-mobile.png'),fullPage:true});
 });
 
+test('hasil checkup mengunduh PDF profesional dengan nama bisnis',async({page})=>{
+  const ranking=['A7','A1','A4','A2','A3','A5','A6'].map((code,index)=>({code,rank:index+1}));
+  await page.route('**/api/digital-checkup/assessment',route=>route.fulfill({json:{
+    id:'SIMULATION-PDF',code:'UMKM-KODE-INTERNAL',linked:false,status:'submitted',revision:1,revisionNumber:1,submittedAt:'2026-09-16T00:00:00Z',
+    payload:{profile:{businessName:'Kopi Teko Makassar',email:'demo@example.org',whatsapp:'081234567890',sector:'Makanan & minuman',district:'Kota Makassar, Sulawesi Selatan',businessAgeMonths:12,peopleCount:2,respondentRole:'Pemilik',salesChannels:['WhatsApp'],goal:'Merapikan jualan',note:'',consent:true,profileVersion:2,provinceCode:'73',cityCode:'7371',instagram:'',tiktok:'',googleMaps:''},answers:Object.fromEntries(instrument.questions.map(q=>[q.code,2]))},
+    scores:Array(8).fill(50),run:{id:'RUN-PDF',trace:{status:'RANKED',ranking,topSet:['A7'],uncovered:[]},reasons:{A7:['Siap ikut pendampingan'],A1:['Kenal usaha sendiri'],A4:['Pemakaian digital']},createdAt:'2026-09-16T00:00:00Z',instrumentVersion:'DC-INSTRUMEN-1.1',modelVersion:'DC-MODEL-1.1'}
+  }}));
+  await page.goto('/mulai');
+  await expect(page.getByText('Kopi Teko Makassar · Checkup selesai')).toBeVisible();
+  await expect(page.getByText('UMKM-KODE-INTERNAL')).toHaveCount(0);
+  const downloadPromise=page.waitForEvent('download');
+  await page.getByRole('button',{name:'Unduh laporan PDF'}).click();
+  const download=await downloadPromise;
+  expect(download.suggestedFilename()).toBe('digital-checkup-kopi-teko-makassar.pdf');
+  const stream=await download.createReadStream();
+  const chunks:Buffer[]=[];
+  for await (const chunk of stream) chunks.push(Buffer.from(chunk));
+  expect(Buffer.concat(chunks).subarray(0,8).toString('ascii')).toBe('%PDF-1.4');
+});
+
 test('checkup desktop and sign-in remain usable; unauthorized research is rejected',async({page,request},info)=>{
   await page.setViewportSize({width:1440,height:900});
   await page.goto('/mulai');
