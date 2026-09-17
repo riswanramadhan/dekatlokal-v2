@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ClipboardCheck, Lock } from "lucide-react";
-import { FinalTestRunner } from "@/components/final-test/final-test-runner";
+import { FinalTestRunner } from "@/components/landing/final-test/final-test-runner";
 import { HeroBanner, StateBlock, StatusPill, VisualPanel } from "@/components/ui";
 import { getFinalTestView } from "@/domain/services/app-service";
 
