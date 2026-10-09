@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import type { CSSProperties } from "react";
-import { useCallback, useEffect, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { animate, motion, useMotionValue, useReducedMotion, type PanInfo } from "motion/react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export type LandingStory = {
@@ -16,90 +15,126 @@ export type LandingStory = {
   logo: string;
 };
 
-const AUTOPLAY_DELAY = 3000;
-
-function getVisibleCount() {
-  if (typeof window === "undefined") return 3;
-  if (window.innerWidth < 700) return 1;
-  if (window.innerWidth < 1080) return 2;
-  return 3;
-}
+const AUTOPLAY_DELAY = 4500;
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(3);
-  const [announcement, setAnnouncement] = useState("");
   const reduceMotion = useReducedMotion();
-  const maxIndex = Math.max(0, stories.length - visibleCount);
+  const viewport = useRef<HTMLDivElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const [rawIndex, setIndex] = useState(0);
+  const [visible, setVisible] = useState(3);
+  const [step, setStep] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
+  // Setelah pengguna menekan panah/titik, autoplay ditahan sebentar supaya tidak melompat sendiri.
+  const holdUntil = useRef(0);
+  const maxIndex = Math.max(0, stories.length - visible);
+  // Saat jumlah kartu terlihat berubah (resize), indeks dijepit tanpa setState di effect.
+  const index = Math.min(rawIndex, maxIndex);
 
-  const goTo = useCallback((index: number) => {
-    const nextIndex = index > maxIndex ? 0 : index < 0 ? maxIndex : index;
-    setActiveIndex(nextIndex);
-    setAnnouncement(`Menampilkan cerita ${nextIndex + 1} sampai ${Math.min(nextIndex + visibleCount, stories.length)} dari ${stories.length}`);
-  }, [maxIndex, stories.length, visibleCount]);
-
+  // Ukur lebar kartu + jarak supaya geseran selalu pas satu kartu.
   useEffect(() => {
-    const updateLayout = () => {
-      const nextVisibleCount = getVisibleCount();
-      setVisibleCount(nextVisibleCount);
-      setActiveIndex((current) => Math.min(current, Math.max(0, stories.length - nextVisibleCount)));
+    const measure = () => {
+      const card = track.current?.firstElementChild as HTMLElement | null;
+      const viewportWidth = viewport.current?.clientWidth ?? 0;
+      if (!card || !viewportWidth) return;
+      const gap = parseFloat(getComputedStyle(track.current as HTMLElement).columnGap || "20") || 20;
+      const cardWidth = card.getBoundingClientRect().width;
+      setStep(cardWidth + gap);
+      setVisible(Math.max(1, Math.round((viewportWidth + gap) / (cardWidth + gap))));
     };
-
-    updateLayout();
-    window.addEventListener("resize", updateLayout, { passive: true });
-    return () => window.removeEventListener("resize", updateLayout);
-  }, [stories.length]);
+    measure();
+    const observer = new ResizeObserver(measure);
+    if (viewport.current) observer.observe(viewport.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
-    if (reduceMotion || maxIndex === 0 || visibleCount === 1) return;
-    const timer = window.setTimeout(() => {
-      setActiveIndex((current) => (current >= maxIndex ? 0 : current + 1));
-    }, AUTOPLAY_DELAY);
+    const controls = animate(x, -index * step, reduceMotion ? { duration: 0 } : { duration: 0.55, ease: EASE });
+    return () => controls.stop();
+  }, [index, step, x, reduceMotion]);
+
+  const goTo = useCallback(
+    (next: number) => {
+      const target = next > maxIndex ? 0 : next < 0 ? maxIndex : next;
+      holdUntil.current = Date.now() + 6000;
+      setIndex(target);
+      setAnnouncement(`Menampilkan cerita ${target + 1} sampai ${Math.min(target + visible, stories.length)} dari ${stories.length}`);
+    },
+    [maxIndex, stories.length, visible],
+  );
+
+  useEffect(() => {
+    if (reduceMotion || paused || maxIndex === 0) return;
+    const delay = Math.max(AUTOPLAY_DELAY, holdUntil.current - Date.now());
+    const timer = window.setTimeout(() => setIndex((current) => (current >= maxIndex ? 0 : current + 1)), delay);
     return () => window.clearTimeout(timer);
-  }, [activeIndex, maxIndex, reduceMotion, visibleCount]);
+  }, [index, maxIndex, paused, reduceMotion]);
+
+  const onDragEnd = (_: unknown, info: PanInfo) => {
+    const swipe = info.offset.x;
+    const velocity = info.velocity.x;
+    if (swipe < -40 || velocity < -400) goTo(Math.min(index + 1, maxIndex));
+    else if (swipe > 40 || velocity > 400) goTo(Math.max(index - 1, 0));
+    else animate(x, -index * step, { duration: 0.4, ease: EASE });
+  };
 
   if (!stories.length) return null;
 
   return (
-    <section
+    <div
       aria-label="Cerita perjalanan UMKM"
       aria-roledescription="carousel"
-      className="dl-story-carousel"
-      data-reveal-item
+      className="dl-stories"
       data-testid="story-carousel"
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false);
+      }}
+      onFocus={(event) => {
+        // Jeda hanya untuk fokus keyboard; klik mouse tidak menahan autoplay selamanya.
+        if ((event.target as HTMLElement).matches(":focus-visible")) setPaused(true);
+      }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}
     >
-      <div aria-atomic="true" aria-live="polite" className="dl-story-live-region">{announcement}</div>
+      <div aria-atomic="true" aria-live="polite" className="dl-stories-live">{announcement}</div>
 
-      <div className="dl-story-viewport">
-        <div
-          className="dl-story-track"
-          style={{
-            "--story-index": activeIndex,
-            "--story-visible": visibleCount,
-          } as CSSProperties}
+      <div className="dl-stories-viewport" ref={viewport}>
+        <motion.div
+          className="dl-stories-track"
+          drag={maxIndex > 0 ? "x" : false}
+          dragConstraints={{ left: -maxIndex * step, right: 0 }}
+          dragElastic={0.12}
+          onDragEnd={onDragEnd}
+          onDragStart={() => setPaused(true)}
+          ref={track}
+          style={{ x }}
         >
           {stories.map((story, storyIndex) => {
-            const isVisible = storyIndex >= activeIndex && storyIndex < activeIndex + visibleCount;
-
+            const isVisible = storyIndex >= index && storyIndex < index + visible;
             return (
-              <article aria-hidden={visibleCount === 1 ? undefined : !isVisible} className="dl-story-card" key={story.id}>
-                <div className="dl-story-image">
+              <article aria-hidden={!isVisible} className="dl-story" key={story.id}>
+                <div className="dl-story-media">
                   <Image
                     alt={story.imageAlt}
+                    draggable={false}
                     fill
                     priority={storyIndex < 3}
-                    sizes="(max-width: 699px) 88vw, (max-width: 1079px) 44vw, 30vw"
+                    sizes="(max-width: 699px) 92vw, (max-width: 1079px) 46vw, 380px"
                     src={story.image}
                     unoptimized
                   />
-                  <span>{story.category}</span>
+                  <span className="chip">{story.category}</span>
                 </div>
-
-                <div className="dl-story-content">
+                <div className="dl-story-body">
                   <p>{story.summary}</p>
-                  <footer>
+                  <footer className="dl-story-foot">
                     <span className="dl-story-logo">
-                      <Image alt={`Logo ${story.business}`} fill sizes="72px" src={story.logo} unoptimized />
+                      <Image alt={`Logo ${story.business}`} draggable={false} fill sizes="46px" src={story.logo} unoptimized />
                     </span>
                     <span>
                       <strong>{story.business}</strong>
@@ -110,38 +145,31 @@ export function TestimonialsCarousel({ stories }: { stories: LandingStory[] }) {
               </article>
             );
           })}
-        </div>
+        </motion.div>
       </div>
 
-      <div className="dl-story-arrows">
-        <button aria-label="Cerita sebelumnya" onClick={() => goTo(activeIndex - 1)} type="button">
-          <ArrowLeft aria-hidden="true" size={19} />
-        </button>
-        <button aria-label="Cerita berikutnya" onClick={() => goTo(activeIndex + 1)} type="button">
-          <ArrowRight aria-hidden="true" size={19} />
-        </button>
-      </div>
-
-      <div className="dl-story-controls">
-        <div aria-label="Pilih kelompok cerita" className="dl-story-dots" role="group">
-          {Array.from({ length: maxIndex + 1 }, (_, index) => (
+      <div className="dl-stories-nav">
+        <div aria-label="Pilih kelompok cerita" className="dl-stories-dots" role="group">
+          {Array.from({ length: maxIndex + 1 }, (_, dot) => (
             <button
-              aria-label={`Tampilkan kelompok cerita ${index + 1}`}
-              aria-pressed={index === activeIndex}
-              className={index === activeIndex ? "is-active" : undefined}
-              key={index}
-              onClick={() => goTo(index)}
+              aria-label={`Tampilkan kelompok cerita ${dot + 1}`}
+              aria-pressed={dot === index}
+              className={dot === index ? "is-active" : undefined}
+              key={dot}
+              onClick={() => goTo(dot)}
               type="button"
-            >
-              <span />
-            </button>
+            />
           ))}
         </div>
-
-        <div className="dl-story-status">
-          <span>{String(activeIndex + 1).padStart(2, "0")} / {String(maxIndex + 1).padStart(2, "0")}</span>
+        <div className="dl-stories-arrows">
+          <button aria-label="Cerita sebelumnya" onClick={() => goTo(index - 1)} type="button">
+            <ArrowLeft aria-hidden="true" size={19} />
+          </button>
+          <button aria-label="Cerita berikutnya" onClick={() => goTo(index + 1)} type="button">
+            <ArrowRight aria-hidden="true" size={19} />
+          </button>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

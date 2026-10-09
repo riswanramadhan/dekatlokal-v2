@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { SignInForm } from "@/components/auth/sign-in-form";
-import "./signin.css";
+import "@/app/auth.css";
 
 export const metadata: Metadata = { title: "Masuk ke DekatLokal", robots: { index: false, follow: true } };
 

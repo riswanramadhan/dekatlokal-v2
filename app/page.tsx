@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { PublicLanding } from "@/components/landing/public-landing";
-import { getRepositoriesForRequest } from "@/domain/services/app-service";
 
 export const metadata: Metadata = {
   title: "Digital Checkup Gratis untuk UMKM | DekatLokal",
@@ -29,10 +28,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function PublicLandingPage() {
-  const repositories = await getRepositoriesForRequest();
-  const modules = await repositories.learning.listFoundationalModules();
-
+export default function PublicLandingPage() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -49,7 +45,7 @@ export default async function PublicLandingPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-      <PublicLanding modules={modules} checkupHref="/mulai" />
+      <PublicLanding checkupHref="/mulai" />
     </>
   );
 }

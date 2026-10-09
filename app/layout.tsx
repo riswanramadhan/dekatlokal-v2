@@ -1,32 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Poppins } from "next/font/google";
-import { SoundEffects } from "@/components/sound";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import "./landing-nav-hero-refresh.css";
-import "./landing-course-refresh.css";
-import "./landing-sections-refresh.css";
-import "./landing-commercial-polish.css";
-import "./landing-future.css";
-import "./landing-request-lock.css";
-import "./landing-brand-refresh.css";
-import "./checkup-polish.css";
 import { PwaRegistration } from "@/components/pwa-registration";
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["500", "600", "700", "800"],
 });
 
-const geist = Geist({
-  variable: "--font-geist",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
@@ -65,18 +50,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="id"
-      className={`${poppins.variable} ${geist.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full bg-surface-page text-text-primary">
-        <SoundEffects />
+    <html lang="id" className={`${poppins.variable} ${inter.variable} h-full antialiased`}>
+      <body className="min-h-full">
         <PwaRegistration />
         {children}
       </body>

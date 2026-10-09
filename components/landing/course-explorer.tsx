@@ -1,24 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  BadgePercent,
-  BookOpen,
-  Clock3,
-  LockKeyhole,
-} from "lucide-react";
+import { BadgePercent, BookOpen, Clock3, LockKeyhole } from "lucide-react";
+import { moduleVisualBySlug, type ModuleVisual } from "@/lib/digital-checkup/module-catalog";
+import { RevealGroup, RevealItem } from "@/components/system/reveal";
+import { SectionHeading } from "@/components/landing/section-heading";
 
-export type LandingCourse = {
+export type LandingCourse = ModuleVisual & {
   slug: string;
   title: string;
   outcome: string;
-  image: string;
-  imageAlt: string;
-  category: "Branding" | "Digitalisasi" | "Legalitas" | "Operasional" | "Pengembangan" | "Penjualan";
-  access: "Gratis" | "Premium";
-  duration: string;
-  recommended?: boolean;
-  reason?: string;
-  prerequisite?: string;
 };
 
 const conciseReasonBySlug: Record<string, string> = {
@@ -43,71 +33,70 @@ const courseCopy: Record<string, { title: string; outcome: string }> = {
   "komitmen-dan-growth-mindset": { title: "Bikin Rencana yang Jalan", outcome: "Ubah target besar jadi langkah kecil yang bisa kamu kerjakan setiap minggu." },
 };
 
+/** Daftar modul landing dibangun langsung dari katalog visual + copy landing (tanpa repository lama). */
+export function buildLandingCourses(): LandingCourse[] {
+  return Object.keys(moduleVisualBySlug).map((slug) => ({
+    slug,
+    title: courseCopy[slug]?.title ?? slug,
+    outcome: courseCopy[slug]?.outcome ?? "",
+    ...moduleVisualBySlug[slug],
+  }));
+}
+
 export function CourseExplorer({ courses }: { courses: LandingCourse[] }) {
   return (
-    <section aria-labelledby="course-title" className="dl-course-shell dl-viewport-section" id="course">
-      <div className="dl-course-section">
-        <div className="dl-course-heading" data-reveal-item>
-          <p className="dl-section-kicker">Belajar yang langsung kepakai</p>
-          <h2 id="course-title">
-            Belajar seperlunya. <span className="dl-title-pill">Praktikkan setelahnya.</span>
-          </h2>
-          <p>
-            Materi singkat dan contoh sehari-hari. Selesai belajar, langsung coba untuk jualanmu.
-          </p>
-        </div>
+    <section aria-labelledby="course-title" className="dl-section" id="course">
+      <div className="container-x">
+        <SectionHeading
+          center
+          description="Materi singkat dan contoh sehari-hari. Selesai belajar, langsung coba untuk jualanmu."
+          eyebrow="Belajar yang langsung kepakai"
+          title={<>Belajar seperlunya. <span className="dl-mark-pill">Praktikkan setelahnya.</span></>}
+          titleId="course-title"
+        />
 
-        <div className="dl-course-grid">
+        <RevealGroup className="dl-courses" delay={0.06}>
           {courses.map((course) => {
             const price = course.access === "Gratis" ? "Rp0" : "Rp99.000";
             const focus = conciseReasonBySlug[course.slug] ?? course.reason ?? "Praktik usaha";
             return (
-              <article className="dl-course-card" data-reveal-item key={course.slug}>
-                <div className="dl-course-image">
-                  <Image alt={course.imageAlt} fill sizes="(max-width: 699px) 84vw, (max-width: 1099px) 42vw, 23vw" src={course.image} unoptimized />
-                  <div className="dl-course-image-badges">
-                    <span className={`dl-access-badge is-${course.access.toLocaleLowerCase("id-ID")}`}>
-                      {course.access}
-                    </span>
-                    {course.recommended ? <span className="dl-recommended-badge">Prioritas</span> : null}
-                  </div>
-                </div>
-                <div className="dl-course-body">
-                  <div className="dl-course-access-row">
-                    <span>Modul DekatLokal</span>
-                    <span>{course.category}</span>
-                  </div>
-                  <h3>{courseCopy[course.slug]?.title ?? course.title}</h3>
-                  <p>{courseCopy[course.slug]?.outcome ?? course.outcome}</p>
-                  <div className="dl-course-meta">
-                    <span>
-                      <BookOpen aria-hidden="true" size={16} />
-                      <span><strong>Fokus</strong>{focus}</span>
-                    </span>
-                    <span>
-                      <Clock3 aria-hidden="true" size={16} />
-                      <span><strong>Durasi</strong>{course.duration}</span>
-                    </span>
-                    <span className={course.prerequisite ? "dl-course-prerequisite" : "dl-course-prerequisite is-open"}>
-                      {course.prerequisite ? <LockKeyhole aria-hidden="true" size={16} /> : <BadgePercent aria-hidden="true" size={16} />}
-                      <span><strong>Akses</strong>{course.prerequisite ?? "Terbuka setelah Checkup"}</span>
-                    </span>
-                  </div>
-                  <div className="dl-course-price-row">
-                    <div>
-                      <small>Mulai dari</small>
-                      <span><strong>{price}</strong></span>
+              <RevealItem className="dl-course" key={course.slug}>
+                <article>
+                  <div className="dl-course-media">
+                    <Image alt={course.imageAlt} fill sizes="(max-width: 639px) 84vw, (max-width: 1099px) 46vw, 280px" src={course.image} unoptimized />
+                    <div className="dl-course-badges">
+                      <span className={`chip ${course.access === "Gratis" ? "chip-mint" : "chip-violet"}`}>{course.access}</span>
+                      {course.recommended ? <span className="chip chip-amber">Prioritas</span> : null}
                     </div>
-                    <span>{course.access === "Gratis" ? "Fondasi" : "Lanjutan"}</span>
                   </div>
-                  <div className="dl-course-actions" aria-label={`Aksi untuk ${course.title}`}>
-                    <Link href="/masuk">Masuk untuk belajar <BookOpen aria-hidden="true" size={16} /></Link>
+                  <div className="dl-course-body">
+                    <span className="dl-course-cat">{course.category}</span>
+                    <h3>{course.title}</h3>
+                    <p>{course.outcome}</p>
+                    <div className="dl-course-meta">
+                      <span><BookOpen aria-hidden="true" size={15} />{focus}</span>
+                      <span><Clock3 aria-hidden="true" size={15} />{course.duration}</span>
+                      <span>
+                        {course.prerequisite ? <LockKeyhole aria-hidden="true" size={15} /> : <BadgePercent aria-hidden="true" size={15} />}
+                        {course.prerequisite ?? "Terbuka setelah Checkup"}
+                      </span>
+                    </div>
+                    <div className="dl-course-foot">
+                      <div className="dl-course-price">
+                        <small>Mulai dari</small>
+                        <strong>{price}</strong>
+                      </div>
+                      <Link aria-label={`Masuk untuk belajar ${course.title}`} href="/masuk">
+                        Masuk untuk belajar <BookOpen aria-hidden="true" size={15} />
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </article>
+                </article>
+              </RevealItem>
             );
           })}
-        </div>
+        </RevealGroup>
+        <p className="dl-courses-hint">Geser untuk lihat modul lainnya →</p>
       </div>
     </section>
   );

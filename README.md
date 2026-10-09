@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DekatLokal · Digital Checkup
 
-## Getting Started
+Aplikasi web untuk pemilik UMKM: isi Digital Checkup (32 pertanyaan gaya kuis), lihat kondisi usaha dalam 8 bagian, dapatkan 3 modul belajar prioritas, lalu belajar gratis selama 7 hari. Rekomendasi dihitung dengan **Fuzzy AHP** (bobot dari 3 ahli) dan **TOPSIS** (urutan modul untuk setiap usaha). Admin dapat membaca setiap checkup yang masuk beserta langkah hitungnya.
 
-First, run the development server:
+## Menjalankan di komputer
 
 ```bash
+npm install
+cp .env.supabase.example .env.local   # isi nilai Supabase
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Halaman utama
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Alamat | Untuk siapa | Isi |
+|---|---|---|
+| `/` | Umum | Landing page |
+| `/mulai` | Pemilik usaha | Digital Checkup satu pertanyaan per layar, hasil langsung |
+| `/masuk` | Pemilik usaha | Masuk dengan kode email atau Google; hasil checkup tersambung otomatis |
+| `/dashboard` | Pemilik usaha | Ruang belajar: modul prioritas, latihan, kuis, akses 7 hari |
+| `/ahli` | Panel ahli | Penilaian instrumen, perbandingan berpasangan, relevansi modul |
+| `/admin` | Admin / peneliti | Daftar checkup, detail hitungan, panel ahli, verifikasi metode, ekspor |
 
-## Learn More
+## Struktur kode
 
-To learn more about Next.js, take a look at the following resources:
+- `app/` — rute Next.js (App Router). CSS per area: `globals.css` (token desain), `landing.css`, `checkup.css`, `auth.css`, `dashboard.css`, `admin/admin.css`.
+- `components/checkup/` — wizard checkup (layar sambutan, profil 3 langkah, pertanyaan, tinjauan).
+- `components/landing/`, `components/auth/`, `components/admin/`, `components/digital-checkup/` — komponen per area.
+- `components/system/` — tombol, animasi masuk (`Reveal`), penghitung angka.
+- `lib/decision-engine/` — mesin Fuzzy AHP + TOPSIS (`index.ts`), instrumen (`instrument.json`), pemeriksa hitung ulang (`verify.ts`).
+- `lib/digital-checkup/` — layanan server (Supabase), validasi, bahasa mudah (`plain-language.ts`), label awam (`labels.ts`), kode UMKM, kurikulum.
+- `supabase/migrations/` — skema database (`dc_*`), RLS, fungsi.
+- `tests/` — Vitest (unit + jsdom) dan Playwright (`tests/e2e`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Perintah
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run check            # lint + typecheck + unit test + build
+npm run test             # unit test saja
+npm run test:e2e         # Playwright (butuh server di :3000 atau dijalankan otomatis)
+npm run check:production # cek kesiapan produksi (baca saja)
+```
 
-## Deploy on Vercel
+## Dokumen
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `PANDUAN_AKTIVASI_AKSES.md` — langkah agar login dan akses 7 hari berjalan di produksi.
+- `AKTIVASI_PRODUKSI_DIGITAL_CHECKUP.md`, `AKTIVASI_LOGIN_DAN_AKUN_DEMO.md` — rincian teknis aktivasi.
+- `DEMO_SEMHAS_FAHP_TOPSIS.md`, `PROMPT_LAPORAN_VALIDASI_FAHP_TOPSIS.md` — bahan demo dan laporan validasi metode.
+- `notebooks/validasi_fahp_topsis_colab.ipynb` — validasi independen di Google Colab.

@@ -1,24 +1,33 @@
+import "@/app/landing.css";
+
 import { adminWhatsApp } from "@/lib/digital-checkup/contact";
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import {
+  ArrowRight,
   ArrowUpRight,
   BarChart3,
   BookOpenCheck,
   CheckCircle2,
+  ClipboardCheck,
+  MessageCircle,
   ScanSearch,
+  Sparkles,
   Target,
+  UserRound,
+  Users,
 } from "lucide-react";
-import { CourseExplorer, type LandingCourse } from "@/components/landing/course-explorer";
+import { Reveal, RevealGroup, RevealItem } from "@/components/system/reveal";
+import { CourseExplorer, buildLandingCourses } from "@/components/landing/course-explorer";
+import { FaqAccordion } from "@/components/landing/faq-accordion";
 import { HeroHeadline } from "@/components/landing/hero-headline";
-import { HeroDashboardPreview } from "@/components/landing/hero-dashboard-preview";
+import { HeroVisual } from "@/components/landing/hero-visual";
 import { LandingNavbar } from "@/components/landing/landing-navbar";
 import { LandingPricingSelector } from "@/components/landing/landing-pricing-selector";
-import { LandingEffects } from "@/components/landing/landing-effects";
+import { SectionHeading } from "@/components/landing/section-heading";
 import { TestimonialsCarousel, type LandingStory } from "@/components/landing/testimonials-carousel";
-import { fallbackModuleVisual, moduleVisualBySlug } from "@/lib/digital-checkup/module-catalog";
 
-type ModuleCardView = { slug: string; title: string; outcome: string; icon: string };
 const umkmLogos = [
   ["Aroma Bakery", "/umkm/aroma-bakery.webp"], ["Bakpia Malino", "/umkm/bakpia-malino.webp"],
   ["Banangih", "/umkm/banangih.webp"], ["Bio Atama", "/umkm/bio-atama.webp"],
@@ -43,6 +52,13 @@ const stories: LandingStory[] = [
   { id: "mulkan", business: "Mulkan Mimbaun", category: "Produk lokal", summary: "Mulkan Mimbaun mengubah target besar menjadi langkah kecil yang jelas. Jadi lebih mudah dimulai dan dilanjutkan.", image: "/platform-v2/stories/latest/mulkan-mimbaun.webp", imageAlt: "Tim Mulkan Mimbaun dalam perjalanan pengembangan usaha", logo: "/umkm/mulkan-mimbaun.webp" },
   { id: "keripik", business: "Rumah Keripik", category: "Camilan", summary: "Rumah Keripik mulai dari informasi produk yang rapi, supaya promosi tidak cuma ramai sesaat tetapi benar-benar membantu penjualan.", image: "/platform-v2/stories/latest/rumah-keripik.webp", imageAlt: "Tim Rumah Keripik menunjukkan perkembangan usahanya", logo: "/umkm/rumah-keripik.webp" },
 ];
+
+const accessSteps = [
+  { number: "01", label: "Mulai Checkup Gratis", title: "Ceritakan kondisi usahamu", description: "Jawab pertanyaan sederhana dalam 5–7 menit.", image: "/platform-v2/access/checkup.webp", imageAlt: "Pemilik UMKM memulai Digital Checkup melalui ponsel", icon: ScanSearch, tone: "var(--color-primary)", tint: "var(--color-primary-soft)", wide: true },
+  { number: "02", label: "Pahami hasil", title: "Lihat tiga fokus utama", description: "Temukan apa yang perlu dikerjakan lebih dahulu dan alasannya.", image: "/platform-v2/access/analysis.webp", imageAlt: "Pemilik usaha meninjau hasil analisis usahanya", icon: BarChart3, tone: "#5b3fd6", tint: "var(--color-violet-soft)", wide: false },
+  { number: "03", label: "Langsung praktik", title: "Kerjakan langsung di usaha", description: "Coba latihan sederhana untuk produk, promosi, atau catatan usahamu.", image: "/platform-v2/access/action.webp", imageAlt: "Pelaku UMKM menerapkan aksi pada produk usahanya", icon: Target, tone: "var(--color-success)", tint: "var(--color-mint-soft)", wide: false },
+  { number: "04", label: "Lanjut belajar", title: "Belajar dari mana saja", description: "Belajar sebentar dulu, lanjut lagi saat ada waktu.", image: "/platform-v2/access/course.webp", imageAlt: "Pemilik UMKM belajar course menggunakan laptop", icon: BookOpenCheck, tone: "var(--color-warning)", tint: "var(--color-amber-soft)", wide: true },
+] as const;
 
 const faqItems = [
   {
@@ -77,16 +93,22 @@ const faqItems = [
   },
 ] as const;
 
-export function PublicLanding({ modules, checkupHref }: { modules: ModuleCardView[]; checkupHref: string }) {
-  const courses: LandingCourse[] = modules.map((module) => ({ slug: module.slug, title: module.title, outcome: module.outcome, ...(moduleVisualBySlug[module.slug] ?? fallbackModuleVisual) }));
+const faqGroups = [
+  { title: "Tentang Digital Checkup", items: faqItems.slice(0, 3) },
+  { title: "Tentang Ruang Tumbuh", items: faqItems.slice(3) },
+];
+
+export function PublicLanding({ checkupHref }: { checkupHref: string }) {
+  const courses = buildLandingCourses();
 
   return (
     <div className="dl-landing">
       <a className="dl-skip-link" href="#konten-utama">Lewati ke konten utama</a>
       <LandingNavbar checkupHref={checkupHref} />
-      <main>
+      <main id="konten-utama" tabIndex={-1}>
         <Hero checkupHref={checkupHref} />
         <AccessLearningSection />
+        <BenefitsSection />
         <TestimonialsSection />
         <CourseExplorer courses={courses} />
         <PricingSection checkupHref={checkupHref} />
@@ -94,42 +116,50 @@ export function PublicLanding({ modules, checkupHref }: { modules: ModuleCardVie
         <FinalCta checkupHref={checkupHref} />
       </main>
       <LandingFooter checkupHref={checkupHref} />
-      <LandingEffects />
     </div>
   );
 }
 
 function Hero({ checkupHref }: { checkupHref: string }) {
   return (
-    <section aria-labelledby="hero-title" className="dl-hero-section" id="beranda">
-      <div aria-hidden="true" className="dl-hero-grid" />
-      <div aria-hidden="true" className="dl-hero-orb dl-hero-orb-one" />
-      <div aria-hidden="true" className="dl-hero-orb dl-hero-orb-two" />
-      <div className="dl-hero-inner">
-        <div className="dl-hero-copy" data-reveal-item id="konten-utama" tabIndex={-1}>
-          <HeroHeadline />
-          <p className="dl-hero-description">Usaha mau maju, tapi bingung mulai dari mana? Cek kondisinya dulu, lalu temukan langkah yang bisa kamu coba hari ini.</p>
-          <div className="dl-hero-actions">
-            <Link className="dl-primary-button" href={checkupHref}>Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} /></Link>
-            <Link className="dl-secondary-button" href="#akses-belajar">Lihat cara kerjanya</Link>
+    <section aria-labelledby="hero-title" className="dl-hero" id="beranda">
+      <div aria-hidden="true" className="dl-hero-bg" />
+      <div className="container-x">
+        <div className="dl-hero-inner">
+          <div className="dl-hero-copy">
+            <span className="chip dl-hero-chip">
+              <i><Sparkles aria-hidden="true" size={12} /></i>
+              Digital Checkup gratis untuk UMKM
+            </span>
+            <HeroHeadline />
+            <p className="dl-hero-desc">
+              Usaha mau maju, tapi bingung mulai dari mana? Cek kondisinya dulu, lalu temukan langkah yang bisa kamu coba hari ini.
+            </p>
+            <div className="dl-hero-actions">
+              <Link className="btn btn-primary btn-lg" href={checkupHref}>
+                Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} />
+              </Link>
+              <Link className="btn btn-secondary btn-lg" href="#akses-belajar">Lihat cara kerjanya</Link>
+            </div>
+            <ul aria-label="Informasi Digital Checkup" className="dl-hero-trust">
+              {["Gratis", "Cuma 5–7 menit", "Hasil langsung"].map((item) => (
+                <li key={item}><CheckCircle2 aria-hidden="true" size={16} />{item}</li>
+              ))}
+            </ul>
           </div>
-          <ul className="dl-hero-trust" aria-label="Informasi Digital Checkup">
-            {["Gratis", "Cuma 5–7 menit", "Hasil langsung"].map((item) => <li key={item}><CheckCircle2 aria-hidden="true" size={16} />{item}</li>)}
-          </ul>
+          <HeroVisual />
         </div>
-      </div>
 
-      <div className="dl-hero-product" data-reveal-item>
-        <HeroDashboardPreview />
-      </div>
-
-      <div aria-label="Usaha lokal bersama DekatLokal" className="dl-logo-strip" data-reveal-item tabIndex={0}>
-        <p className="dl-logo-strip-label">Bareng usaha lokal, tumbuh selangkah lagi</p>
-        <div className="dl-logo-mask">
-          <div className="dl-logo-track">
-            {[...umkmLogos, ...umkmLogos].map(([name, src], index) => (
-              <span aria-hidden={index >= umkmLogos.length} className="dl-logo-item" key={`${name}-${index}`}><Image alt={index < umkmLogos.length ? name : ""} height={52} loading={index < 4 ? "eager" : "lazy"} src={src} unoptimized width={128} /></span>
-            ))}
+        <div aria-label="Usaha lokal bersama DekatLokal" className="dl-logos">
+          <p className="dl-logos-label">Bareng usaha lokal, tumbuh selangkah lagi</p>
+          <div className="dl-logos-mask">
+            <div className="dl-logos-track">
+              {[...umkmLogos, ...umkmLogos].map(([name, src], index) => (
+                <span aria-hidden={index >= umkmLogos.length} className="dl-logo" key={`${name}-${index}`}>
+                  <Image alt={index < umkmLogos.length ? name : ""} height={44} loading={index < 6 ? "eager" : "lazy"} src={src} unoptimized width={120} />
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -137,57 +167,124 @@ function Hero({ checkupHref }: { checkupHref: string }) {
   );
 }
 
-const accessSteps = [
-  { number: "01", label: "Mulai Checkup Gratis", title: "Ceritakan kondisi usahamu", description: "Jawab pertanyaan sederhana dalam 5–7 menit.", image: "/platform-v2/access/checkup.webp", imageAlt: "Pemilik UMKM memulai Digital Checkup melalui ponsel", icon: ScanSearch },
-  { number: "02", label: "Pahami hasil", title: "Lihat tiga fokus utama", description: "Temukan apa yang perlu dikerjakan lebih dahulu dan alasannya.", image: "/platform-v2/access/analysis.webp", imageAlt: "Pemilik usaha meninjau hasil analisis usahanya", icon: BarChart3 },
-  { number: "03", label: "Langsung praktik", title: "Kerjakan langsung di usaha", description: "Coba latihan sederhana untuk produk, promosi, atau catatan usahamu.", image: "/platform-v2/access/action.webp", imageAlt: "Pelaku UMKM menerapkan aksi pada produk usahanya", icon: Target },
-  { number: "04", label: "Lanjut belajar", title: "Belajar dari mana saja", description: "Belajar sebentar dulu, lanjut lagi saat ada waktu.", image: "/platform-v2/access/course.webp", imageAlt: "Pemilik UMKM belajar course menggunakan laptop", icon: BookOpenCheck },
-] as const;
-
 function AccessLearningSection() {
   return (
-    <section aria-labelledby="access-title" className="dl-access-section dl-viewport-section" id="akses-belajar">
-      <div className="dl-access-board" data-reveal-item>
-        <article className="dl-access-lead">
-          <div className="dl-access-lead-heading">
-            <p className="dl-section-kicker">Cara kerjanya</p>
-            <h2 id="access-title">
-              Mulai dari yang penting. <span className="dl-title-pill">Lanjut tanpa bingung.</span>
-            </h2>
-            <p>
-              Nggak perlu mengerjakan semuanya sekaligus. Mulai dari hal yang paling dibutuhkan usahamu, lalu lanjut satu per satu.
-            </p>
-          </div>
-        </article>
+    <section aria-labelledby="access-title" className="dl-section" id="akses-belajar">
+      <div className="container-x">
+        <Reveal>
+          <SectionHeading
+            center
+            description="Nggak perlu mengerjakan semuanya sekaligus. Mulai dari hal yang paling dibutuhkan usahamu, lalu lanjut satu per satu."
+            eyebrow="Cara kerjanya"
+            title={<>Mulai dari yang penting. <span className="dl-mark-pill">Lanjut tanpa bingung.</span></>}
+            titleId="access-title"
+          />
+        </Reveal>
 
-        <div className="dl-access-row-list">
+        <RevealGroup className="dl-steps">
           {accessSteps.map((step) => {
             const Icon = step.icon;
-
             return (
-              <article className="dl-access-row" key={step.number}>
-                <div aria-hidden="true" className="dl-access-row-icon">
-                  <Icon size={23} />
-                </div>
-                <div className="dl-access-row-copy">
-                  <span>{step.number} / {step.label}</span>
+              <RevealItem
+                className={`dl-step ${step.wide ? "is-wide" : "is-narrow"}`}
+                key={step.number}
+                style={{ "--dl-tone": step.tone, "--dl-tint": step.tint } as CSSProperties}
+              >
+                <div className="dl-step-body">
+                  <div className="dl-step-top">
+                    <span aria-hidden="true" className="dl-step-icon"><Icon size={23} /></span>
+                    <span className="dl-step-num">{step.number}</span>
+                  </div>
+                  <span className="dl-step-label">{step.label}</span>
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
                 </div>
-                <div className="dl-access-row-media">
-                  <Image
-                    alt={step.imageAlt}
-                    fill
-                    loading="eager"
-                    sizes="(max-width: 560px) 86vw, 150px"
-                    src={step.image}
-                    unoptimized
-                  />
+                <div className="dl-step-media">
+                  <Image alt={step.imageAlt} fill sizes="(max-width: 699px) 90vw, (max-width: 1023px) 46vw, 340px" src={step.image} unoptimized />
                 </div>
-              </article>
+              </RevealItem>
             );
           })}
-        </div>
+        </RevealGroup>
+      </div>
+    </section>
+  );
+}
+
+function BenefitsSection() {
+  return (
+    <section aria-labelledby="benefit-title" className="dl-section-tight dl-section" id="manfaat">
+      <div className="container-x">
+        <Reveal>
+          <SectionHeading
+            center
+            description="Semuanya dimulai dari checkup gratis. Hasilnya jadi peta yang jelas untuk langkah berikutnya."
+            eyebrow="Yang kamu dapat"
+            title={<>Bukan cuma skor. <span className="dl-mark-pill">Arah yang jelas.</span></>}
+            titleId="benefit-title"
+          />
+        </Reveal>
+
+        <RevealGroup className="dl-benefits">
+          <RevealItem className="dl-benefit" style={{ "--dl-tint": "var(--color-primary-soft)" } as CSSProperties}>
+            <div aria-hidden="true" className="dl-benefit-visual">
+              <div className="dl-mini-bars">
+                {[72, 46, 88, 58, 39, 80, 64, 90].map((height, index) => (
+                  <span key={index} style={{ height: `${height}%`, animationDelay: `${index * 70}ms` }} />
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3>Nilai 8 bagian usaha</h3>
+              <p>Dari kenal usaha sendiri, legalitas, produk, merek, sampai pemakaian digital. Kamu tahu mana yang sudah kuat dan mana yang perlu dibenahi.</p>
+            </div>
+            <span className="chip chip-primary dl-benefit-tag"><BarChart3 size={14} /> Hasil langsung</span>
+          </RevealItem>
+
+          <RevealItem className="dl-benefit" style={{ "--dl-tint": "var(--color-violet-soft)" } as CSSProperties}>
+            <div aria-hidden="true" className="dl-benefit-visual">
+              <div className="dl-experts">
+                <div className="dl-expert-avatars">
+                  <span><UserRound size={20} /></span>
+                  <span><UserRound size={20} /></span>
+                  <span><UserRound size={20} /></span>
+                </div>
+                <ArrowRight className="dl-experts-arrow" size={18} />
+                <div className="dl-expert-stack">
+                  <span><i>1</i>Mulai Jualan Online</span>
+                  <span><i>2</i>Usaha Mudah Diingat</span>
+                  <span><i>3</i>Produk &amp; Kemasan</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3>3 modul prioritas dari penilaian 3 ahli</h3>
+              <p>Jawabanmu dinilai oleh tiga ahli usaha, lalu dirangkum jadi tiga modul yang paling pas untuk dikerjakan dulu.</p>
+            </div>
+            <span className="chip chip-violet dl-benefit-tag"><Users size={14} /> Dinilai manusia, bukan robot</span>
+          </RevealItem>
+
+          <RevealItem className="dl-benefit" style={{ "--dl-tint": "var(--color-mint-soft)" } as CSSProperties}>
+            <div aria-hidden="true" className="dl-benefit-visual">
+              <div className="dl-days-row">
+                <div className="dl-days">
+                  {["H1", "H2", "H3", "H4", "H5", "H6", "H7"].map((day, index) => (
+                    <span className={index < 3 ? "is-done" : undefined} key={day}>{index < 3 ? "✓" : day}</span>
+                  ))}
+                </div>
+                <div className="dl-days-chips">
+                  <span className="chip chip-mint">Latihan</span>
+                  <span className="chip chip-amber">Kuis</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3>Akses modul gratis 7 hari + latihan &amp; kuis</h3>
+              <p>Buka modul prioritasmu tanpa biaya selama 7 hari. Ada latihan dan kuis singkat supaya yang dipelajari langsung kepakai.</p>
+            </div>
+            <span className="chip chip-mint dl-benefit-tag"><ClipboardCheck size={14} /> Langsung praktik</span>
+          </RevealItem>
+        </RevealGroup>
       </div>
     </section>
   );
@@ -195,61 +292,55 @@ function AccessLearningSection() {
 
 function TestimonialsSection() {
   return (
-    <section aria-labelledby="experience-title" className="dl-testimonials-section dl-viewport-section" id="pengalaman">
-      <div className="dl-story-heading" data-reveal-item><div><p className="dl-section-kicker">Cerita perjalanan UMKM</p><h2 id="experience-title">Bukan soal langsung besar. <span className="dl-title-pill">Soal terus bergerak.</span></h2></div><p>Kenalan dengan usaha lokal yang terus belajar, merapikan jualan, dan mencoba hal baru.</p></div>
-      <TestimonialsCarousel stories={stories} />
+    <section aria-labelledby="experience-title" className="dl-section" id="pengalaman">
+      <div className="container-x">
+        <Reveal>
+          <SectionHeading
+            description="Kenalan dengan usaha lokal yang terus belajar, merapikan jualan, dan mencoba hal baru."
+            eyebrow="Cerita perjalanan UMKM"
+            title={<>Bukan soal langsung besar. <span className="dl-mark-pill">Soal terus bergerak.</span></>}
+            titleId="experience-title"
+          />
+        </Reveal>
+        <Reveal delay={0.1}>
+          <TestimonialsCarousel stories={stories} />
+        </Reveal>
+      </div>
     </section>
   );
 }
 
 function PricingSection({ checkupHref }: { checkupHref: string }) {
   return (
-    <section aria-labelledby="pricing-title" className="dl-pricing-section dl-viewport-section" id="paket">
-      <LandingPricingSelector checkupHref={checkupHref} />
+    <section aria-labelledby="pricing-title" className="dl-section" id="paket">
+      <div className="container-x">
+        <Reveal>
+          <LandingPricingSelector checkupHref={checkupHref} />
+        </Reveal>
+      </div>
     </section>
   );
 }
 
 function FaqSection() {
-  const faqGroups = [
-    { title: "Tentang Digital Checkup", items: faqItems.slice(0, 3) },
-    { title: "Tentang Ruang Tumbuh", items: faqItems.slice(3) },
-  ];
-
   return (
-    <section aria-labelledby="faq-title" className="dl-faq-section dl-viewport-section" id="faq">
-      <div className="dl-faq-layout" data-reveal-item>
-        <div className="dl-faq-copy">
-          <div className="dl-faq-eyebrow">
-            <span aria-hidden="true" className="dl-faq-logo">
-              <Image alt="" height={32} loading="eager" src="/brand/dekat-lokal-icon.png" unoptimized width={32} />
-            </span>
-            <p className="dl-section-kicker">FAQ</p>
-          </div>
-          <h2 id="faq-title">Masih ada yang bikin ragu?</h2>
-        </div>
-
-        <div className="dl-faq-columns">
-          {faqGroups.map((group, groupIndex) => (
-            <section aria-labelledby={`faq-group-${groupIndex}`} className="dl-faq-category" key={group.title}>
-              <h3 id={`faq-group-${groupIndex}`}>{group.title}</h3>
-              <div className="dl-faq-list">
-                {group.items.map((item, itemIndex) => (
-                  <details
-                    className="dl-faq-item dl-faq-reference-item"
-                    key={item.question}
-                    open={groupIndex === 0 && itemIndex === 0}
-                  >
-                    <summary>
-                      <span>{item.question}</span>
-                      <i aria-hidden="true" className="dl-faq-toggle" />
-                    </summary>
-                    <p className="dl-faq-answer">{item.answer}</p>
-                  </details>
-                ))}
-              </div>
-            </section>
-          ))}
+    <section aria-labelledby="faq-title" className="dl-section" id="faq">
+      <div className="container-x">
+        <div className="dl-faq">
+          <Reveal className="dl-faq-copy">
+            <SectionHeading
+              description="Kalau pertanyaanmu belum ada di sini, langsung saja tanya tim DekatLokal lewat WhatsApp."
+              eyebrow="Tanya jawab"
+              title="Masih ada yang bikin ragu?"
+              titleId="faq-title"
+            />
+            <a className="btn btn-secondary" href={adminWhatsApp()} rel="noreferrer" target="_blank">
+              <MessageCircle aria-hidden="true" size={18} /> Tanya lewat WhatsApp
+            </a>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <FaqAccordion groups={faqGroups} />
+          </Reveal>
         </div>
       </div>
     </section>
@@ -258,15 +349,28 @@ function FaqSection() {
 
 function FinalCta({ checkupHref }: { checkupHref: string }) {
   return (
-    <section aria-labelledby="start-title" className="dl-final-cta dl-viewport-section dl-cta-refined" id="mulai">
-      <div aria-hidden="true" className="dl-cta-grid" />
-      <div className="dl-final-inner">
-        <div className="dl-final-copy" data-reveal-item>
-          <p className="dl-section-kicker">Langkah kecil, mulai hari ini</p>
-          <h2 id="start-title">Kenali usahamu. Tentukan langkah berikutnya.</h2>
-          <p>Mulai dari checkup gratis. Lihat kondisi usahamu dan lanjut belajar sesuai kebutuhan.</p>
-          <div><Link className="dl-final-primary" href={checkupHref}>Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} /></Link></div>
-        </div>
+    <section aria-labelledby="start-title" className="dl-section-tight dl-section dl-cta-refined" id="mulai">
+      <div className="container-x">
+        <Reveal>
+          <div className="dl-cta-box">
+            <div className="dl-cta-copy">
+              <p className="eyebrow">Langkah kecil, mulai hari ini</p>
+              <h2 id="start-title">Kenali usahamu. Tentukan langkah berikutnya.</h2>
+              <p>Mulai dari checkup gratis. Lihat kondisi usahamu dan lanjut belajar sesuai kebutuhan.</p>
+              <div className="dl-cta-actions">
+                <Link className="btn btn-lg dl-btn-white" href={checkupHref}>
+                  Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} />
+                </Link>
+                <a className="btn btn-lg dl-btn-outline-white" href={adminWhatsApp()} rel="noreferrer" target="_blank">
+                  Tanya dulu
+                </a>
+              </div>
+            </div>
+            <div aria-hidden="true" className="dl-cta-figure">
+              <Image alt="" fill sizes="(max-width: 899px) 0px, 360px" src="/platform-v2/hero/owner-cutout.webp" unoptimized />
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -274,10 +378,45 @@ function FinalCta({ checkupHref }: { checkupHref: string }) {
 
 function LandingFooter({ checkupHref }: { checkupHref: string }) {
   return (
-    <footer className="dl-footer" data-testid="landing-footer"><div className="dl-footer-grid"><div className="dl-footer-about"><Image alt="DekatLokal" height={64} src="/brand/dekat-lokal.png" width={207} /><p>Teman belajar pemilik usaha. Cek kondisi jualanmu, temukan yang perlu dibenahi, lalu coba langkah kecil setiap hari.</p><a href={adminWhatsApp()}>Hubungi DekatLokal</a><span>Indonesia</span></div><FooterColumn title="Platform" links={[["Digital Checkup", checkupHref], ["Cara Kerja", "#akses-belajar"], ["Modul", "#course"], ["Harga", "#paket"]]} /><FooterColumn title="Ruang Tumbuh" links={[["Mulai Belajar", "/masuk"], ["Perkembangan Belajar", "/masuk"], ["Hasil Praktik", "/masuk"]]} /><FooterColumn title="Dukungan" links={[["Masuk", "/masuk"], ["Bantuan", adminWhatsApp()], ["Hubungi Kami", adminWhatsApp()]]} /></div><div aria-hidden="true" className="dl-footer-word">DekatLokal</div><div className="dl-footer-bottom"><span>&copy; 2026 DekatLokal. Hak cipta dilindungi.</span><div><a href="https://dekatlokal.com/privacy-policy" rel="noreferrer" target="_blank">Kebijakan Privasi</a><a href="https://dekatlokal.com/terms-of-service" rel="noreferrer" target="_blank">Syarat &amp; Ketentuan</a></div><span>UMKM bertumbuh, satu langkah lebih dekat.</span></div></footer>
+    <footer className="dl-footer" data-testid="landing-footer">
+      <div className="container-x">
+        <div className="dl-footer-grid">
+          <div className="dl-footer-about">
+            <Image alt="DekatLokal" height={40} src="/brand/dekat-lokal.png" unoptimized width={130} />
+            <p>Teman belajar pemilik usaha. Cek kondisi jualanmu, temukan yang perlu dibenahi, lalu coba langkah kecil setiap hari.</p>
+            <a href={adminWhatsApp()} rel="noreferrer" target="_blank">
+              <MessageCircle aria-hidden="true" size={16} /> Hubungi DekatLokal
+            </a>
+            <span>Indonesia</span>
+          </div>
+          <FooterColumn links={[["Digital Checkup", checkupHref], ["Cara Kerja", "#akses-belajar"], ["Modul", "#course"], ["Harga", "#paket"]]} title="Platform" />
+          <FooterColumn links={[["Mulai Belajar", "/masuk"], ["Perkembangan Belajar", "/masuk"], ["Hasil Praktik", "/masuk"]]} title="Ruang Tumbuh" />
+          <FooterColumn links={[["Masuk", "/masuk"], ["Bantuan", adminWhatsApp()], ["Hubungi Kami", adminWhatsApp()]]} title="Dukungan" />
+        </div>
+        <div className="dl-footer-bottom">
+          <span>&copy; 2026 DekatLokal. Hak cipta dilindungi.</span>
+          <div className="dl-footer-legal">
+            <a href="https://dekatlokal.com/privacy-policy" rel="noreferrer" target="_blank">Kebijakan Privasi</a>
+            <a href="https://dekatlokal.com/terms-of-service" rel="noreferrer" target="_blank">Syarat &amp; Ketentuan</a>
+          </div>
+          <span>UMKM bertumbuh, satu langkah lebih dekat.</span>
+        </div>
+      </div>
+    </footer>
   );
 }
 
 function FooterColumn({ title, links }: { title: string; links: ReadonlyArray<readonly [string, string]> }) {
-  return <div className="dl-footer-column"><h2>{title}</h2>{links.map(([label, href]) => <Link href={href} key={label}>{label}</Link>)}</div>;
+  return (
+    <div className="dl-footer-column">
+      <h2>{title}</h2>
+      {links.map(([label, href]) =>
+        href.startsWith("http") ? (
+          <a href={href} key={label} rel="noreferrer" target="_blank">{label}</a>
+        ) : (
+          <Link href={href} key={label}>{label}</Link>
+        ),
+      )}
+    </div>
+  );
 }

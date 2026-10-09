@@ -47,8 +47,8 @@ it("orders dashboard courses by the exact TOPSIS ranking",async()=>{
   m.api.mockResolvedValue({name:"Demo",claimPending:false,access:{startsAt:"2026-09-16T00:00:00Z",expiresAt:"2099-09-23T00:00:00Z",active:true,daysLeft:7},version:"DL-FREE-1.0",progress:[],courses:freeCourses.map(course=>({...course,quiz:course.quiz.map(item=>({question:item.question,options:item.options}))})),assessment:{status:"submitted",linked:true,run:{trace:{ranking,topSet:["A7"],status:"RANKED"}},payload:{profile:{}},scores:Array(8).fill(50)}});
   const {container}=render(createElement(LearningDashboard));
   await screen.findByText("Urutan modul dari hasil checkup-mu");
-  const titles=[...container.querySelectorAll(".dl-free-card h3")].map(node=>node.textContent);
+  const titles=[...container.querySelectorAll(".ld-card h3")].map(node=>node.textContent);
   expect(titles.slice(0,3)).toEqual(["Rencana kecil, jalan terus","Promosi yang punya arah","Merek yang gampang dikenali"]);
-  expect(container.querySelector(".dl-free-card .dc-badge")?.textContent).toBe("Prioritas #1");
+  expect(container.querySelector(".ld-card .chip")?.textContent).toBe("Prioritas #1");
   expect(screen.getByRole("button",{name:/Mulai modul pertama/})).toBeTruthy();
 });
