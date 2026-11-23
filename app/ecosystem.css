@@ -1,0 +1,1103 @@
+/* Sistem tampilan ekosistem DekatLokal — disalin dari dekatlokal.com (app/globals.css, branch main)
+   supaya Digital Checkup terasa satu keluarga: kicker, CTA, teks berjalan, tombol mengambang, animasi. */
+
+/* ── dekatlokal.com globals.css baris 26–54 ── */
+.public-page-transition {
+  animation: public-page-fade-in 350ms ease-out both;
+}
+
+/* Keep the first public-page content clear of the fixed announcement + navbar. */
+.public-header-offset {
+  padding-top: calc(10rem + env(safe-area-inset-top, 0px));
+}
+
+.public-header {
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.public-announcement {
+  padding-top: calc(0.375rem + env(safe-area-inset-top, 0px));
+}
+
+@media (min-width: 1024px) {
+  .public-header-offset {
+    padding-top: calc(11rem + env(safe-area-inset-top, 0px));
+  }
+}
+
+html.splash-active .public-page-transition {
+  animation-play-state: paused;
+}
+
+
+/* ── dekatlokal.com globals.css baris 151–507 ── */
+.hero-kicker {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 0.58rem 1.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1) 46%, rgba(183, 207, 252, 0.16)),
+    rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    inset 0 -1px 0 rgba(183, 207, 252, 0.2),
+    0 14px 38px rgba(0, 17, 49, 0.16),
+    0 2px 8px rgba(255, 255, 255, 0.08);
+  color: white;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: clamp(0.78rem, 1.2vw, 0.92rem);
+  font-weight: 600;
+  letter-spacing: 0.075em;
+  text-shadow: 0 1px 10px rgba(0, 17, 49, 0.22);
+  text-transform: uppercase;
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+}
+
+.hero-kicker::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(112deg, rgba(255, 255, 255, 0.22), transparent 32%, transparent 68%, rgba(255, 255, 255, 0.1));
+  content: "";
+  pointer-events: none;
+}
+
+.hero-kicker::after {
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+}
+
+.hero-kicker--light {
+  border-color: rgba(2, 85, 245, 0.18);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(235, 241, 254, 0.9)),
+    var(--primary-50);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    0 10px 28px rgba(2, 85, 245, 0.1);
+  color: var(--primary);
+  text-shadow: none;
+}
+
+.hero-kicker--light::before {
+  background: linear-gradient(112deg, rgba(2, 85, 245, 0.08), transparent 34%, transparent 68%, rgba(2, 85, 245, 0.05));
+}
+
+.hero-kicker--light::after {
+  border-color: rgba(2, 85, 245, 0.08);
+}
+
+.hero-kicker--blue {
+  border-color: rgba(2, 85, 245, 0.8);
+  background: var(--primary);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 12px 30px rgba(2, 85, 245, 0.2);
+  color: white;
+  text-shadow: none;
+}
+
+.hero-kicker--blue::before {
+  background: linear-gradient(112deg, rgba(255, 255, 255, 0.18), transparent 40%, rgba(255, 255, 255, 0.08));
+}
+
+.hero-kicker--blue::after {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.hero-kicker--portfolio {
+  padding: 0.42rem 1rem;
+  border-color: rgba(255, 255, 255, 0.55);
+  background:
+    linear-gradient(135deg, rgba(79, 141, 248, 0.96), rgba(2, 85, 245, 0.98) 55%, rgba(1, 51, 147, 0.96)),
+    var(--primary);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(0, 17, 49, 0.18),
+    0 14px 34px rgba(2, 85, 245, 0.2);
+  color: white;
+  font-size: clamp(0.64rem, 1vw, 0.76rem);
+  letter-spacing: 0.065em;
+  text-shadow: 0 1px 10px rgba(0, 17, 49, 0.2);
+}
+
+.hero-kicker--portfolio::after {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.animated-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 12px 32px rgba(0, 17, 49, 0.15);
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease;
+}
+
+.animated-cta::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 20%, rgba(79, 141, 248, 0.14) 45%, transparent 68%);
+  content: "";
+  transform: translateX(-115%);
+  opacity: 0;
+}
+
+.animated-cta:hover,
+.animated-cta:focus-visible {
+  transform: translateY(-3px) scale(1.012);
+  box-shadow: 0 18px 38px rgba(0, 17, 49, 0.22);
+}
+
+.animated-cta:hover::before,
+.animated-cta:focus-visible::before {
+  opacity: 1;
+  animation: cta-shimmer 1.1s ease-out 1;
+}
+
+.animated-cta:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.animated-cta__arrow {
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease;
+}
+
+.icon-hover-motion {
+  transform-origin: center;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), color 240ms ease;
+}
+
+.group:hover .icon-hover-motion,
+.group:focus-visible .icon-hover-motion,
+button:hover .icon-hover-motion,
+button:focus-visible .icon-hover-motion,
+a:hover .icon-hover-motion,
+a:focus-visible .icon-hover-motion {
+  transform: translateY(-2px) rotate(-5deg) scale(1.08);
+}
+
+.service-cta-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 88% 15%, rgba(183, 207, 252, 0.34), transparent 28%),
+    linear-gradient(135deg, #0255f5 0%, #0647c9 62%, #013393 100%);
+  box-shadow: 0 24px 60px rgba(2, 85, 245, 0.2);
+}
+
+.service-cta-card::before {
+  position: absolute;
+  inset: -40% -20%;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.18) 48%, transparent 60%);
+  content: "";
+  transform: translateX(-50%) rotate(8deg);
+  opacity: 0.65;
+}
+
+.service-cta-card::after {
+  position: absolute;
+  right: -3rem;
+  top: -4rem;
+  z-index: -1;
+  width: 12rem;
+  height: 12rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  box-shadow: 0 0 0 2rem rgba(255, 255, 255, 0.035), 0 0 0 4rem rgba(255, 255, 255, 0.025);
+  content: "";
+  animation: cta-orbit 9s ease-in-out infinite alternate;
+}
+
+.problem-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), border-color 260ms ease, box-shadow 260ms ease;
+}
+
+.problem-card::after {
+  position: absolute;
+  right: -2.5rem;
+  bottom: -3rem;
+  z-index: -1;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(2, 85, 245, 0.11), transparent 70%);
+  content: "";
+}
+
+.problem-card:hover,
+.problem-card:focus-within {
+  border-color: rgba(2, 85, 245, 0.34);
+  box-shadow: 0 18px 40px rgba(1, 34, 98, 0.1);
+  transform: translateY(-4px);
+}
+
+.process-rail::after {
+  position: absolute;
+  top: 2rem;
+  left: calc(2.05rem - 0.28rem);
+  z-index: 20;
+  width: 0.56rem;
+  height: 0.56rem;
+  border-radius: 999px;
+  background: var(--primary);
+  box-shadow: 0 0 0 6px rgba(2, 85, 245, 0.12), 0 0 20px rgba(2, 85, 245, 0.38);
+  content: "";
+  animation: process-rail-travel 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.animated-cta:hover .animated-cta__arrow,
+.animated-cta:focus-visible .animated-cta__arrow {
+  transform: scale(1.08);
+  box-shadow: 0 7px 20px rgba(2, 85, 245, 0.28);
+}
+
+.animated-cta:hover .animated-cta__arrow svg,
+.animated-cta:focus-visible .animated-cta__arrow svg {
+  animation: cta-arrow-run 0.72s cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+
+.button-link {
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(2, 85, 245, 0.18);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease;
+}
+
+.button-link:hover,
+.button-link:focus-visible {
+  background-color: var(--primary-600);
+  box-shadow: 0 11px 24px rgba(2, 85, 245, 0.27);
+  transform: translateY(-2px);
+}
+
+.button-link:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.portfolio-outline-cta {
+  transition: color 240ms ease, background-color 240ms ease, transform 240ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 240ms ease;
+}
+
+.portfolio-outline-cta:hover,
+.portfolio-outline-cta:focus-visible {
+  background-color: var(--primary);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(2, 85, 245, 0.2);
+}
+
+.cta-hover-icon {
+  transition: transform 220ms ease;
+}
+
+.group:hover .cta-hover-icon,
+.group:focus-visible .cta-hover-icon {
+  transform: translate3d(3px, -2px, 0);
+}
+
+.umkm-logo-marquee {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+}
+
+.umkm-logo-track {
+  display: flex;
+  width: max-content;
+  min-height: 100%;
+  align-items: center;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  animation: umkm-logo-scroll 52s linear infinite;
+}
+
+html.splash-active .umkm-logo-track {
+  animation-play-state: paused;
+}
+
+.umkm-logo-track--reverse {
+  animation-name: umkm-logo-scroll-reverse;
+}
+
+.umkm-logo-group {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 2.25rem;
+  padding-right: 2.25rem;
+}
+
+.umkm-logo-chip {
+  display: flex;
+  width: 10.5rem;
+  height: 3rem;
+  flex: 0 0 10.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.umkm-logo-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 10.5rem;
+  max-height: 3rem;
+  object-fit: contain;
+}
+
+.card-brand-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 2.75rem;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.card-brand-logo-frame {
+  display: flex;
+  width: 5rem;
+  height: 3rem;
+  flex: 0 0 5rem;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  background: transparent;
+}
+
+
+/* ── dekatlokal.com globals.css baris 546–831 ── */
+.curved-marquee-viewport {
+  --marquee-card-width: 190px;
+  --marquee-card-height: 256px;
+  --marquee-gap: 14px;
+  width: 100%;
+  overflow: hidden;
+  padding: 0.75rem 0 4rem;
+  perspective: 1500px;
+  perspective-origin: 50% 42%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
+}
+
+.curved-marquee-track {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: max-content;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.curved-marquee-item {
+  width: var(--marquee-card-width);
+  height: var(--marquee-card-height);
+  margin-right: var(--marquee-gap);
+  flex: 0 0 auto;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.curved-marquee-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 24px;
+  background: var(--primary-50);
+  cursor: pointer;
+  box-shadow: 0 16px 30px rgba(1, 34, 98, 0.13), 0 3px 10px rgba(1, 34, 98, 0.08);
+  transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 350ms ease;
+}
+
+.curved-marquee-card:hover {
+  z-index: 5;
+  box-shadow: 0 26px 48px rgba(1, 34, 98, 0.24), 0 7px 16px rgba(1, 34, 98, 0.12);
+  transform: translateY(-9px) scale(1.045);
+}
+
+@media (max-width: 1023px) {
+  .curved-marquee-viewport {
+    --marquee-card-width: 164px;
+    --marquee-card-height: 222px;
+    --marquee-gap: 12px;
+    padding-bottom: 3.4rem;
+    perspective: 1300px;
+  }
+
+  .curved-marquee-card {
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .umkm-logo-rows {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 5.45rem;
+    grid-template-rows: repeat(2, 2.35rem);
+    gap: 0.75rem;
+  }
+
+  .umkm-logo-rows::before,
+  .umkm-logo-rows::after {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    bottom: 0;
+    width: 1rem;
+    content: "";
+    pointer-events: none;
+  }
+
+  .umkm-logo-rows::before {
+    left: 0;
+    background: linear-gradient(to right, white, transparent);
+  }
+
+  .umkm-logo-rows::after {
+    right: 0;
+    background: linear-gradient(to left, white, transparent);
+  }
+
+  .umkm-logo-marquee--mobile {
+    position: relative;
+    height: 2.35rem;
+    min-height: 2.35rem;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .umkm-logo-group {
+    gap: 1.15rem;
+    padding-right: 1.15rem;
+  }
+
+  .umkm-logo-chip {
+    width: 7.5rem;
+    flex-basis: 7.5rem;
+    height: 2.35rem;
+  }
+
+  .umkm-logo-image {
+    max-width: 7.4rem;
+    max-height: 2.25rem;
+  }
+
+  .card-brand-logo-frame {
+    width: 4.35rem;
+    height: 2.6rem;
+    flex-basis: 4.35rem;
+  }
+
+  .card-brand-logo {
+    max-height: 2.35rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .curved-marquee-viewport {
+    --marquee-card-width: 124px;
+    --marquee-card-height: 180px;
+    --marquee-gap: 9px;
+    padding: 1rem 0 2.6rem;
+    perspective: 1000px;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 4%, black 96%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, black 4%, black 96%, transparent 100%);
+  }
+
+  .curved-marquee-card {
+    border-radius: 16px;
+  }
+
+}
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+a.button-link,
+a.animated-cta {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:not(:disabled) {
+  transition-property: color, background-color, border-color, opacity, box-shadow, filter, transform;
+  transition-duration: 200ms;
+}
+
+button:not(:disabled):hover {
+  filter: brightness(0.97) saturate(1.05);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+@keyframes splash-progress {
+  to { transform: scaleX(1); }
+}
+
+@keyframes public-page-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes portfolio-detail-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cta-shimmer {
+  0%, 20% { transform: translateX(-115%); }
+  58%, 100% { transform: translateX(115%); }
+}
+
+@keyframes cta-orbit {
+  from { transform: translate3d(0, 0, 0) rotate(0deg); }
+  to { transform: translate3d(-1rem, 0.75rem, 0) rotate(18deg); }
+}
+
+@keyframes cta-arrow-run {
+  0% { opacity: 1; transform: translateX(0); }
+  45% { opacity: 0; transform: translateX(8px); }
+  46% { opacity: 0; transform: translateX(-7px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes cta-hover-gif {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(4px, -2px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes process-rail-travel {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) scale(0.9); }
+  12% { opacity: 1; }
+  82% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(0, calc(100% + 17rem), 0) scale(1); }
+}
+
+@keyframes umkm-logo-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes umkm-logo-scroll-reverse {
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes not-found-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+  50% { transform: translate3d(0, -10px, 0) rotate(2deg); }
+}
+
+@keyframes distribution-card-drift {
+  from { transform: translate3d(-4%, -3%, 0) scale(1); }
+  to { transform: translate3d(5%, 4%, 0) scale(1.08); }
+}
+
+@keyframes ambient-background-drift {
+  from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+  to { transform: translate3d(1.5%, 1%, 0) scale(1.04); }
+}
+
+@keyframes page-background-drift {
+  from { background-position: 0% 0%, 0 0, 0 0; }
+  to { background-position: 12% 6%, 20px 28px, 28px 18px; }
+}
+
+@keyframes section-scroll-reveal {
+  from {
+    opacity: 0.35;
+    translate: 0 1.25rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section-scroll-reveal {
+      animation: section-scroll-reveal linear both;
+      animation-range: entry 0% entry 82%;
+      animation-timeline: view();
+    }
+  }
+}
+
+/* Tambahan smooth untuk browser yang tidak support scroll-behavior */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes ping-idle {
+  75%, 100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes ping-active {
+  75%, 100% { transform: scale(3); opacity: 0; }
+}
+
+@media (min-width: 1024px) {
+  .text-block-lg-clamp {
+    max-width: clamp(36rem, 52vw, 52rem);
+  }
+}
+
+
+/* ── dekatlokal.com globals.css baris 1013–1021 ── */
+.public-page-shell:not(.bg-gradient-hero) {
+  background-color: #fbfdff;
+  background-image:
+    linear-gradient(120deg, rgba(2, 85, 245, 0.045), transparent 34%, rgba(183, 207, 252, 0.14) 56%, transparent 78%),
+    linear-gradient(rgba(2, 85, 245, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(2, 85, 245, 0.03) 1px, transparent 1px);
+  background-size: 155% 155%, 72px 72px, 72px 72px;
+}
+
+
+/* ── dekatlokal.com globals.css baris 1270–1598 ── */
+.fab-stack {
+  --fab-size: 3.25rem;
+  --fab-gap: 0.75rem;
+  --fab-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--fab-gap);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 360ms ease, transform 560ms var(--fab-ease), visibility 0s linear 0s;
+}
+@media (min-width: 768px) {
+  .fab-stack {
+    --fab-size: 3.5rem;
+    --fab-gap: 0.875rem;
+    right: max(clamp(1.5rem, 2.4vw, 2.5rem), env(safe-area-inset-right, 0px));
+    bottom: max(clamp(1.5rem, 2.2vw, 2.25rem), env(safe-area-inset-bottom, 0px));
+  }
+}
+.fab-stack[data-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 1.25rem, 0) scale(0.96);
+  transition: opacity 280ms ease, transform 480ms var(--fab-ease), visibility 0s linear 480ms;
+}
+html.splash-active .fab-stack {
+  opacity: 0;
+  pointer-events: none;
+}
+/* Sembunyikan tombol saat panel DekatAI terbuka atau menu mobile terbuka,
+   agar tidak mengintip di balik panel/scrim. */
+body:has(.dekat-chat-layer) .fab-stack {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 160ms ease, visibility 0s linear 160ms;
+}
+html[data-mobile-menu="open"] .fab-stack {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 200ms ease, visibility 0s linear 200ms;
+}
+
+.fab-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.fab-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--fab-size);
+  height: var(--fab-size);
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 9999px;
+  color: #fff;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.96),
+    0 12px 28px -10px rgba(1, 34, 98, 0.45),
+    0 4px 10px -2px rgba(1, 34, 98, 0.16);
+  transition:
+    transform 520ms var(--fab-ease),
+    box-shadow 520ms var(--fab-ease),
+    filter 520ms var(--fab-ease);
+}
+.fab-button--ai {
+  background: linear-gradient(150deg, #3b82ff 0%, #0255f5 52%, #0140c0 100%);
+}
+.fab-button--wa {
+  background: linear-gradient(150deg, #34e07a 0%, #25d366 50%, #1ebe5b 100%);
+}
+.fab-icon {
+  width: 46%;
+  height: 46%;
+  transition: transform 520ms var(--fab-ease);
+}
+.fab-button--wa .fab-icon {
+  width: 44%;
+  height: 44%;
+}
+.fab-online-dot {
+  position: absolute;
+  top: 6%;
+  right: 6%;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 9999px;
+  background: #34d399;
+  box-shadow: 0 0 0 2px #fff;
+}
+/* Cincin fokus navy menempel di cincin putih: terlihat di latar biru maupun putih. */
+.fab-button:focus-visible {
+  outline: 2.5px solid #0b1a3a;
+  outline-offset: 3px;
+}
+.fab-button:active {
+  transform: scale(0.95);
+  transition-duration: 160ms;
+}
+
+.fab-label {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 0.875rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: min(18rem, calc(100vw - var(--fab-size) - 3.5rem));
+  padding: 0.55rem 0.95rem;
+  border-radius: 9999px;
+  background: #fff;
+  color: #0b1a3a;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  box-shadow:
+    0 0 0 1px rgba(2, 85, 245, 0.08),
+    0 14px 32px -12px rgba(1, 34, 98, 0.32),
+    0 4px 10px -4px rgba(1, 34, 98, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0.5rem, -50%, 0) scale(0.97);
+  transform-origin: right center;
+  transition:
+    opacity 220ms ease,
+    transform 360ms var(--fab-ease),
+    visibility 0s linear 360ms;
+}
+.fab-label::after {
+  position: absolute;
+  top: 50%;
+  right: -0.25rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 0.125rem;
+  background: inherit;
+  transform: translateY(-50%) rotate(45deg);
+  content: "";
+}
+.fab-label__dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: #34d399;
+}
+.fab-label--hint {
+  white-space: normal;
+  width: max-content;
+  max-width: min(15rem, calc(100vw - var(--fab-size) - 3.5rem));
+  border-radius: 1rem;
+  padding: 0.65rem 0.95rem;
+  font-weight: 500;
+  color: #24324d;
+}
+.fab-label--hint strong {
+  display: block;
+  color: #0b1a3a;
+  font-weight: 650;
+}
+
+/* Sapaan otomatis. Jeda 260ms agar tidak bertabrakan dengan label hover yang sedang memudar. */
+.fab-label--visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, -50%, 0) scale(1);
+  transition:
+    opacity 320ms ease 260ms,
+    transform 520ms var(--fab-ease) 260ms,
+    visibility 0s linear 260ms;
+}
+/* Label tombol saat fokus keyboard (aturan terpisah: :has() tidak boleh satu daftar
+   dengan selektor lain agar browser lama tidak membuang seluruh aturan). */
+.fab-item:has(.fab-button:focus-visible) .fab-label:not(.fab-label--hint) {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, -50%, 0) scale(1);
+  transition:
+    opacity 320ms ease 140ms,
+    transform 520ms var(--fab-ease) 140ms,
+    visibility 0s linear 140ms;
+}
+.fab-item:has(.fab-button:focus-visible) .fab-label--hint {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 180ms ease, visibility 0s linear 180ms;
+}
+@media (hover: hover) and (pointer: fine) {
+  .fab-item:hover .fab-button {
+    transform: translate3d(0, -2px, 0);
+    filter: saturate(1.06) brightness(1.03);
+    box-shadow:
+      0 0 0 3px rgba(255, 255, 255, 1),
+      0 18px 34px -12px rgba(1, 34, 98, 0.5),
+      0 6px 14px -4px rgba(1, 34, 98, 0.18);
+  }
+  .fab-item:hover .fab-icon {
+    transform: scale(1.06);
+  }
+  /* Umpan balik tekan untuk mouse (hover selalu aktif saat klik). */
+  .fab-item:hover .fab-button:active {
+    transform: translate3d(0, 0, 0) scale(0.96);
+    transition-duration: 160ms;
+  }
+  .fab-item:hover .fab-label:not(.fab-label--hint) {
+    opacity: 1;
+    visibility: visible;
+    transform: translate3d(0, -50%, 0) scale(1);
+    transition:
+      opacity 320ms ease 140ms,
+      transform 520ms var(--fab-ease) 140ms,
+      visibility 0s linear 140ms;
+  }
+  /* Saat hover, sapaan diganti label tombol agar tidak menumpuk. */
+  .fab-item:hover .fab-label--hint {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0.5rem, -50%, 0) scale(0.97);
+    transition: opacity 180ms ease, transform 300ms var(--fab-ease), visibility 0s linear 300ms;
+  }
+}
+/* Label hanya untuk layar yang cukup lebar; di HP tombol cukup jelas sendiri. */
+@media (max-width: 639px) {
+  .fab-label {
+    display: none;
+  }
+}
+
+.dekatai-dot {
+  animation: dekatai-bounce 1.1s ease-in-out infinite;
+}
+@keyframes dekatai-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}
+.dekat-chat-log {
+  scrollbar-width: thin;
+  scrollbar-color: #c7d7fd transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fab-stack,
+  .fab-button,
+  .fab-icon,
+  .fab-label,
+  .dekatai-dot {
+    animation: none;
+  }
+  /* Tanpa geser/skala: label tetap terpusat vertikal, hanya opacity yang berubah. */
+  .fab-label,
+  .fab-label--visible,
+  .fab-item:hover .fab-label,
+  .fab-item:hover .fab-label--hint {
+    transform: translate3d(0, -50%, 0);
+  }
+  .fab-stack[data-hidden="true"] {
+    transform: none;
+  }
+  .fab-item:hover .fab-button,
+  .fab-item:hover .fab-icon {
+    transform: none;
+  }
+}
+
+/* ─── Spanduk teks berjalan (ticker) ─────────────────────────────── */
+.public-ticker {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.public-ticker__viewport {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  animation: public-ticker-scroll var(--ticker-duration, 40s) linear infinite;
+  will-change: transform;
+}
+.public-ticker__track {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 2.5rem;
+  padding-inline: 1.25rem;
+  white-space: nowrap;
+}
+.public-ticker:hover .public-ticker__viewport,
+.public-ticker:focus-within .public-ticker__viewport,
+html.splash-active .public-ticker__viewport {
+  animation-play-state: paused;
+}
+@keyframes public-ticker-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-ticker__viewport {
+    animation: none;
+    width: 100%;
+  }
+  .public-ticker__track {
+    width: 100%;
+    overflow: hidden;
+    padding-inline: 1rem;
+  }
+  .public-ticker__track > * + *,
+  .public-ticker__track[aria-hidden="true"] {
+    display: none;
+  }
+  .public-ticker__track > :first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* ── Kata berganti di hero (cepat, tanpa loncatan tata letak) ── */
+.eco-rotating { position: relative; display: inline-grid; vertical-align: bottom; text-align: left; justify-items: start; }
+.eco-rotating__sizer, .eco-rotating__word { grid-area: 1 / 1; white-space: nowrap; }
+.eco-rotating__sizer { visibility: hidden; }
+.eco-rotating__word { animation: eco-word-in 360ms cubic-bezier(.22, 1, .36, 1) both; }
+@keyframes eco-word-in {
+  from { opacity: 0; transform: translateY(45%); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@media (prefers-reduced-motion: reduce) { .eco-rotating__word { animation: none; } }
+
+/* Override landing v2 berada di layer "landing-final" (lihat globals.css) karena
+   deklarasi !important di dalam layer selalu mengalahkan !important di luar layer. */
+@layer landing-final {
+/* ── Judul section v2 diselaraskan dengan SectionHeading dekatlokal.com ──
+   (eyebrow kapital bergaris biru + judul 2.55rem semibold). Spesifisitas tinggi + !important
+   karena lapisan CSS landing lama juga memakai !important. */
+html body .dl-landing.dl-landing .dl-section-kicker:not(.dl-final-copy .dl-section-kicker) {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 0 12px !important;
+  color: var(--primary) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+html body .dl-landing.dl-landing .dl-section-kicker:not(.dl-final-copy .dl-section-kicker)::before {
+  content: "";
+  width: 20px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--primary);
+}
+@media (min-width: 768px) {
+  html body .dl-landing.dl-landing .dl-section-kicker:not(.dl-final-copy .dl-section-kicker) { font-size: 14px !important; }
+}
+html body .dl-landing.dl-landing :is(#pricing-title, #course-title, #faq-title, #experience-title), html body .dl-landing.dl-landing :is(.dl-course-heading, .dl-story-heading, .dl-faq-copy, .dl-pricing-copy, .dl-pricing-heading) h2 {
+  font-weight: 600 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.025em !important;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.55rem) !important;
+}
+
+/* ── Grid & ritme section landing v2 (satu sistem dengan dekatlokal.com) ──
+   Lebar konten mengikuti max-w-7xl (1280px) dengan padding 16/24/48px, sehingga tepi kiri
+   semua judul sejajar dengan hero & strip logo. Jarak vertikal seragam di setiap section. */
+html body .dl-landing.dl-landing.dl-landing :is(#akses-belajar, #pengalaman, #course, #paket, #faq).dl-viewport-section {
+  padding: 48px 16px !important;
+  scroll-margin-top: 7rem;
+}
+html body .dl-landing.dl-landing.dl-landing :is(#akses-belajar, #pengalaman, #course, #paket, #faq).dl-viewport-section > * {
+  width: 100% !important;
+  max-width: 1248px !important;
+  margin-inline: auto !important;
+}
+@media (min-width: 640px) {
+  html body .dl-landing.dl-landing.dl-landing :is(#akses-belajar, #pengalaman, #course, #paket, #faq).dl-viewport-section { padding: 56px 24px !important; }
+  html body .dl-landing.dl-landing.dl-landing :is(#akses-belajar, #pengalaman, #course, #paket, #faq).dl-viewport-section > * { max-width: 1232px !important; }
+}
+@media (min-width: 1024px) {
+  html body .dl-landing.dl-landing.dl-landing :is(#akses-belajar, #pengalaman, #course, #paket, #faq).dl-viewport-section { padding: 72px 48px !important; }
+  html body .dl-landing.dl-landing.dl-landing :is(#akses-belajar, #pengalaman, #course, #paket, #faq).dl-viewport-section > * { max-width: 1184px !important; }
+}
+/* Section pertama setelah strip logo tidak perlu jarak ganda. */
+html body .dl-landing.dl-landing.dl-landing #akses-belajar.dl-viewport-section { padding-top: 24px !important; }
+/* CTA penutup sudah punya jarak atas sendiri (pt-12/16/24), jadi FAQ cukup 48px di bawah. */
+html body .dl-landing.dl-landing.dl-landing #faq.dl-viewport-section { padding-bottom: 48px !important; }
+}
+
+/* Pratinjau dashboard di hero hanya "mengintip" seperti visual hero situs utama. */
+.eco-hero-product {
+  max-height: clamp(15rem, 34vw, 27rem);
+  overflow: hidden;
+  border-radius: 1.5rem 1.5rem 0 0;
+  -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent);
+  mask-image: linear-gradient(180deg, #000 70%, transparent);
+}

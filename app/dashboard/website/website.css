@@ -182,3 +182,8 @@
   .sb-preview-pane { height: calc(100dvh - 150px); }
   .sb-actions { grid-column: 1 / -1; }
 }
+
+/* Grid sama dengan halaman Digital Checkup lain (kontainer 1184px, padding sisi 16/24/48px). */
+.sb-wrap { max-width: 1184px; }
+@media (min-width: 640px) { .sb-page { padding-inline: 24px; } }
+@media (min-width: 1024px) { .sb-page { padding-inline: 48px; } }

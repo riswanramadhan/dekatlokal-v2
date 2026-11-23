@@ -10,6 +10,8 @@ import "./landing-future.css";
 import "./landing-request-lock.css";
 import "./landing-brand-refresh.css";
 import "./checkup-polish.css";
+// Sistem tampilan ekosistem (sama dengan dekatlokal.com): kicker, CTA, teks berjalan, tombol mengambang.
+import "./ecosystem.css";
 import { PwaRegistration } from "@/components/pwa-registration";
 
 const poppins = Poppins({

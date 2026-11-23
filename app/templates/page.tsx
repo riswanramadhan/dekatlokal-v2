@@ -1,6 +1,5 @@
 import { MOTIFS } from "@/lib/sites/motifs";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Eye } from "lucide-react";
 import { TemplateThumb } from "@/components/sites/template-thumb";
@@ -49,22 +48,28 @@ function TemplateCard({ template, category }: { template: TemplateInfo; category
   </li>;
 }
 
+import EcosystemHeader from "@/components/ecosystem/ecosystem-header";
+import EcosystemFooter from "@/components/ecosystem/ecosystem-footer";
+import EcosystemWhatsAppFAB from "@/components/ecosystem/whatsapp-fab";
+import { EcosystemHero } from "@/components/ecosystem/ecosystem-hero";
+
 export default async function TemplatesPage({ searchParams }: { searchParams: Search }) {
   const kategori = pick((await searchParams).kategori);
   const category = isCategory(kategori) ? kategori : null;
   const templates = templatesForCategory(category);
-  return <div className={s.page}>
-    <header className={s.top}>
-      <Link href="/" className={s.logo}><Image src="/brand/dekat-lokal.png" alt="DekatLokal" width={143} height={44} loading="eager" /></Link>
-      <nav aria-label="Menu"><Link href="/mulai">Digital Checkup</Link><Link href="/dashboard/website" className={s.topCta}>Website saya</Link></nav>
-    </header>
+  return <div className={`${s.page} public-page-transition`}>
+    <EcosystemHeader />
 
     <main>
-      <section className={s.hero}>
-        <p className={s.eyebrow}>Gratis {TRIAL_DAYS.site_publish} hari · Tanpa coding · Siap di ponsel</p>
-        <h1>{category ? <>Template website <em>{categoryLabel(category).toLowerCase()}</em> untuk usahamu</> : <>Website rapi untuk usahamu, <em>online hari ini</em></>}</h1>
-        <p className={s.lead}>Pilih desain, isi data usaha (otomatis dari Digital Checkup), lalu terbitkan. Pelanggan bisa lihat menu, harga, jam buka, dan langsung pesan lewat WhatsApp.</p>
-      </section>
+      <EcosystemHero
+        id="hero-templates"
+        kicker={`Gratis ${TRIAL_DAYS.site_publish} hari · Tanpa coding`}
+        title={category ? <>Template website {categoryLabel(category).toLowerCase()} untuk <span className="font-mono font-medium tracking-[-0.055em]">usahamu</span></> : <>Website rapi untuk usahamu, online <span className="whitespace-nowrap font-mono font-medium tracking-[-0.055em]">hari ini</span></>}
+        description="Pilih desain, isi data usaha (otomatis dari Digital Checkup), lalu terbitkan. Pelanggan bisa lihat menu, harga, jam buka, dan langsung pesan lewat WhatsApp."
+        primary={{ label: "Buat website gratis", href: "/dashboard/website/baru" }}
+        secondary={{ label: "Lihat template", href: "#daftar-template" }}
+      />
+      <div className={s.afterHero} />
 
       <nav className={s.filters} aria-label="Kategori usaha">
         <Link href="/templates" aria-current={!category ? "page" : undefined}>Semua</Link>
@@ -105,9 +110,8 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
       </section>
     </main>
 
-    <footer className={s.footer}>
-      <p>DekatLokal · Teman digital untuk UMKM Indonesia</p>
-      <p>Foto contoh adalah ilustrasi. Usaha di contoh template bersifat fiktif.</p>
-    </footer>
+    <p className={s.footer}>Foto contoh adalah ilustrasi. Usaha di contoh template bersifat fiktif.</p>
+    <EcosystemFooter />
+    <EcosystemWhatsAppFAB />
   </div>;
 }

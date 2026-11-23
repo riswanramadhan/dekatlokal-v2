@@ -81,3 +81,29 @@
 .previewCats a { flex: none; padding: 6px 12px; border-radius: 999px; color: #c9d7ee; font-size: 12px; text-decoration: none; border: 1px solid rgba(255, 255, 255, .14); }
 .previewCats a[aria-current="page"] { background: #fff; color: #0d1d36; }
 @media (max-width: 520px) { .previewTitle span { display: none; } }
+
+/* Jarak setelah hero biru ekosistem. */
+.afterHero { height: 40px; }
+
+/* ── Grid halaman galeri mengikuti sistem DekatLokal: kontainer 1280px, padding 16/24/48px,
+   jadi tepi kartu, judul, dan blok harga sejajar dengan hero, navbar, dan footer. ── */
+.filters, .grid, .steps { max-width: 1280px; padding-inline: 16px; }
+.filters { padding-top: 0; padding-bottom: 28px; }
+.grid { padding-bottom: 72px; }
+.steps { padding-top: 0; padding-bottom: 56px; }
+.steps h2, .pricing h2 { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.55rem); line-height: 1.15; letter-spacing: -.025em; margin-bottom: 24px; }
+.pricing { width: calc(100% - 32px); max-width: 1184px; margin: 0 auto 72px; }
+.footer { padding: 0 16px 40px; }
+@media (min-width: 640px) {
+  .filters, .grid, .steps { padding-inline: 24px; }
+  .pricing { width: calc(100% - 48px); }
+}
+@media (min-width: 1024px) {
+  .filters, .grid, .steps { padding-inline: 48px; }
+  .pricing { width: calc(100% - 96px); }
+  .grid { gap: 24px; }
+}
+/* Filter kategori selalu satu baris: di layar lebar di tengah, di layar sempit bisa digeser. */
+.filters { gap: 6px; flex-wrap: nowrap; justify-content: flex-start; }
+.filters a { padding: 8px 12px; }
+@media (min-width: 720px) { .filters { flex-wrap: nowrap; justify-content: safe center; } }
