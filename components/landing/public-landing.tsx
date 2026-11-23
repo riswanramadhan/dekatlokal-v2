@@ -115,7 +115,7 @@ function Hero({ checkupHref }: { checkupHref: string }) {
     <EcosystemHero
       id="hero-checkup"
       kicker="Digital Checkup gratis untuk UMKM"
-      title={<>Cek kondisi usahamu, biar makin dekat dengan{" "}<RotatingWord words={["pelanggan", "cuan", "pasar", "peluang", "teknologi"]} className="font-mono font-medium tracking-[-0.055em]" /></>}
+      title={<>Cek kondisi usahamu, biar makin dekat dengan<span className="eco-highlight-line"><RotatingWord words={["pelanggan", "cuan", "pasar", "peluang", "teknologi"]} className="eco-highlight" /></span></>}
       description="Usaha mau maju, tapi bingung mulai dari mana? Cek kondisinya dulu, lalu temukan langkah yang bisa kamu coba hari ini."
       primary={{ label: "Mulai Checkup Gratis", href: checkupHref }}
       secondary={{ label: "Lihat cara kerjanya", href: "#akses-belajar" }}

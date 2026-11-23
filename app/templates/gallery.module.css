@@ -107,3 +107,30 @@
 .filters { gap: 6px; flex-wrap: nowrap; justify-content: flex-start; }
 .filters a { padding: 8px 12px; }
 @media (min-width: 720px) { .filters { flex-wrap: nowrap; justify-content: safe center; } }
+
+/* ── Pilihan warna di kartu template ── */
+.colorRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; padding-top: 12px; border-top: 1px solid #edf2fa; }
+.colorLabel { font-size: 12.5px; color: #73849b; white-space: nowrap; }
+.colorLabel strong { margin-left: 4px; color: #10223d; font-weight: 600; }
+.swatches { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
+.swatch { position: relative; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
+.swatch input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.swatchDot { width: 22px; height: 22px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(16, 34, 61, .16); transition: transform .18s ease, box-shadow .18s ease; }
+.swatch:hover .swatchDot { transform: scale(1.08); }
+.swatch:has(input:checked) .swatchDot { box-shadow: inset 0 0 0 1px rgba(16, 34, 61, .16), 0 0 0 2px #fff, 0 0 0 4px #0255f5; }
+.swatch:has(input:focus-visible) { outline: 3px solid #91b8ff; outline-offset: 1px; }
+.thumbWrap :global([data-mode]) { transition: background-color .25s ease; }
+
+/* ── Pilihan warna di halaman contoh ── */
+.previewColors { display: flex; align-items: center; gap: 6px; padding: 8px 16px 10px; overflow-x: auto; background: #10223d; border-top: 1px solid rgba(255, 255, 255, .08); scrollbar-width: none; font-family: var(--font-poppins), system-ui, sans-serif; }
+.previewColors::-webkit-scrollbar { display: none; }
+.previewColors > span { flex: none; margin-right: 4px; color: #8ea3c4; font-size: 12px; }
+.previewColors a { flex: none; display: inline-flex; align-items: center; gap: 7px; min-height: 32px; padding: 4px 12px 4px 5px; border-radius: 999px; color: #c9d7ee; font-size: 12px; text-decoration: none; border: 1px solid rgba(255, 255, 255, .14); }
+.previewColors a[aria-current="true"] { background: #fff; color: #0d1d36; border-color: #fff; }
+.previewColors i { width: 20px; height: 20px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); }
+/* Kartu sempit (ponsel, tablet 2 kolom): label warna di atas, swatch satu baris di bawahnya. */
+.cardBody { container-type: inline-size; }
+@container (max-width: 330px) {
+  .colorRow { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .swatches { justify-content: flex-start; flex-wrap: nowrap; margin-left: -5px; }
+}

@@ -6,17 +6,20 @@ import { requireSiteOwner } from "@/lib/sites/owner-guard";
 import { prefillContent } from "@/lib/sites/prefill";
 import { availableSlug, listOwnerSites } from "@/lib/sites/repository";
 import { MAX_SITES_PER_OWNER } from "@/lib/sites/schema";
+import { isPaletteId } from "@/lib/sites/palettes";
 import { isTemplateCode, templateMeta } from "@/lib/sites/templates";
 
 export const dynamic = "force-dynamic";
 
-type Search = Promise<{ template?: string | string[]; kategori?: string | string[] }>;
+type Search = Promise<{ template?: string | string[]; kategori?: string | string[]; warna?: string | string[] }>;
 const pick = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value);
 
 export default async function NewWebsitePage({ searchParams }: { searchParams: Search }) {
   const query = await searchParams;
-  const template = pick(query.template), kategori = pick(query.kategori);
-  const next = `/dashboard/website/baru${template || kategori ? `?${new URLSearchParams({ ...(template ? { template } : {}), ...(kategori ? { kategori } : {}) })}` : ""}`;
+  const template = pick(query.template), kategori = pick(query.kategori), warna = pick(query.warna);
+  const palette = isPaletteId(warna) ? warna : null;
+  const params = new URLSearchParams({ ...(template ? { template } : {}), ...(kategori ? { kategori } : {}), ...(palette ? { warna: palette } : {}) }).toString();
+  const next = `/dashboard/website/baru${params ? `?${params}` : ""}`;
   const actor = await requireSiteOwner(next);
   const sites = await listOwnerSites(actor.id).catch(() => []);
   if (sites.length >= MAX_SITES_PER_OWNER) return <main className="sb-page">
@@ -25,7 +28,7 @@ export default async function NewWebsitePage({ searchParams }: { searchParams: S
   </main>;
 
   const business = await latestBusinessProfile(actor.id).catch(() => null);
-  const initial = prefillContent(business?.profile, { category: kategori, template: isTemplateCode(template) ? template : null });
+  const initial = prefillContent(business?.profile, { category: kategori, template: isTemplateCode(template) ? template : null, palette });
   const slug = await availableSlug(initial.slug, initial.content.businessName, initial.content.city).catch(() => initial.slug);
   return <main className="sb-page">
     <WebsiteTopbar back={{ href: "/dashboard/website", label: "Website saya" }} />

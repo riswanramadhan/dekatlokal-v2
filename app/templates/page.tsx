@@ -1,13 +1,14 @@
 import { MOTIFS } from "@/lib/sites/motifs";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Eye } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { TemplateThumb } from "@/components/sites/template-thumb";
 import { PRODUCTS, priceLabel, TRIAL_DAYS } from "@/lib/commerce/catalog";
 import { categoryLabel, isCategory, SITE_CATEGORIES, type SiteCategory } from "@/lib/sites/categories";
 import { sampleContent } from "@/lib/sites/samples";
 import { templatesForCategory, type TemplateInfo } from "@/lib/sites/templates";
 import s from "./gallery.module.css";
+import { TemplateCard } from "./template-card";
 
 type Search = Promise<{ kategori?: string | string[] }>;
 const pick = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value);
@@ -27,25 +28,13 @@ export async function generateMetadata({ searchParams }: { searchParams: Search 
 const sitePrice = PRODUCTS.find((product) => product.code === "site_upgrade");
 const aiPrice = PRODUCTS.find((product) => product.code === "ai_admin_monthly");
 
-function TemplateCard({ template, category }: { template: TemplateInfo; category: SiteCategory }) {
+function GalleryCard({ template, category }: { template: TemplateInfo; category: SiteCategory }) {
   const content = { ...sampleContent(category), palette: template.defaultPalette };
-  const query = `template=${template.code}&kategori=${category}`;
-  return <li className={s.card}>
-    <div className={s.thumbWrap}>
-      <TemplateThumb template={template.code} content={content} />
-      {/* Tautan menimpa pratinjau (bukan membungkusnya) agar tidak ada <a> bersarang. */}
-      <Link href={`/templates/${template.code}/preview?kategori=${category}`} className={s.thumbLink} aria-label={`Lihat contoh template ${template.name}`} />
-    </div>
-    <div className={s.cardBody}>
-      <div className={s.cardTitle}><h3>{template.name}</h3><span>Motif {MOTIFS[template.motif].label} · {MOTIFS[template.motif].origin}</span></div>
-      <p>{template.summary}</p>
-      <p className={s.fit}>Cocok untuk {template.bestFor.map(categoryLabel).join(", ")}</p>
-      <div className={s.cardActions}>
-        <Link className={s.primary} href={`/dashboard/website/baru?${query}`}>Pakai template ini <ArrowRight size={16} aria-hidden="true" /></Link>
-        <Link className={s.secondary} href={`/templates/${template.code}/preview?kategori=${category}`}><Eye size={16} aria-hidden="true" /> Lihat contoh</Link>
-      </div>
-    </div>
-  </li>;
+  return <TemplateCard code={template.code} name={template.name} category={category} palettes={template.palettes} thumb={<TemplateThumb template={template.code} content={content} />}>
+    <div className={s.cardTitle}><h3>{template.name}</h3><span>Motif {MOTIFS[template.motif].label} · {MOTIFS[template.motif].origin}</span></div>
+    <p>{template.summary}</p>
+    <p className={s.fit}>Cocok untuk {template.bestFor.map(categoryLabel).join(", ")}</p>
+  </TemplateCard>;
 }
 
 import EcosystemHeader from "@/components/ecosystem/ecosystem-header";
@@ -64,7 +53,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
       <EcosystemHero
         id="hero-templates"
         kicker={`Gratis ${TRIAL_DAYS.site_publish} hari · Tanpa coding`}
-        title={category ? <>Template website {categoryLabel(category).toLowerCase()} untuk <span className="font-mono font-medium tracking-[-0.055em]">usahamu</span></> : <>Website rapi untuk usahamu, online <span className="whitespace-nowrap font-mono font-medium tracking-[-0.055em]">hari ini</span></>}
+        title={category ? <>Template website {categoryLabel(category).toLowerCase()} untuk<span className="eco-highlight-line"><span className="eco-highlight whitespace-nowrap">usahamu</span></span></> : <>Website rapi untuk usahamu, online<span className="eco-highlight-line"><span className="eco-highlight whitespace-nowrap">hari ini</span></span></>}
         description="Pilih desain, isi data usaha (otomatis dari Digital Checkup), lalu terbitkan. Pelanggan bisa lihat menu, harga, jam buka, dan langsung pesan lewat WhatsApp."
         primary={{ label: "Buat website gratis", href: "/dashboard/website/baru" }}
         secondary={{ label: "Lihat template", href: "#daftar-template" }}
@@ -79,7 +68,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
       <section aria-labelledby="daftar-template">
         <h2 id="daftar-template" className={s.srOnly}>{category ? `Template untuk ${categoryLabel(category)}` : "Semua template"}</h2>
         <ul className={s.grid}>
-          {templates.map((template) => <TemplateCard key={template.code} template={template} category={category ?? template.bestFor[0]} />)}
+          {templates.map((template) => <GalleryCard key={template.code} template={template} category={category ?? template.bestFor[0]} />)}
         </ul>
       </section>
 

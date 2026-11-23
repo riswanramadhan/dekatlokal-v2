@@ -2,6 +2,7 @@
 import { categoryFromSector, isCategory, type SiteCategory } from "./categories";
 import { SAMPLE_CONTENT } from "./samples";
 import { coerceContent, slugify, type SiteContent } from "./schema";
+import type { PaletteId } from "./palettes";
 import { templateMeta, templateForCategory, type TemplateCode } from "./templates";
 
 export interface ProfileLike {
@@ -35,7 +36,7 @@ export function cityFromDistrict(district: string | undefined) {
  * Konten awal untuk website baru. Data kontak diambil dari Checkup; produk & keunggulan memakai contoh kategori
  * (ditandai sebagai contoh di builder). Testimoni & FAQ sengaja kosong supaya tidak ada ulasan karangan yang ikut tayang.
  */
-export function prefillContent(profile: ProfileLike | null | undefined, options: { category?: string | null; template?: TemplateCode | null } = {}): { content: SiteContent; template: TemplateCode; slug: string } {
+export function prefillContent(profile: ProfileLike | null | undefined, options: { category?: string | null; template?: TemplateCode | null; palette?: PaletteId | null } = {}): { content: SiteContent; template: TemplateCode; slug: string } {
   const category: SiteCategory = isCategory(options.category) ? options.category : categoryFromSector(profile?.sector);
   const template = options.template ?? templateForCategory(category);
   const sample = SAMPLE_CONTENT[category];
@@ -55,7 +56,7 @@ export function prefillContent(profile: ProfileLike | null | undefined, options:
     googleMaps: profile?.googleMaps ?? "",
     address: (profile?.district ?? "").slice(0, 240),
     hours: [],
-    palette: templateMeta(template).defaultPalette,
+    palette: options.palette ?? templateMeta(template).defaultPalette,
     testimonials: [],
     faq: [],
   }, category);

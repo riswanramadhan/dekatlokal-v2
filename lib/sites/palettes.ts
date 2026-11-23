@@ -30,11 +30,24 @@ export type PaletteId = (typeof PALETTES)[number]["id"];
 export const PALETTE_IDS = PALETTES.map((item) => item.id) as [PaletteId, ...PaletteId[]];
 export const paletteById = (id: string): Palette => PALETTES.find((item) => item.id === id) ?? PALETTES[0];
 
-/** Variabel CSS untuk elemen akar template. */
+const PALETTE_KEYS = [["bg", "bg"], ["surface", "surface"], ["ink", "ink"], ["muted", "muted"], ["accent", "accent"], ["accent-ink", "accentInk"], ["line", "line"], ["soft", "soft"]] as const;
+
+/**
+ * Variabel CSS untuk elemen akar template. Setiap nilai bisa ditimpa dari elemen induk lewat
+ * --palette-* (lihat paletteOverride), sehingga galeri bisa menukar warna pratinjau tanpa render ulang.
+ */
 export function paletteStyle(id: string): Record<string, string> {
   const p = paletteById(id);
-  return { "--c-bg": p.bg, "--c-surface": p.surface, "--c-ink": p.ink, "--c-muted": p.muted, "--c-accent": p.accent, "--c-accent-ink": p.accentInk, "--c-line": p.line, "--c-soft": p.soft };
+  return Object.fromEntries(PALETTE_KEYS.map(([name, key]) => [`--c-${name}`, `var(--palette-${name}, ${p[key]})`]));
 }
+
+/** Variabel --palette-* untuk dipasang di pembungkus pratinjau agar template di dalamnya berganti warna. */
+export function paletteOverride(id: string): Record<string, string> {
+  const p = paletteById(id);
+  return Object.fromEntries(PALETTE_KEYS.map(([name, key]) => [`--palette-${name}`, p[key]]));
+}
+
+export const isPaletteId = (value: unknown): value is PaletteId => typeof value === "string" && (PALETTE_IDS as readonly string[]).includes(value);
 
 // ─── Kontras WCAG (dipakai test) ───────────────────────────────────────────
 function luminance(hex: string) {

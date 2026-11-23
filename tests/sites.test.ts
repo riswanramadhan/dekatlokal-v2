@@ -6,7 +6,7 @@ import { categoryFromSector, CATEGORY_IDS, mappedSectors } from "@/lib/sites/cat
 import { buildSitePrompt, fallbackReply, guardReply, orderLink, sanitizeHistory } from "@/lib/sites/chat";
 import { parseReply, replyToPlainText } from "@/lib/sites/format";
 import { BUNDLED_IMAGES } from "@/lib/sites/images";
-import { contrast, PALETTES } from "@/lib/sites/palettes";
+import { contrast, isPaletteId, paletteOverride, PALETTES, paletteStyle } from "@/lib/sites/palettes";
 import { cityFromDistrict, prefillContent } from "@/lib/sites/prefill";
 import { createRateLimiter } from "@/lib/sites/rate-limit";
 import { SAMPLE_CONTENT, sampleLeftovers } from "@/lib/sites/samples";
@@ -127,6 +127,22 @@ describe("kategori, template, palet, dan foto", () => {
       expect(contrast(p.accentInk, p.accent), `${p.id} tombol`).toBeGreaterThanOrEqual(4.5);
     }
   });
+  it("tiap template punya pilihan warna kurasi yang valid, unik, dan diawali warna bawaan", () => {
+    for (const t of TEMPLATES) {
+      expect(t.palettes[0], t.code).toBe(t.defaultPalette);
+      expect(new Set(t.palettes).size, t.code).toBe(t.palettes.length);
+      expect(t.palettes.length, t.code).toBeGreaterThanOrEqual(4);
+      for (const id of t.palettes) expect(isPaletteId(id), `${t.code}:${id}`).toBe(true);
+    }
+    expect(isPaletteId("ungu")).toBe(false);
+  });
+  it("warna template bisa ditimpa pembungkus lewat --palette-*", () => {
+    const style = paletteStyle("hutan");
+    expect(style["--c-accent"]).toBe("var(--palette-accent, #2d6a3e)");
+    expect(style["--c-accent-ink"]).toBe("var(--palette-accent-ink, #ffffff)");
+    expect(paletteOverride("malam")["--palette-bg"]).toBe("#141311");
+    expect(Object.keys(paletteOverride("malam"))).toHaveLength(Object.keys(style).length);
+  });
   it("foto bawaan hanya aset lokal", () => {
     for (const image of BUNDLED_IMAGES) expect(image.src.startsWith("/")).toBe(true);
     for (const id of CATEGORY_IDS) expect(BUNDLED_IMAGES.some((image) => image.categories.includes(id)), id).toBe(true);
@@ -150,6 +166,8 @@ describe("isian awal dari Digital Checkup", () => {
     expect(content.whatsapp).toBe("");
     expect(content.businessName).toBe("Nama Usahamu");
     expect(prefillContent(null).content.category).toBe("toko");
+    expect(prefillContent(null, { template: "warung", palette: "malam" }).content.palette).toBe("malam");
+    expect(prefillContent(null, { template: "warung" }).content.palette).toBe("terakota");
     expect(cityFromDistrict("Kabupaten Gowa, Sulawesi Selatan")).toBe("Gowa");
   });
 });

@@ -36,7 +36,7 @@ export function EcosystemHero({ kicker, title, description, primary, secondary, 
   const reduce = useReducedMotion();
   return <div className="overflow-hidden bg-primary">
     <section id={id} aria-labelledby={`${id}-title`} className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-12">
-      <div className="public-header-offset relative isolate overflow-hidden pb-0 text-center">
+      <div className={`public-header-offset relative isolate overflow-hidden text-center ${visual ? "pb-0" : "pb-16 md:pb-20 lg:pb-24"}`}>
         <HeroAmbientBackground />
         <motion.div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center justify-center" variants={staggerContainer} initial={reduce ? false : "hidden"} animate="visible">
           <motion.div variants={fadeInUp} className="mb-5 md:mb-6"><span className="hero-kicker"><span>{kicker}</span></span></motion.div>

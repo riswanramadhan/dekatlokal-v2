@@ -1022,15 +1022,42 @@ html.splash-active .public-ticker__viewport {
 }
 
 /* ── Kata berganti di hero (cepat, tanpa loncatan tata letak) ── */
-.eco-rotating { position: relative; display: inline-grid; vertical-align: bottom; text-align: left; justify-items: start; }
+.eco-rotating { position: relative; display: inline-grid; vertical-align: bottom; justify-items: center; box-sizing: content-box; }
 .eco-rotating__sizer, .eco-rotating__word { grid-area: 1 / 1; white-space: nowrap; }
 .eco-rotating__sizer { visibility: hidden; }
+.eco-rotating[data-measured] { transition: width 420ms cubic-bezier(.22, 1, .36, 1); }
+.eco-rotating[data-measured] .eco-rotating__sizer { display: none; }
+/* Salinan tersembunyi untuk mengukur lebar tiap kata (ikut ukuran & font judul). */
+.eco-rotating__measure { position: absolute; top: 0; left: 0; display: flex; width: max-content; height: 0; overflow: hidden; visibility: hidden; pointer-events: none; }
+.eco-rotating__measure > span { flex: none; white-space: nowrap; }
 .eco-rotating__word { animation: eco-word-in 360ms cubic-bezier(.22, 1, .36, 1) both; }
 @keyframes eco-word-in {
   from { opacity: 0; transform: translateY(45%); filter: blur(4px); }
   to { opacity: 1; transform: none; filter: none; }
 }
-@media (prefers-reduced-motion: reduce) { .eco-rotating__word { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .eco-rotating__word { animation: none; }
+  .eco-rotating[data-measured] { transition: none; }
+}
+
+/* ── Sorotan kata kunci di judul hero: berdiri di barisnya sendiri sebagai "chip" putih
+   bertinta biru — menonjol, tapi tetap rata, ringkas, dan modern. ── */
+.eco-highlight-line { display: block; margin-top: .14em; }
+.eco-highlight {
+  display: inline-grid;
+  padding: .01em .3em .07em;
+  border-radius: .26em;
+  background: #fff;
+  color: var(--color-primary, #0255f5);
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: -.045em;
+  line-height: 1.12;
+  overflow: hidden;
+  box-shadow: 0 .32em .8em -.38em rgba(1, 20, 72, .55), inset 0 -.055em 0 rgba(2, 85, 245, .14);
+}
+.eco-highlight.eco-rotating { box-sizing: content-box; }
+
 
 /* Override landing v2 berada di layer "landing-final" (lihat globals.css) karena
    deklarasi !important di dalam layer selalu mengalahkan !important di luar layer. */
