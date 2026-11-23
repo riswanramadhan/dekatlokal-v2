@@ -1,0 +1,68 @@
+/* Dasar bersama semua template. Responsif memakai container query (lebar bingkai), bukan lebar layar,
+   sehingga pratinjau ponsel/desktop di builder dan galeri tampil sama seperti website aslinya. */
+.root {
+  container-type: inline-size;
+  position: relative;
+  isolation: isolate;
+  min-height: 100%;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--t-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+  overflow-x: clip;
+}
+.root[data-mode="live"] { min-height: 100dvh; }
+.root *, .root *::before, .root *::after { box-sizing: border-box; }
+.root a { color: inherit; text-underline-offset: 3px; }
+.root :focus-visible { outline: 3px solid var(--c-accent); outline-offset: 3px; }
+.root ::selection { background: var(--c-accent); color: var(--c-accent-ink); }
+.root details > summary { cursor: pointer; list-style: none; }
+.root details > summary::-webkit-details-marker { display: none; }
+
+.stickyWrap {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  pointer-events: none;
+}
+.sticky {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 520px;
+  min-height: 52px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: #0e7a3f;
+  color: #fff !important;
+  font-weight: 650;
+  font-size: 15px;
+  letter-spacing: .01em;
+  text-decoration: none;
+  box-shadow: 0 14px 32px -14px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .12);
+  transition: transform .2s ease, background .2s ease;
+}
+.sticky:hover { background: #0a6533; transform: translateY(-1px); }
+@container (min-width: 760px) {
+  .stickyWrap { justify-content: flex-end; padding: 0 28px 24px; }
+  .sticky { width: auto; }
+}
+
+.credit {
+  margin: 0;
+  padding: 18px 20px 8px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--c-muted);
+}
+.credit a { font-weight: 600; }
