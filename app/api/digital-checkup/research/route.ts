@@ -9,6 +9,7 @@ import { ALGORITHM, compareRankings, conditionScores, instrument as decisionInst
 import { canonical, csvCell } from "@/lib/digital-checkup/canonical";
 import { expertDirectory } from "@/lib/digital-checkup/expert-directory";
 import { processExpertPanel } from "@/lib/digital-checkup/auto-panel";
+import { researchCodes, susSummary, validationSummary } from "@/lib/digital-checkup/research-metrics";
 
 export async function GET(request: Request) {
   try {
@@ -32,10 +33,12 @@ export async function GET(request: Request) {
       return new Response(canonical(selectedRuns[0].canonical_input), { headers: { "Content-Type": "application/json", "Content-Disposition": "attachment; filename=canonical-input.json", "Cache-Control": "private, no-store" } });
     }
     const code = (id: unknown) => String(businesses.find((b) => b.id === id)?.code ?? "");
+    // Stable research codes come from every submitted snapshot before any export filter is applied.
+    const umkmCodes = researchCodes(assessments as unknown as AssessmentRow[]);
     const safeAssessments = assessments.filter((a) => (!runId && !version) || selectedRuns.some((r) => r.assessment_id === a.id)).map((a) => {
       const value = a as unknown as AssessmentRow;
-      const p = value.payload.profile;
-      return { id: a.id, code: code(a.umkm_id), instrumentId: a.instrument_id, status: a.status, revision: a.revision_number, submittedAt: a.submitted_at, answers: value.payload.answers, metadata: { sector: p.sector, district: p.district, businessAgeMonths: p.businessAgeMonths, peopleCount: p.peopleCount, respondentRole: p.respondentRole, salesChannels: p.salesChannels } };
+      const p = value.payload.profile ?? {} as AssessmentRow["payload"]["profile"];
+      return { id: a.id as string, code: code(a.umkm_id), umkmCode: umkmCodes.get(String(a.id)) ?? null, instrumentId: a.instrument_id, status: a.status as string, revision: a.revision_number, submittedAt: a.submitted_at, answers: value.payload.answers ?? {}, metadata: { sector: p.sector, district: p.district, businessAgeMonths: p.businessAgeMonths, peopleCount: p.peopleCount, respondentRole: p.respondentRole, salesChannels: p.salesChannels } };
     });
     const selectedModels = models.filter((m) => (!runId && !version) || selectedRuns.some((r) => r.model_input_id === m.id));
     const safeExperts = experts.filter((e) => (!runId && !version) || selectedModels.some((m) => (m.expert_ids as string[]).includes(String(e.id)))).map((e) => {
@@ -47,13 +50,14 @@ export async function GET(request: Request) {
     const validations = cases.filter((c) => safeAssessments.some((a) => a.id === c.assessment_id)).map((c) => {
       const p = c.payload as { decision?: string; ranks?: Record<string, number>; rationale?: string };
       const run = selectedRuns.filter((r) => r.assessment_id === c.assessment_id).sort((a, b) => b.created_at.localeCompare(a.created_at))[0];
-      return { id: c.id, assessmentId: c.assessment_id, expertCode: experts.find((e) => e.id === c.expert_assignment_id)?.code, umkmCode: safeAssessments.find((a) => a.id === c.assessment_id)?.code, status: c.status, decision: p.decision, ranks: p.ranks, rationale: p.rationale, runId: run?.id, metrics: c.status === "submitted" && p.decision === "Dinilai" && p.ranks && run?.status === "RANKED" ? compareRankings(run.trace, p.ranks) : null };
+      return { id: c.id, assessmentId: c.assessment_id as string, expertCode: experts.find((e) => e.id === c.expert_assignment_id)?.code as string | undefined, umkmCode: umkmCodes.get(String(c.assessment_id)) ?? null, status: c.status as string, decision: p.decision, ranks: p.ranks, rationale: p.rationale, runId: run?.id, metrics: c.status === "submitted" && p.decision === "Dinilai" && p.ranks && run?.status === "RANKED" ? compareRankings(run.trace, p.ranks) : null };
     });
-    const valid = validations.filter((v) => v.metrics), abstains = validations.filter((v) => v.status === "submitted" && v.decision === "Tidak dapat menilai");
-    const adminAssessments=safeAssessments.map((assessment,index)=>{
+    const validation = validationSummary(validations.map((v) => ({ ...v, businessId: assessments.find((a) => a.id === v.assessmentId)?.umkm_id as string | undefined })));
+    const usabilityRows = usability.filter((u) => safeAssessments.some((a) => a.id === u.assessment_id)).map((u) => ({ id: u.id, umkmCode: umkmCodes.get(String(u.assessment_id)) ?? null, date: u.actual_date, tasks: u.task_statuses, minutes: u.total_minutes, ease: u.ease, sus: (u.sus_responses as number[] | null | undefined) ?? null, susScore: (u.sus_score as number | null | undefined) ?? null }));
+    const adminAssessments=safeAssessments.map((assessment)=>{
       const source=assessments.find((item)=>item.id===assessment.id) as unknown as AssessmentRow|undefined;
-      return {...assessment,demoCode:`U${String(index+1).padStart(3,"0")}`,businessName:source?.payload.profile.businessName?.trim()||"Usaha tanpa nama"};
-    });
+      return {...assessment,demoCode:assessment.umkmCode,businessName:source?.payload.profile?.businessName?.trim()||"Usaha tanpa nama"};
+    }).sort((a,b)=>Number(!a.demoCode)-Number(!b.demoCode)||String(a.demoCode??"").localeCompare(String(b.demoCode??""))||String(a.submittedAt??"").localeCompare(String(b.submittedAt??""))||a.id.localeCompare(b.id));
     const usedExpertIds=new Set(selectedModels.flatMap((model)=>(model.expert_ids as string[])??[]));
     const adminExperts=safeExperts.map((expert)=>({...expert,displayName:expertDirectory.find((item)=>item.assignmentId===expert.id)?.name||"Ahli",usedInModel:usedExpertIds.has(String(expert.id))}));
     const format=params.get("format");
@@ -122,32 +126,42 @@ export async function GET(request: Request) {
       }) } : {}),
       instruments: instruments.map(({ id, code, status, content, frozen_at }) => ({ id, code, status, content, frozenAt: frozen_at })), versions, experts: params.get("format")?safeExperts:adminExperts, assessments: params.get("format")?safeAssessments:adminAssessments,
       models: selectedModels.map(({ id, model_version_id, input_hash, trace, created_at }) => ({ id, modelVersionId: model_version_id, inputHash: input_hash, trace, createdAt: created_at })), runs: selectedRuns, validations,
-      usability: usability.filter((u) => safeAssessments.some((a) => a.id === u.assessment_id)).map((u) => ({ id: u.id, umkmCode: safeAssessments.find((a) => a.id === u.assessment_id)?.code, date: u.actual_date, tasks: u.task_statuses, minutes: u.total_minutes, ease: u.ease })),
-      summary: { validPairs: valid.length, uniqueBusinesses: new Set(valid.map((v) => v.umkmCode)).size, uniqueExperts: new Set(valid.map((v) => experts.find((e) => e.code === v.expertCode)?.expert_user_id).filter(Boolean)).size, abstentions: abstains.length, sensitivityScenarios: selectedRuns.reduce((n, r) => n + r.sensitivity.length, 0) },
+      usability: usabilityRows,
+      // Experts are counted by assignment code: the panel experts have no login account (expert_user_id is null).
+      summary: { validPairs: validation.validPairs, uniqueBusinesses: validation.businesses, uniqueExperts: validation.experts, abstentions: validation.abstentions, sensitivityScenarios: selectedRuns.reduce((n, r) => n + r.sensitivity.length, 0), validation: params.get("format") ? validation : { ...validation, perExpert: validation.perExpert.map((item) => ({ ...item, displayName: adminExperts.find((e) => e.code === item.expertCode)?.displayName ?? item.expertCode })) }, sus: susSummary(usabilityRows.map((u) => u.susScore)) },
+      ...(params.get("format") ? { validationByExpert: validation.perExpert } : {}),
     };
     if (params.get("format")) {
       // Rationale remains available in the authorized dashboard, not in anonymous downloads.
       const anonymous = { ...result, validations: validations.map((v) => ({ id: v.id, assessmentId: v.assessmentId, expertCode: v.expertCode, umkmCode: v.umkmCode, status: v.status, decision: v.decision, ranks: v.ranks, runId: v.runId, metrics: v.metrics })) };
       if(params.get("format")==="colab"){
+        // Only submitted snapshots are records; drafts are listed, not scored, so one draft never breaks the export.
+        const recordable=safeAssessments.filter((assessment)=>assessment.umkmCode).sort((a,b)=>String(a.umkmCode).localeCompare(String(b.umkmCode)));
         const content=JSON.stringify({
-          schemaVersion:"DL-COLAB-1.0",
+          schemaVersion:"DL-COLAB-1.1",
+          exportedAt:new Date().toISOString(),
           algorithm:ALGORITHM,
           dimensions:decisionInstrument.dimensions.map((item)=>item.code),
+          dimensionTitles:Object.fromEntries(decisionInstrument.dimensions.map((item)=>[item.code,item.title])),
           modules:decisionInstrument.modules.map((item)=>item.code),
+          moduleNames:Object.fromEntries(decisionInstrument.modules.map((item)=>[item.code,item.name])),
           modelInputs:result.models,
           experts:anonymous.experts,
-          records:safeAssessments.map((assessment,index)=>{
+          skippedRecords:safeAssessments.filter((assessment)=>!assessment.umkmCode).map((assessment)=>({assessmentId:assessment.id,status:assessment.status,answered:Object.values(assessment.answers).filter((value)=>value!=null).length,reason:"Belum dikirim final; tidak dihitung."})),
+          validations:anonymous.validations,
+          validationSummary:validation,
+          records:recordable.map((assessment)=>{
             const assessmentRuns=selectedRuns.filter((item)=>item.assessment_id===assessment.id).sort((a,b)=>b.created_at.localeCompare(a.created_at));
             const decision=assessmentRuns[0];
             return {
               assessmentId:assessment.id,
-              umkmCode:`U${String(index+1).padStart(3,"0")}`,
+              umkmCode:assessment.umkmCode,
               instrumentId:assessment.instrumentId,
               revision:assessment.revision,
               submittedAt:assessment.submittedAt,
               metadata:assessment.metadata,
               answers:assessment.answers,
-              dimensionScores:conditionScores(assessment.answers),
+              dimensionScores:(()=>{try{return conditionScores(assessment.answers);}catch{return null;}})(),
               canonicalInput:decision?.canonical_input??null,
               run:decision?{
                 id:decision.id,
@@ -199,7 +213,8 @@ export async function POST(request: Request) {
     }
     if (input.action === "usability") {
       const p = input.payload;
-      const { error } = await db.from("dc_usability_tests").insert({ assessment_id: p.assessmentId, actual_date: p.date, task_statuses: p.tasks, total_minutes: p.minutes, ease: p.ease, note: p.note, recorded_by: actor.id }); dbError(error);
+      // sus_score is a generated column (migration 202611240010); only the ten raw answers are stored.
+      const { error } = await db.from("dc_usability_tests").insert({ assessment_id: p.assessmentId, actual_date: p.date, task_statuses: p.tasks, total_minutes: p.minutes, ease: p.ease, note: p.note, recorded_by: actor.id, ...(p.sus ? { sus_responses: p.sus } : {}) }); dbError(error);
     }
     if (input.action === "version") {
       const { data, error } = await db.rpc("dc_clone_model", { p_source: input.sourceId, p_code: input.code, p_actor: actor.id }); dbError(error); return json({ id: data });

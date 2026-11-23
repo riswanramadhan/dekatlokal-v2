@@ -146,6 +146,17 @@ describe.sequential('real PostgreSQL migrations / transactions / RLS (isolated s
       await expect(db.query("select dc_save_learning($1,'DL-FREE-1.0','A1','__quiz','',true,100)",[outsider])).rejects.toThrow(/permission denied/);
     }finally{await db.exec('reset role');}
   });
+  it('derives optional SUS scores in the database and rejects malformed answers',async()=>{
+    const insert=(sus:unknown)=>scalar("insert into dc_usability_tests(assessment_id,actual_date,task_statuses,total_minutes,ease,note,recorded_by,sus_responses) values($1,'2026-11-24',$2,5,4,'SIMULASI TEST',$3,$4) returning sus_score as value",[session,{kirim:'selesai'},admin,sus===null?null:JSON.stringify(sus)]);
+    expect(Number(await insert([5,1,5,1,5,1,5,1,5,1]))).toBe(100);
+    expect(Number(await insert([1,5,1,5,1,5,1,5,1,5]))).toBe(0);
+    expect(Number(await insert([4,2,4,2,4,2,4,2,4,2]))).toBe(75);
+    expect(await insert(null)).toBeNull();
+    await expect(insert([6,1,5,1,5,1,5,1,5,1])).rejects.toThrow();
+    await expect(insert([5,1,5,1,5,1,5,1,5])).rejects.toThrow();
+    await expect(insert([5,1,5,1,5,1,5,1,5,1.5])).rejects.toThrow();
+    await expect(db.query("update dc_usability_tests set sus_responses=null where assessment_id=$1",[session])).rejects.toThrow(/Immutable/);
+  });
   it('supports email-free expert assignments without creating Auth users, while keeping final answers immutable',async()=>{
     const usersBefore=await scalar('select count(*) as value from auth.users');
     const draft={...blankExpert(),profile:{name:'SIMULASI TANPA EMAIL',institution:'TEST',jobTitle:'TEST',expertise:'TEST',experienceYears:2,consent:true,assessmentDate:'2026-09-10'},decision:'layak_uji_coba',reviews:Object.fromEntries(instrument.questions.map(q=>[q.code,{relevance:4,clarity:4,suggestion:''}])),pairs,relevance};

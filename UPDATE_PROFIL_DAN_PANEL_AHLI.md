@@ -8,7 +8,7 @@
 
 Direktori default ada di `lib/digital-checkup/expert-directory.ts`. Dua penugasan draf sebelumnya dipertahankan; penugasan Rizky Amelia ditambahkan ke proyek Supabase yang dikonfigurasi, tanpa akun email dan tanpa jawaban/nilai. Halaman `/ahli` menampilkan nama dan jabatan, kemudian membuka instrumen milik ahli terpilih. Nama, instansi, dan jabatan awal terisi sesuai direktori.
 
-Jika `DC_EXPERT_ROSTER` kosong, direktori ini digunakan dalam mode pilih nama sesuai permintaan pemilik. Jika environment tersebut sudah diisi, isinya tetap mengesampingkan direktori; kosongkan untuk memakai panel di atas. Mode pilih nama tidak memverifikasi identitas orang yang membuka halaman. Untuk panel tertutup, gunakan konfigurasi kode akses pada panduan sebelumnya. ID penugasan pada direktori berlaku untuk proyek yang dikonfigurasi saat implementasi; proyek Supabase baru memerlukan penugasan dan roster sendiri.
+Jika `DC_EXPERT_ROSTER` kosong, direktori ini dipakai **dengan kode akses pribadi per ahli** dari `DC_EXPERT_ACCESS_CODES` (format di `env.example`). Tanpa kode, `/ahli` tertutup; mode pilih nama tanpa verifikasi hanya aktif bila `DC_EXPERT_ALLOW_PUBLIC_ENTRY=true` secara sadar (demo lokal), karena siapa pun dapat mengaku sebagai ahli. Jika `DC_EXPERT_ROSTER` diisi, isinya tetap mengesampingkan direktori. ID penugasan pada direktori berlaku untuk proyek yang dikonfigurasi saat implementasi; proyek Supabase baru memerlukan penugasan dan roster sendiri.
 
 Pengolahan panel masih memerlukan `DC_AUTO_MODEL_VERSION`, `DC_AUTO_MODEL_APPROVER`, scheduler, dan tiga penilaian final yang sah. Tidak ada nilai ahli atau bobot pengganti yang dibuat otomatis. Fuzzy AHP dan TOPSIS memakai instrumen versi tetap; akun sosial dan kontak tidak memengaruhi skor.
 

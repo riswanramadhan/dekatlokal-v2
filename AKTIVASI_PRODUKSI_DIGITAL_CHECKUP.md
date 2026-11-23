@@ -17,6 +17,7 @@ Cadangkan database, pastikan proyek Supabase yang dipilih benar, lalu tinjau dan
 4. `202609120001_free_learning.sql`
 5. `202609130001_email_free_experts.sql`
 6. `202609140001_results_and_learning_access.sql`
+7. `202611240010_usability_sus.sql` — kolom SUS opsional pada `dc_usability_tests` (skor dihitung database).
 
 Jangan menjalankan ulang migration lama jika sudah terpasang. Migration baru menambahkan klaim checkup, antrean rekomendasi, dan progres belajar tanpa menghapus jawaban lama. Tidak ada seed jawaban UMKM/penilaian ahli rekaan. Ada 25 tabel `dc_*` dengan RLS.
 

@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { spawnSync } from "node:child_process";
 import { buildModel, conditionScores, consistency, crispMatrix, DIMENSIONS, instrument, minimumRanks, MODULES, PAIRS, relevanceMatrix, sensitivity, spearman, toTFN, topsis, type ExpertInput } from "@/lib/decision-engine";
 import { canonical, inputHash, csvCell } from "@/lib/digital-checkup/canonical";
+import { pythonCommand } from "./helpers/python";
 export const answers = (n: number) => Object.fromEntries(instrument.questions.map((q) => [q.code, n]));
 export const expert = (variant = 0): ExpertInput => ({ pairs: PAIRS.map((p) => ({ ...p, preferred: variant && p.left === 'C1' ? p.left : 'equal', intensity: variant && p.left === 'C1' ? variant+1 : 1 })), relevance: Object.fromEntries(MODULES.map((m, i) => [m, Object.fromEntries(DIMENSIONS.map((d, j) => [d, (i+j+variant)%5]))])) });
 
@@ -81,7 +82,7 @@ describe("independent Python golden comparison", () => {
     if(kind==='tie') experts.forEach(e=>{e.relevance.A2={...e.relevance.A1};});
     const a=kind==='normal'||kind==='tie'?Object.fromEntries(instrument.questions.map((q,i)=>[q.code,Math.floor(i/4)%5])):answers(kind==='perfect'?4:2),model=buildModel(experts),actual=topsis(a,model.w,model.R);
     const input={instrumentVersion:instrument.version,modelVersion:instrument.modelVersion,dimensionCodes:DIMENSIONS,moduleCodes:MODULES,experts,answers:a};
-    const python=spawnSync('python',['scripts/decision-oracle.py'],{input:JSON.stringify(input),encoding:'utf8'});
+    const python=spawnSync(pythonCommand(),['scripts/decision-oracle.py'],{input:JSON.stringify(input),encoding:'utf8'});
     expect(python.status,python.stderr).toBe(0);const reference=JSON.parse(python.stdout);
     const compare=(x:unknown,y:unknown):void=>{if(typeof y==='number'){expect(typeof x).toBe('number');expect(Number.isFinite(x)).toBe(true);expect(Math.abs(Number(x)-y)).toBeLessThanOrEqual(1e-10*Math.max(1,Math.abs(y)));}else if(Array.isArray(y)){expect(Array.isArray(x)).toBe(true);expect((x as unknown[]).length).toBe(y.length);y.forEach((v,i)=>compare((x as unknown[])[i],v));}else expect(x).toEqual(y);};
     Object.entries(reference).forEach(([key,value])=>{if(['status','rank','topSet'].includes(key))expect(actual[key as keyof typeof actual]).toEqual(value);else compare(actual[key as keyof typeof actual],value);});

@@ -1,5 +1,5 @@
 """Independent stdlib-only research oracle. Read canonical JSON from stdin.
-Usage: python scripts/decision-oracle.py < canonical-input.json
+Usage: python3 scripts/decision-oracle.py < canonical-input.json
 Never invoked by production requests. No simulated observations are stored in DB.
 """
 import json

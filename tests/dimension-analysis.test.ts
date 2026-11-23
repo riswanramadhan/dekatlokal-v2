@@ -17,7 +17,7 @@ it("menganalisis delapan dimensi berurutan lalu membuka tinjauan", () => {
   const answers = Object.fromEntries(instrument.questions.map((question) => [question.code, 2]));
   render(createElement(DimensionAnalysis, { answers, onComplete: done }));
   expect(screen.getByRole("heading", { name: "Profil usaha" })).toBeTruthy();
-  expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "50");
+  expect(screen.getByRole("progressbar").getAttribute("aria-valuenow")).toBe("50");
   for (let index = 1; index < instrument.dimensions.length; index += 1) act(() => vi.advanceTimersByTime(320));
   expect(screen.getByRole("heading", { name: "Komitmen" })).toBeTruthy();
   act(() => vi.advanceTimersByTime(320));

@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { clearExpertEntry, enterExpert, expertRoster } from "@/lib/digital-checkup/expert-access";
+import { clearExpertEntry, enterExpert, publicExpertRoster } from "@/lib/digital-checkup/expert-access";
 import { failure, json, readBody } from "@/lib/digital-checkup/http";
 export async function GET() {
-  return json({ experts:expertRoster().map((x,slot)=>({ slot, name:x.name, requiresCode:Boolean(x.accessCode) })) });
+  return json({ experts:publicExpertRoster() });
 }
 export async function POST(request:Request) {
   try {
