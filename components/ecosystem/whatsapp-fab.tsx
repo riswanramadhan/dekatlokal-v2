@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import { buildWhatsAppUrl } from "@/lib/ecosystem/links";
 
 const WHATSAPP_MESSAGE = "Halo DekatLokal, saya mau tanya soal Digital Checkup.";
@@ -15,62 +12,13 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 /**
- * Tumpukan tombol mengambang di pojok kanan bawah: DekatAI di atas, WhatsApp di bawah.
- * Posisi, ukuran, dan efek hover diatur oleh kelas .fab-* di app/globals.css.
- * Tumpukan disembunyikan saat footer mencapai area tombol agar tidak menutupi tautan footer.
+ * Tombol WhatsApp mengambang di pojok kanan bawah. Selalu terlihat selama halaman di-scroll
+ * (hanya disembunyikan saat splash, panel chat, atau menu ponsel terbuka — lihat .fab-stack di
+ * app/ecosystem.css). Baris terakhir footer diberi ruang bawah agar tautannya tidak tertutup.
  */
 export default function EcosystemWhatsAppFAB() {
-  const [isHiddenAtFooter, setIsHiddenAtFooter] = useState(false);
-  const stackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let frame = 0;
-
-    const update = () => {
-      frame = 0;
-      const footer = document.querySelector("footer");
-      const stack = stackRef.current;
-      if (!footer || !stack) return;
-
-      // Pakai posisi tanpa transform (bottom dari CSS) agar tidak berkedip saat animasi sembunyi.
-      const styles = window.getComputedStyle(stack);
-      const stackBottom = window.innerHeight - Number.parseFloat(styles.bottom || "0");
-      // offsetHeight mengabaikan transform dan mengikuti ukuran font root pengguna.
-      const buttonSize = (stack.lastElementChild as HTMLElement | null)?.offsetHeight || 56;
-      const footerTop = footer.getBoundingClientRect().top;
-      // Halaman pendek (footer sudah terlihat tanpa scroll) tidak boleh menyembunyikan tombol selamanya.
-      const canScroll = document.documentElement.scrollHeight - window.innerHeight > buttonSize;
-
-      setIsHiddenAtFooter(canScroll && footerTop < stackBottom - buttonSize * 0.5);
-    };
-
-    const schedule = () => {
-      if (!frame) frame = window.requestAnimationFrame(update);
-    };
-
-    // Tinggi halaman bisa berubah tanpa scroll (FAQ dibuka, gambar dimuat, splash selesai).
-    const observer = new ResizeObserver(schedule);
-    observer.observe(document.body);
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
-    update();
-
-    return () => {
-      if (frame) window.cancelAnimationFrame(frame);
-      observer.disconnect();
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-    };
-  }, []);
-
   return (
-    <div
-      ref={stackRef}
-      className="fab-stack"
-      data-hidden={isHiddenAtFooter ? "true" : "false"}
-      aria-hidden={isHiddenAtFooter}
-      inert={isHiddenAtFooter}
-    >
+    <div className="fab-stack">
       <div className="fab-item">
         <span className="fab-label" aria-hidden="true">
           Chat tim via WhatsApp
@@ -80,7 +28,6 @@ export default function EcosystemWhatsAppFAB() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat tim via WhatsApp (buka di tab baru)"
-          tabIndex={isHiddenAtFooter ? -1 : 0}
           className="fab-button fab-button--wa"
         >
           <WhatsAppIcon className="fab-icon" />

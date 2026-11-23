@@ -202,7 +202,7 @@ export default function EcosystemFooter() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-neutral-200 py-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 border-t border-neutral-200 pb-20 pt-6 sm:flex-row sm:items-center sm:justify-between md:pb-24">
           <p className="text-sm leading-6 text-neutral-600">
             © {currentYear} Digital Checkup · DekatLokal
           </p>
