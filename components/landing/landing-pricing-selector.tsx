@@ -1,79 +1,69 @@
 "use client";
 
-import { adminWhatsApp } from "@/lib/digital-checkup/contact";
 import { useId, useState } from "react";
 import Link from "next/link";
 import { Check, ArrowRight } from "lucide-react";
+import { TRIAL_DAYS, formatRupiah, priceLabel, productByCode } from "@/lib/commerce/catalog";
+
+// Harga diambil dari katalog produk (lib/commerce/catalog.ts) agar selalu sama dengan halaman pesanan.
+const site = productByCode("site_upgrade")!, aiAdmin = productByCode("ai_admin_monthly")!;
+const pro = productByCode("checkup_pro")!, gbp = productByCode("gbp_optimization")!, care = productByCode("website_care_monthly")!;
 
 const pricingPlans = [
   {
     name: "Mulai",
     price: "Rp0",
-    originalPrice: null,
-    saving: null,
-    description: "Mulai dari kondisi usaha dan tuntaskan tiga fokus paling penting.",
+    priceNote: "tanpa biaya",
+    description: "Cek kondisi usaha dan mulai belajar dari tiga fokus paling penting.",
     features: [
       "Cek delapan bagian penting usahamu",
-      "Tiga modul dasar sesuai kebutuhanmu",
-      "Kuis dan tugas praktik usaha",
-      "Simpan hasil praktik dan perkembangan belajar",
+      "Urutan tujuh modul sesuai kebutuhanmu",
+      "Akses modul, latihan, dan kuis gratis 7 hari",
+      "Laporan PDF ringkas hasil checkup",
     ],
     cta: "Mulai Gratis",
-    hrefType: "checkup",
-    status: "Mulai tanpa biaya",
+    href: "checkup",
+    status: "Tersedia sekarang",
     statusDetail: "Cek usahamu dulu. Pilih langkah berikutnya setelah melihat hasilnya.",
     featured: false,
   },
   {
-    name: "Tumbuh",
-    price: "Rp499.000",
-    originalPrice: "Rp1.000.000",
-    saving: "Hemat Rp501.000",
-    description: "Lanjut belajar dan bangun tampilan online usahamu.",
+    name: "Website",
+    price: formatRupiah(site.price),
+    priceNote: "sekali bayar",
+    description: "Website usaha dari template. Coba gratis dulu, bayar kalau ingin dipertahankan.",
     features: [
-      "Semua manfaat paket Mulai",
-      "Empat modul lanjutan",
-      "Website pengenalan usaha satu halaman",
-      "Pengelolaan media sosial dasar selama 30 hari",
-      "Bantu daftarkan usaha di Google dan buat katalog produk",
-      "Monitoring usaha one-on-one bersama pendamping",
-      "Rencana kerja 90 hari, lembar latihan, dan contoh siap pakai",
+      `Pilih template dan coba gratis ${TRIAL_DAYS.site_publish ?? 14} hari`,
+      ...site.bullets,
+      `Opsional: ${aiAdmin.name} ${priceLabel(aiAdmin)}, bisa dicoba gratis ${TRIAL_DAYS.ai_admin ?? 7} hari`,
     ],
-    cta: "Aktifkan Paket",
-    hrefType: "premium",
-    status: "Segera tersedia",
-    statusDetail: "Produksi website dan layanan media sosial sedang dipersiapkan.",
+    cta: "Pilih Template",
+    href: "/templates",
+    status: "Tersedia sekarang",
+    statusDetail: "Mulai dari template gratis. Bayar lewat WhatsApp atau transfer hanya kalau kamu ingin website tetap online.",
     featured: true,
   },
   {
-    name: "Melesat",
-    price: "Rp799.000",
-    originalPrice: "Rp1.500.000",
-    saving: "Hemat Rp701.000",
-    description: "Dapatkan masukan untuk promosi, website, dan rencana usahamu.",
+    name: "Layanan Pro",
+    price: `Mulai ${formatRupiah(Math.min(pro.price, gbp.price, care.price))}`,
+    priceNote: "pilih sesuai kebutuhan",
+    description: "Bantuan langsung dari tim: laporan lengkap, profil Google, dan perawatan website.",
     features: [
-      "Semua manfaat paket Tumbuh",
-      "Website pengenalan usaha dengan tampilan sesuai kebutuhan",
-      "Kelola media sosial 30 hari, termasuk 12 konten dan teks postingan",
-      "Rapikan profil usaha di Google dan katalog produk",
-      "Usaha pasti tampil di Google melalui Google Business Profile",
-      "Belajar Meta Ads dan dasar beriklan",
-      "Dua sesi diskusi usaha bersama",
-      "Masukan untuk tiga hasil praktik usahamu",
-      "Ringkasan hasil dan rencana kerja 30 hari untuk usahamu",
+      `${pro.name} ${priceLabel(pro)}: laporan PDF detail, rencana aksi 30 hari, dan konsultasi 30 menit`,
+      `${gbp.name} ${priceLabel(gbp)}: rapikan kategori, jam buka, foto, dan produk di Google Maps`,
+      `${care.name} ${priceLabel(care)}: update konten hingga 3 kali per bulan, pemantauan, dan backup`,
+      "Bayar manual lewat WhatsApp atau transfer, aktif setelah dikonfirmasi admin",
     ],
-    cta: "Pilih Pendampingan",
-    hrefType: "interest",
-    status: "Segera tersedia",
-    statusDetail: "Pendaftaran pendampingan dan pembayaran belum dibuka.",
+    cta: "Lihat Layanan Pro",
+    href: "/layanan-pro",
+    status: "Tersedia sekarang",
+    statusDetail: "Kami merapikan profil sesuai panduan Google, tetapi posisi di hasil pencarian tidak bisa dijamin.",
     featured: false,
   },
 ] as const;
 
-function resolveHref(type: (typeof pricingPlans)[number]["hrefType"], checkupHref: string) {
-  if (type === "checkup") return checkupHref;
-  if (type === "premium") return adminWhatsApp("Halo Admin DekatLokal, saya ingin bertanya tentang Paket Tumbuh.");
-  return adminWhatsApp("Halo Admin DekatLokal, saya tertarik dengan Paket Melesat.");
+function resolveHref(href: (typeof pricingPlans)[number]["href"], checkupHref: string) {
+  return href === "checkup" ? checkupHref : href;
 }
 
 export function LandingPricingSelector({ checkupHref }: { checkupHref: string }) {
@@ -114,7 +104,6 @@ export function LandingPricingSelector({ checkupHref }: { checkupHref: string })
                     <small>{plan.description}</small>
                   </span>
                   <span className="dl-pricing-option-price">
-                    {plan.originalPrice ? <del>{plan.originalPrice}</del> : null}
                     <strong>{plan.price}</strong>
                   </span>
                 </button>
@@ -139,14 +128,12 @@ export function LandingPricingSelector({ checkupHref }: { checkupHref: string })
           </div>
 
           <div className="dl-pricing-detail-price">
-            {selectedPlan.originalPrice ? <del>{selectedPlan.originalPrice}</del> : null}
             <strong>{selectedPlan.price}</strong>
-            <span>{selectedPlan.hrefType === "checkup" ? "tanpa biaya" : "sekali bayar"}</span>
+            <span>{selectedPlan.priceNote}</span>
           </div>
-          {selectedPlan.saving ? <span className="dl-pricing-discount">{selectedPlan.saving}</span> : null}
 
-          <Link className="dl-pricing-detail-cta" href={resolveHref(selectedPlan.hrefType, checkupHref)}>
-            <span>{selectedPlan.hrefType === "checkup" ? "Mulai Gratis" : "Tanya Paket Ini"}</span>
+          <Link className="dl-pricing-detail-cta" href={resolveHref(selectedPlan.href, checkupHref)}>
+            <span>{selectedPlan.cta}</span>
             <ArrowRight aria-hidden="true" size={18} />
           </Link>
 
@@ -177,7 +164,7 @@ export function LandingPricingSelector({ checkupHref }: { checkupHref: string })
       </div>
 
       <p className="dl-pricing-note">
-        Mulai dari yang gratis dulu. Paket berbayar belum dibuka; kamu bisa tanya tim kami sebelum memilih.
+        Mulai dari yang gratis dulu. Layanan berbayar dibayar manual lewat WhatsApp atau transfer dan baru aktif setelah dikonfirmasi admin.
       </p>
     </>
   );
