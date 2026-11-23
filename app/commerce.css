@@ -1,0 +1,144 @@
+/* Komponen produk berbayar & admin pesanan (prefiks cm-). */
+.cm-order { display:grid; gap:8px; }
+.cm-order-note { margin:0; font-size:12px; color:#087a45; }
+.cm-order-error { margin:0; font-size:12px; color:#a52d3a; }
+.cm-admin { max-width:1100px; margin:0 auto; }
+.cm-admin-top { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; margin:8px 0 22px; }
+.cm-admin-top h1 { margin:4px 0 6px; font-size:30px; line-height:1.2; }
+.cm-filter { display:inline-flex; gap:4px; padding:4px; border-radius:14px; background:#e8f0fd; margin-bottom:14px; overflow-x:auto; max-width:100%; }
+.cm-filter button { border:0; background:transparent; padding:8px 14px; border-radius:10px; font:inherit; font-size:13px; color:#3d5576; cursor:pointer; white-space:nowrap; }
+.cm-filter button.is-active { background:#fff; color:#0255f5; font-weight:600; box-shadow:0 2px 8px -4px #0255f566; }
+.cm-summary { margin:0 0 12px; font-size:13px; color:#3d5576; }
+.cm-order-list { display:grid; gap:12px; }
+.cm-order-card { display:grid; gap:12px; padding:18px; border:1px solid #dce7f8; border-radius:18px; background:#fff; }
+.cm-order-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.cm-order-head h2 { margin:2px 0; font-size:17px; }
+.cm-order-head p { margin:0; font-size:12px; color:#5b708a; }
+.cm-code { font-family:ui-monospace,monospace; font-size:11px; color:#0255f5; background:#eaf2ff; padding:3px 8px; border-radius:8px; }
+.cm-order-meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin:0; }
+.cm-order-meta div { padding:10px 12px; border-radius:12px; background:#f6f9ff; }
+.cm-order-meta dt { font-size:11px; color:#73849b; }
+.cm-order-meta dd { margin:0; font-size:13px; font-weight:600; }
+.cm-order-actions { display:flex; flex-wrap:wrap; gap:8px; }
+@media (max-width:700px) {
+  .cm-admin-top { flex-direction:column; align-items:stretch; }
+  .cm-order-head { flex-direction:column; }
+  .cm-order-actions > * { flex:1 1 100%; }
+}
+.cm-admin-switch { position:sticky; top:0; z-index:20; display:flex; justify-content:flex-end; gap:18px; padding:10px max(18px,env(safe-area-inset-right)); background:#0255f5; overflow-x:auto; }
+.cm-admin-links { display:flex; flex-wrap:wrap; gap:8px; }
+.cm-admin-switch a { color:#fff; font-size:13px; font-weight:600; text-decoration:none; }
+
+/* ─── Layanan Pro (/layanan-pro), form permintaan, admin permintaan, dan Langkah lanjut ─── */
+.dc-page.cm-pro { background:#f5f7fb; }
+.dc-page .cm-pro-shell { max-width:780px; margin:0 auto; }
+.dc-page .cm-pro-top { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:6px 2px 18px; }
+.dc-page .cm-pro-top img { display:block; width:118px; height:auto; }
+.dc-page .cm-pro-top a { text-decoration:none; }
+.dc-page .cm-pro-back { font-size:13px; font-weight:500; padding:8px 14px; border-radius:99px; background:#fff; border:1px solid #dde6f4; }
+.dc-page .cm-pro-hero { padding:8px 2px 6px; }
+.dc-page .cm-pro-hero h1 { margin:6px 0 10px; font-size:clamp(28px,6vw,42px); font-weight:600; letter-spacing:-.04em; }
+.dc-page .cm-pro-hero > p { margin:0 0 18px; font-size:15px; max-width:620px; }
+.dc-page .cm-steps { list-style:none; margin:0 0 22px; padding:0; display:grid; gap:8px; grid-template-columns:repeat(3,minmax(0,1fr)); }
+.dc-page .cm-steps li { display:flex; align-items:center; gap:10px; padding:12px; border-radius:16px; background:#fff; border:1px solid #e3eaf5; font-size:12px; line-height:1.4; color:#3d5576; }
+.dc-page .cm-steps span { display:grid; place-items:center; flex:0 0 26px; width:26px; height:26px; border-radius:50%; background:#eaf2ff; color:#0255f5; font-weight:600; font-size:12px; }
+.dc-page .cm-banner { padding:12px 14px; border-radius:14px; background:#fff; border:1px solid #e3eaf5; margin:0 0 14px !important; }
+.dc-page .cm-services { display:grid; gap:16px; }
+.dc-page .cm-service { scroll-margin-top:24px; padding:clamp(18px,4vw,28px); border-radius:24px; background:#fff; border:1px solid #e3eaf5; box-shadow:0 18px 40px -36px #0b2a6b55; }
+.dc-page .cm-service.is-active { border-color:#bcd3fb; }
+.dc-page .cm-service-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.dc-page .cm-service-head h2 { margin:0 0 4px; font-size:21px; font-weight:600; letter-spacing:-.03em; }
+.dc-page .cm-service-head p { margin:0; font-size:13px; }
+.dc-page .cm-pill { flex-shrink:0; display:inline-flex; align-items:center; padding:5px 10px; border-radius:99px; font-size:11px; font-weight:500; line-height:1.3; background:#eef1f6; color:#4a5d78; white-space:nowrap; }
+.dc-page .cm-pill.is-active { background:#e5f6ee; color:#08703f; }
+.dc-page .cm-pill.is-pending { background:#fff4df; color:#8a5a00; }
+.dc-page .cm-price { display:flex; align-items:baseline; gap:8px; margin:16px 0 10px !important; }
+.dc-page .cm-price strong { font-size:26px; font-weight:600; letter-spacing:-.03em; color:#11243e; }
+.dc-page .cm-price span { font-size:12px; color:#6a7c93; }
+.dc-page .cm-bullets { list-style:none; margin:0 0 16px; padding:0; display:grid; gap:8px; }
+.dc-page .cm-bullets li { display:flex; align-items:flex-start; gap:9px; font-size:13px; line-height:1.55; color:#304a6b; }
+.dc-page .cm-bullets svg { flex-shrink:0; margin-top:3px; color:#0255f5; }
+.dc-page .cm-hint { margin:6px 0 12px !important; font-size:12px; color:#5b708a; }
+.dc-page .cm-pending { display:grid; gap:10px; padding:14px; border-radius:16px; background:#fffaf0; border:1px solid #f4e3bd; }
+.dc-page .cm-pending p { margin:0; font-size:12px; color:#6b5420; }
+.dc-page .cm-next { display:grid; gap:14px; margin-top:6px; padding-top:16px; border-top:1px solid #edf1f7; }
+.dc-page .cm-next-block { display:grid; gap:8px; }
+.dc-page .cm-next-block h3 { display:flex; align-items:center; gap:8px; margin:0; font-size:16px; font-weight:600; }
+.dc-page .cm-next-block h3 svg { color:#0255f5; }
+.dc-page .cm-next-block > p { margin:0; font-size:12px; }
+.dc-page .cm-request { display:grid; gap:8px; padding:14px; border-radius:16px; background:#f6f9ff; border:1px solid #e1eafa; }
+.dc-page .cm-request-head { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; font-size:12px; color:#5b708a; }
+.dc-page .cm-request-head strong { color:#0255f5; font-weight:600; }
+.dc-page .cm-request h3 { margin:0; font-size:15px; }
+.dc-page .cm-request p { margin:0; font-size:12px; }
+.dc-page .cm-slot-list { margin:0; padding-left:18px; font-size:13px; color:#304a6b; }
+.dc-page .cm-dl { display:grid; gap:6px; margin:0; }
+.dc-page .cm-dl div { display:grid; grid-template-columns:120px minmax(0,1fr); gap:10px; font-size:12px; }
+.dc-page .cm-dl dt { color:#6a7c93; }
+.dc-page .cm-dl dd { margin:0; color:#1d3454; overflow-wrap:anywhere; }
+.dc-page .cm-renew { padding-top:4px; }
+.dc-page .cm-service .cm-order { justify-items:start; }
+.dc-page .cm-form { display:grid; gap:2px; }
+.dc-page .cm-form h3 { margin:0; font-size:16px; font-weight:600; }
+.dc-page .cm-form-intro { margin:4px 0 6px !important; font-size:12px; }
+.dc-page .cm-field { display:grid; gap:6px; margin:10px 0; }
+.dc-page .cm-field-label { font-size:12px; font-weight:500; color:#24405f; }
+.dc-page .cm-field-hint { font-size:11px; color:#6a7c93; line-height:1.5; }
+.dc-page .cm-field-error { font-size:11px; color:#a52d3a; line-height:1.5; }
+.dc-page .cm-field.is-invalid :is(input, .dc-page select, .dc-page textarea) { border-color:#c43e3e; background:#fff8f8; }
+.dc-page .cm-slots { display:grid; gap:10px; margin-top:6px; }
+.dc-page .cm-slot { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:10px; margin:0; padding:10px 12px 0; border:1px solid #e3eaf5; border-radius:14px; }
+.dc-page .cm-slot legend { padding:0 6px; font-size:11px; font-weight:600; color:#0255f5; }
+.dc-page .cm-slot .cm-field { margin:4px 0 12px; }
+.dc-page .cm-choice { display:grid; gap:8px; margin:10px 0; padding:12px 14px; border:1px solid #e3eaf5; border-radius:14px; }
+.dc-page .cm-choice legend { padding:0 6px; font-size:12px; font-weight:500; color:#24405f; }
+.dc-page .cm-choice label { display:flex; align-items:flex-start; gap:10px; font-size:13px; line-height:1.5; color:#304a6b; cursor:pointer; }
+.dc-page .cm-choice[aria-invalid="true"] { border-color:#c43e3e; }
+.dc-page .cm-safety { display:flex; align-items:flex-start; gap:9px; margin:8px 0 !important; padding:12px 14px; border-radius:14px; background:#eef8f2; color:#1f5a3c !important; font-size:12px; line-height:1.6; }
+.dc-page .cm-safety svg { flex-shrink:0; margin-top:2px; color:#13824a; }
+.dc-page .cm-form-footer { display:grid; gap:8px; margin-top:8px; }
+.dc-page .cm-free { margin:28px 0 8px; }
+.dc-page .cm-free h2 { margin:0 0 12px; font-size:19px; font-weight:600; }
+.dc-page .cm-free-grid { display:grid; gap:10px; }
+.dc-page .cm-free-card { display:flex; align-items:center; gap:14px; padding:16px; border-radius:18px; background:#fff; border:1px solid #e3eaf5; text-decoration:none; color:#152b49 !important; }
+.dc-page .cm-free-card:hover { border-color:#bcd3fb; }
+.dc-page .cm-free-card > svg:first-child { flex-shrink:0; color:#0255f5; }
+.dc-page .cm-free-card > span { display:grid; gap:2px; flex:1; min-width:0; }
+.dc-page .cm-free-card strong { font-size:14px; font-weight:600; }
+.dc-page .cm-free-card small { font-size:12px; color:#5b708a; }
+.dc-page .cm-history { margin:28px 0 8px; }
+.dc-page .cm-history h2 { margin:0 0 12px; font-size:19px; font-weight:600; }
+.dc-page .cm-history-list { list-style:none; margin:0; padding:0; border-radius:18px; background:#fff; border:1px solid #e3eaf5; overflow:hidden; }
+.dc-page .cm-history-list li { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; border-top:1px solid #edf1f7; }
+.dc-page .cm-history-list li:first-child { border-top:0; }
+.dc-page .cm-history-list li > div { display:grid; gap:4px; min-width:0; font-size:12px; color:#5b708a; }
+.dc-page .cm-history-list li > div:last-child { justify-items:end; text-align:right; }
+.dc-page .cm-history-list strong { font-size:13px; font-weight:600; color:#152b49; }
+.dc-page .cm-help { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:6px; margin:26px 0 8px !important; font-size:12px; text-align:center; }
+.dc-page .cm-request-meta dd { font-weight:400; overflow-wrap:anywhere; }
+.dc-page .cm-admin-edit { display:grid; grid-template-columns:minmax(0,200px) minmax(0,1fr); gap:12px; }
+.dc-page .cm-admin-edit .cm-field { margin:0; }
+.dc-page .cm-admin-edit textarea { min-height:46px; }
+@media (min-width:640px) { .cm-free-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:640px) {
+  .dc-page .cm-steps li { flex-direction:column; align-items:flex-start; gap:6px; padding:10px; font-size:11px; }
+  .dc-page .cm-service-head { flex-direction:column; }
+  .dc-page .cm-service .dc-primary, .dc-page .cm-service .dc-secondary { width:100%; white-space:normal; }
+  .dc-page .cm-slot { grid-template-columns:1fr; gap:0; }
+  .dc-page .cm-dl div { grid-template-columns:1fr; gap:0; }
+  .dc-page .cm-admin-edit { grid-template-columns:1fr; }
+  .dc-page .cm-history-list li { flex-direction:column; align-items:stretch; gap:8px; }
+  .dc-page .cm-history-list li > div:last-child { display:flex; align-items:center; justify-content:space-between; text-align:left; }
+}
+
+/* Langkah lanjut di halaman hasil Checkup */
+.dc-page .cm-nextsteps { margin:8px 0 6px; }
+.dc-page .cm-nextsteps-grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+.dc-page .cm-nextstep { display:flex; flex-direction:column; gap:6px; padding:18px; border-radius:18px; background:#fff; border:1px solid #d8e4f7; color:#152b49 !important; text-decoration:none !important; transition:border-color .2s, box-shadow .2s, transform .2s; }
+.dc-page .cm-nextstep:hover { border-color:#9fc0fb; box-shadow:0 16px 34px -28px #0255f580; transform:translateY(-1px); }
+.dc-page .cm-nextstep-icon { display:grid; place-items:center; width:38px; height:38px; border-radius:12px; background:#eaf2ff; color:#0255f5; margin-bottom:4px; }
+.dc-page .cm-nextstep-eyebrow { font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#0255f5; }
+.dc-page .cm-nextstep strong { font-size:16px; font-weight:600; line-height:1.35; letter-spacing:-.02em; }
+.dc-page .cm-nextstep-body { font-size:12px; line-height:1.65; color:#53647d; }
+.dc-page .cm-nextstep-foot { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:auto; padding-top:10px; font-size:12px; color:#3d5576; }
+.dc-page .cm-nextstep-cta { display:inline-flex; align-items:center; gap:5px; color:#0255f5; font-weight:600; }

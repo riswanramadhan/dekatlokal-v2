@@ -321,3 +321,18 @@
 @keyframes dc-meter-fill { from { width:0; opacity:.45; } }
 @media(max-width:600px) { .dc-analysis { min-height:500px; padding:24px 2px; }.dc-analysis-icon { width:58px; height:58px; margin-bottom:20px; }.dc-analysis-definition { min-height:64px; }.dc-analysis-insight { min-height:96px; }.dc-analysis-dots { width:100%; }.dc-analysis-dots span { flex:1; width:auto; }.dc-analysis-dots .is-active { width:auto; flex:2; } }
 @media(prefers-reduced-motion:reduce) { .dc-analysis-meter > span { animation:none; }.dc-module-image img { transition:none; } }
+
+/* ── Selaras dengan grid & navbar DekatLokal: kontainer 1184px (max-w-7xl + px-12),
+   padding sisi 16/24/48px, dan topbar berbentuk pil kaca seperti navbar situs utama. ── */
+.dc-page { padding-inline: max(16px, env(safe-area-inset-left)) max(16px, env(safe-area-inset-right)); }
+@media (min-width: 640px) { .dc-page { padding-inline: 24px; } }
+@media (min-width: 1024px) { .dc-page { padding-inline: 48px; } }
+.dc-topbar, .dc-admin, .dc-checkup .dc-workspace, .dl-learn-layout { max-width: 1184px; }
+.dc-topbar { min-height: 64px; padding: 8px 10px 8px 20px; border: 1px solid rgba(255,255,255,.8); border-radius: 999px; background: rgba(255,255,255,.9); box-shadow: 0 12px 40px rgba(1,34,98,.1); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+.dc-topbar > a:last-child, .dc-topbar > button:last-child { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; border-radius: 999px; font-weight: 600; font-size: 14px; }
+.dc-topbar > a:last-child:hover, .dc-topbar > button:last-child:hover { background: #f1f6ff; }
+@media (max-width: 800px) { .dc-topbar { padding: 8px 8px 8px 16px; border-radius: 2rem; } }
+.dc-brand { display: flex; align-items: center; gap: 10px; }
+.dc-topbar .dc-brand-label { padding-left: 10px; border-left: 1px solid #e5e7eb; color: var(--dc-blue); font-size: 13px; font-weight: 600; letter-spacing: -.01em; line-height: 20px; white-space: nowrap; }
+@media (max-width: 639px) { .dc-topbar .dc-brand-label { display: none; } }
+@media (min-width: 640px) and (max-width: 800px) { .dc-topbar .dc-brand-label { display: inline; } }

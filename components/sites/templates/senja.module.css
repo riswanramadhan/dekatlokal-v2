@@ -1,0 +1,83 @@
+/* Font: judul Plus Jakarta Sans tebal & rapat, isi Gantari — keduanya karya desainer Indonesia. */
+.root { --t-display: var(--f-jakarta); --t-body: var(--f-gantari); --pad: clamp(18px, 5.5cqi, 72px); }
+.root h1, .root h2, .root h3 { margin: 0; font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; letter-spacing: -.03em; }
+.root p { margin: 0; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--c-accent); }
+
+.top { position: absolute; inset: 0 0 auto; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px var(--pad); color: #fff; }
+.brand { font-family: var(--t-display), sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; }
+.topOrder { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 14px; border-radius: 999px; background: rgba(255, 255, 255, .14); backdrop-filter: blur(10px); font-size: 14px; font-weight: 600; text-decoration: none; }
+
+.hero { position: relative; isolation: isolate; display: grid; align-items: end; min-height: min(92vh, 860px); min-height: clamp(560px, 92cqh, 860px); padding: 120px var(--pad) 48px; color: #fff; overflow: hidden; }
+.root[data-mode="thumb"] .hero { min-height: 640px; }
+.heroMedia { position: absolute; inset: 0; z-index: -2; }
+.heroImg { object-fit: cover; }
+.heroShade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10, 9, 8, .35) 0%, rgba(10, 9, 8, .15) 35%, rgba(10, 9, 8, .82) 78%, var(--c-bg) 100%); }
+.heroText { display: grid; gap: 18px; max-width: 900px; }
+.title { font-size: clamp(52px, 13cqi, 148px); line-height: .9; font-weight: 800; letter-spacing: -.045em; }
+.lead { max-width: 36ch; font-size: clamp(17px, 2.2cqi, 22px); line-height: 1.5; color: rgba(255, 255, 255, .86); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+.primary, .ghost { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 12px 24px; border-radius: 999px; font-weight: 700; font-size: 15px; text-decoration: none; transition: transform .2s ease, background .2s ease; }
+.primary { background: var(--c-accent); color: var(--c-accent-ink) !important; }
+.primary:hover { transform: translateY(-1px); }
+.ghost { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, currentColor 40%, transparent); }
+
+.band { color: var(--c-accent); }
+
+.rail { padding: 56px 0 64px; }
+.railHead { display: grid; gap: 10px; padding: 0 var(--pad); margin-bottom: 26px; }
+.railHead h2 { font-size: clamp(32px, 6cqi, 64px); line-height: 1; font-weight: 800; }
+.hint { font-size: 13px; color: var(--c-muted); }
+.railList { list-style: none; margin: 0; padding: 4px var(--pad) 14px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(250px, 78%); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+.card { scroll-snap-align: start; display: grid; grid-template-rows: auto auto 1fr auto; gap: 8px; padding: 22px; border-radius: 22px; background: var(--c-surface); box-shadow: inset 0 0 0 1px var(--c-line); }
+.cardNo { font-family: var(--t-display), sans-serif; font-weight: 800; font-size: 13px; letter-spacing: .1em; color: var(--c-accent); }
+.card h3 { font-size: 22px; line-height: 1.15; font-weight: 700; }
+.card p { font-size: 14.5px; color: var(--c-muted); }
+.cardFoot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--c-line); }
+.price { font-family: var(--t-display), sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.add { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--c-accent); color: var(--c-accent-ink) !important; }
+
+.story { display: grid; gap: 36px; padding: 64px var(--pad); border-block: 1px solid var(--c-line); }
+.story > div { display: grid; gap: 14px; }
+.storyText { font-family: var(--t-display), sans-serif; font-weight: 600; font-size: clamp(22px, 3.6cqi, 38px); line-height: 1.28; letter-spacing: -.02em; max-width: 30ch; }
+.perks { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.perks li { display: grid; gap: 4px; padding: 16px 0 16px 22px; border-bottom: 1px solid var(--c-line); position: relative; }
+.perks li::before { content: ""; position: absolute; left: 0; top: 25px; width: 8px; height: 8px; transform: rotate(45deg); background: var(--c-accent); }
+.perks strong { font-size: 17px; }
+.perks span { color: var(--c-muted); font-size: 15px; }
+
+.voices { display: grid; gap: 14px; padding: 64px var(--pad); }
+.voices blockquote { margin: 0; padding: 24px; border-radius: 22px; background: var(--c-soft); display: grid; gap: 14px; }
+.voices p { font-size: clamp(18px, 2.4cqi, 22px); line-height: 1.45; }
+.voices footer { font-size: 14px; color: var(--c-muted); }
+
+.visit { padding: 24px var(--pad) 64px; }
+.visitCard { display: grid; gap: 28px; padding: clamp(24px, 5cqi, 48px); border-radius: 28px; background: var(--c-surface); box-shadow: inset 0 0 0 1px var(--c-line); }
+.visitMain { display: grid; gap: 14px; align-content: start; }
+.visitMain h2 { font-size: clamp(28px, 5cqi, 52px); line-height: 1.02; font-weight: 800; }
+.line { display: flex; gap: 10px; align-items: flex-start; color: var(--c-muted); }
+.line svg { flex: 0 0 auto; margin-top: 3px; color: var(--c-accent); }
+.socials { display: flex; flex-wrap: wrap; gap: 16px; padding: 0; margin: 0; list-style: none; font-size: 14px; }
+.hoursBox { display: grid; gap: 12px; align-content: start; padding: 22px; border-radius: 20px; background: var(--c-soft); }
+.hoursBox h3 { font-size: 15px; letter-spacing: .14em; text-transform: uppercase; color: var(--c-accent); }
+.hours { margin: 0; display: grid; gap: 8px; }
+.hours div { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 1px dashed var(--c-line); }
+.hours dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.faq { display: grid; gap: 18px; padding: 24px var(--pad) 72px; max-width: 980px; }
+.faq h2 { font-size: clamp(26px, 4.4cqi, 44px); font-weight: 800; }
+.faqList details { border-bottom: 1px solid var(--c-line); }
+.faqList summary { display: flex; justify-content: space-between; gap: 16px; padding: 18px 0; font-weight: 700; font-size: 17px; }
+.faqList summary::after { content: "+"; color: var(--c-accent); font-weight: 800; }
+.faqList details[open] summary::after { content: "–"; }
+.faqList p { padding: 0 0 18px; color: var(--c-muted); }
+
+.footer { display: grid; gap: 6px; justify-items: center; padding: 28px var(--pad) 90px; text-align: center; }
+.footBrand { font-family: var(--t-display), sans-serif; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+
+@container (min-width: 760px) {
+  .railList { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: visible; }
+  .story { grid-template-columns: 1.2fr 1fr; align-items: start; }
+  .voices { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .visitCard { grid-template-columns: 1.4fr 1fr; }
+}

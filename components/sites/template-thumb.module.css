@@ -1,0 +1,16 @@
+.thumb { container-type: inline-size; position: relative; aspect-ratio: 16 / 10; min-height: 240px; max-height: 460px; overflow: hidden; border-radius: 16px; background: #eef2f8; pointer-events: none; user-select: none; }
+.thumb::after { content: ""; position: absolute; inset: auto 0 0; height: 56px; background: linear-gradient(180deg, transparent, rgba(16, 34, 61, .08)); }
+/* zoom (bukan transform) supaya tinggi layout ikut mengecil; template dirender selebar 1200px (tata letak desktop). */
+.canvas { width: 1200px; zoom: .25; }
+@container (min-width: 320px) { .canvas { zoom: .27; } }
+@container (min-width: 350px) { .canvas { zoom: .3; } }
+@container (min-width: 390px) { .canvas { zoom: .33; } }
+@container (min-width: 430px) { .canvas { zoom: .36; } }
+@container (min-width: 480px) { .canvas { zoom: .4; } }
+@container (min-width: 540px) { .canvas { zoom: .45; } }
+@container (min-width: 600px) { .canvas { zoom: .5; } }
+@container (min-width: 660px) { .canvas { zoom: .55; } }
+@container (min-width: 720px) { .canvas { zoom: .6; } }
+@container (min-width: 780px) { .canvas { zoom: .65; } }
+@container (min-width: 840px) { .canvas { zoom: .7; } }
+@container (min-width: 960px) { .canvas { zoom: .8; } }

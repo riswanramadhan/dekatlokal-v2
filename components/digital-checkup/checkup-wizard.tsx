@@ -114,7 +114,7 @@ export function CheckupWizard({ configured }: { configured: boolean }) {
     setBusy(true);
     try { const revised = await api<PublicAssessment>("assessment", "POST", { profile, revision: true }); adopt(revised); setAnswers(revised.payload.answers); setConfirmed(false); change(0); } catch (e) { setError((e as Error).message); } finally { setBusy(false); }
   };
-  const finishAnalysis = useCallback(() => { setAnalyzing(false); setError(""); setStep(8); window.scrollTo({ top: 0, behavior: "smooth" }); requestAnimationFrame(() => heading.current?.focus()); }, []);
+  const finishAnalysis = useCallback(() => { setAnalyzing(false); setError(""); setStep(8); window.scrollTo({ top: 0, behavior: "smooth" }); requestAnimationFrame(() => heading.current?.focus()); }, [setError, setStep]);
   const download = async () => {
     if (!row || pdfBusy) return;
     setPdfBusy(true); setError("");
@@ -122,7 +122,7 @@ export function CheckupWizard({ configured }: { configured: boolean }) {
   };
   return <main className="dc-page dc-checkup" onInput={e => { const target=e.target as HTMLElement; target.removeAttribute("aria-invalid"); const field=target.closest<HTMLElement>(".dc-field-attention"); if(field) { field.removeAttribute("data-error"); field.classList.remove("dc-field-attention"); } }}>
     {scanning && <ScanLoading/>}
-    <header className="dc-topbar"><Link href="/" aria-label="Beranda DekatLokal"><Image src="/brand/dekat-lokal.png" alt="DekatLokal" width={143} height={44} priority /></Link><span>Digital Checkup</span><Link href="/masuk">Masuk</Link></header>
+    <header className="dc-topbar"><Link href="/" className="dc-brand" aria-label="Digital Checkup DekatLokal, beranda"><Image src="/brand/dekat-lokal.png" alt="" width={143} height={44} priority /><span className="dc-brand-label">Digital Checkup</span></Link><Link href="/masuk">Masuk</Link></header>
     <div className="dc-workspace">
       <aside className="dc-sidebar dc-stepper"><p className="dc-eyebrow">Digital Checkup</p><h2>Satu per satu.<br />Biar makin jelas.</h2><p>Jawab sesuai kondisi usahamu hari ini.</p><ol aria-label="Tahapan checkup">{[{ code: "profil", title: "Profil usaha" }, ...instrument.dimensions, { code: "hasil", title: "Tinjauan & hasil" }].map((d, i) => { const active = Math.max(0, Math.min(9, step + 1)); return <li key={d.code} aria-current={active === i ? "step" : undefined} className={i < active ? "is-done" : ""}><span>{i < active ? <Check size={14} aria-hidden="true" /> : i + 1}</span><div>{d.title}<small>{i < active ? "Sudah diisi" : active === i ? "Kamu di sini" : "Langkah berikutnya"}</small></div></li>; })}</ol><small>Gratis · Sekitar 5–7 menit</small></aside>
       <section className="dc-panel">

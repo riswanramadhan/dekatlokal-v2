@@ -28,7 +28,7 @@ afterAll(async()=>{await db.close();});
 describe.sequential('real PostgreSQL migrations / transactions / RLS (isolated simulation)',()=>{
   it('seeds exact instrument counts and enables all 26 table policies',async()=>{
     for(const [table,count] of [['dc_dimensions',8],['dc_questions',32],['dc_question_options',160],['dc_intervention_modules',7]] as const)expect(Number(await scalar(`select count(*) as value from ${table}`))).toBe(count);
-    expect(Number(await scalar("select count(*) as value from pg_tables where schemaname='public' and tablename like 'dc_%' and rowsecurity"))).toBe(26);
+    expect(Number(await scalar("select count(*) as value from pg_tables where schemaname='public' and tablename like 'dc_%' and rowsecurity"))).toBe(31);
   });
   it('UMKM draft saves zeros, rejects null final, finalizes and retries idempotently',async()=>{
     business=await scalar("insert into dc_umkm_profiles(code,metadata,owner_id) values('SIMULASI-UMKM',$1,$2) returning id as value",[profile,outsider]);
@@ -145,6 +145,17 @@ describe.sequential('real PostgreSQL migrations / transactions / RLS (isolated s
       await expect(db.query('update dc_learning_progress set quiz_score=100')).rejects.toThrow(/permission denied/);
       await expect(db.query("select dc_save_learning($1,'DL-FREE-1.0','A1','__quiz','',true,100)",[outsider])).rejects.toThrow(/permission denied/);
     }finally{await db.exec('reset role');}
+  });
+  it('derives optional SUS scores in the database and rejects malformed answers',async()=>{
+    const insert=(sus:unknown)=>scalar("insert into dc_usability_tests(assessment_id,actual_date,task_statuses,total_minutes,ease,note,recorded_by,sus_responses) values($1,'2026-11-24',$2,5,4,'SIMULASI TEST',$3,$4) returning sus_score as value",[session,{kirim:'selesai'},admin,sus===null?null:JSON.stringify(sus)]);
+    expect(Number(await insert([5,1,5,1,5,1,5,1,5,1]))).toBe(100);
+    expect(Number(await insert([1,5,1,5,1,5,1,5,1,5]))).toBe(0);
+    expect(Number(await insert([4,2,4,2,4,2,4,2,4,2]))).toBe(75);
+    expect(await insert(null)).toBeNull();
+    await expect(insert([6,1,5,1,5,1,5,1,5,1])).rejects.toThrow();
+    await expect(insert([5,1,5,1,5,1,5,1,5])).rejects.toThrow();
+    await expect(insert([5,1,5,1,5,1,5,1,5,1.5])).rejects.toThrow();
+    await expect(db.query("update dc_usability_tests set sus_responses=null where assessment_id=$1",[session])).rejects.toThrow(/Immutable/);
   });
   it('supports email-free expert assignments without creating Auth users, while keeping final answers immutable',async()=>{
     const usersBefore=await scalar('select count(*) as value from auth.users');

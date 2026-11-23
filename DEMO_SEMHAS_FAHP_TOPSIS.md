@@ -26,8 +26,8 @@ Dokumen ini adalah urutan demo yang aman, singkat, dan dapat direproduksi. Gunak
 6. Buka **Lihat cara hitung**. Tunjukkan `w`, `R`, `S`, `g`, `H`, `q`, `C`, dan `rank` dari run produksi yang sama.
 7. Klik **Ekspor input U001 untuk Colab**. File `digital-checkup-colab.json` berisi input canonical dan trace hasil, tanpa email, WhatsApp, token, atau catatan bebas.
 8. Unggah `notebooks/validasi_fahp_topsis_colab.ipynb` ke Colab, jalankan semua sel, lalu unggah JSON U001 ketika diminta.
-9. Notebook menghitung ulang Fuzzy AHP dan TOPSIS secara independen, menampilkan CR masing-masing ahli, serta membandingkan `w`, `R`, `S`, `g`, `H`, `q`, `C`, dan `rank`.
-10. Tunjukkan pesan **VALIDASI LULUS**. Batas penerimaan adalah galat relatif maksimum `1e-10`; urutan kode modul juga harus sama persis.
+9. Notebook menghitung ulang Fuzzy AHP dan TOPSIS secara independen, menampilkan tabel CR masing-masing ahli, bobot `w`, dan matriks `R`, serta membandingkan `w`, `R`, `S`, `g`, `H`, `q`, `N`, `V`, `A±`, `D±`, `C`, `rank`, top set, dan hash input untuk **setiap** record RANKED dalam file.
+10. Tunjukkan tabel ringkasan dan pesan **VALIDASI LULUS**. Batas penerimaan adalah selisih mutlak maksimum `1e-10` per record; urutan kode modul juga harus sama persis. Untuk menunjukkan seluruh data sekaligus, pakai **JSON siap Google Colab** di tab Ekspor; bagian tahap 2 notebook menghitung ulang Spearman, top-set hit rate, dan overlap top-3 dari ranking ahli yang sudah masuk.
 
 ## Apa yang benar-benar dihitung
 
@@ -60,6 +60,6 @@ Dokumen ini adalah urutan demo yang aman, singkat, dan dapat direproduksi. Gunak
 - Pastikan JSON diekspor dari tombol pada kartu U001 yang sama, bukan dari run lama.
 - Pastikan status run adalah `RANKED`.
 - Jangan mengedit angka dalam JSON.
-- Pastikan file memiliki `schemaVersion: DL-COLAB-1.0`, `canonicalInput`, dan `run.trace`.
+- Pastikan file memiliki `schemaVersion: DL-COLAB-1.1` (1.0 masih diterima), `canonicalInput`, dan `run.trace`. Draf yang belum dikirim tidak menjadi record; lihat `skippedRecords`.
 - Jika model baru dibuat, ekspor ulang JSON agar versi model dan run cocok.
 

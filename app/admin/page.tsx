@@ -3,6 +3,7 @@ import { AdminSignIn } from "@/components/auth/admin-sign-in";
 import { currentActor, supabaseConfigured } from "@/lib/supabase/server";
 import { ResearchDashboard } from "@/components/digital-checkup/research-dashboard";
 import "@/app/digital-checkup.css";
+import "@/app/commerce.css";
 export const metadata: Metadata = { title: "Admin Digital Checkup", robots: { index: false, follow: false } };
 export const dynamic = "force-dynamic";
 export default async function AdminPage() {
@@ -10,5 +11,8 @@ export default async function AdminPage() {
   let actor;
   try {actor=await currentActor();} catch {return <AdminSignIn notice="Sesi belum dapat diperiksa. Silakan masuk kembali."/>;}
   if (!actor || !["admin", "researcher"].includes(actor.role)) return <AdminSignIn notice={actor?"Gunakan akun yang memiliki akses admin atau peneliti.":""}/>;
-  return <ResearchDashboard name={actor.name} />;
+  return <>
+    {actor.role === "admin" ? <nav className="cm-admin-switch" aria-label="Menu admin"><a href="/admin/pesanan">Pesanan & langganan</a><a href="/admin/permintaan">Permintaan layanan</a></nav> : null}
+    <ResearchDashboard name={actor.name} />
+  </>;
 }

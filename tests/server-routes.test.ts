@@ -47,7 +47,7 @@ it('provides an anonymized Colab-ready result file for authorized admins',async(
   expect(response.status).toBe(200);
   expect(response.headers.get('content-disposition')).toContain('digital-checkup-colab.json');
   const body=await response.json();
-  expect(body).toMatchObject({schemaVersion:'DL-COLAB-1.0',records:[{umkmCode:'U001'}]});
+  expect(body).toMatchObject({schemaVersion:'DL-COLAB-1.1',records:[{umkmCode:'U001'}]});
   expect(body.records[0].dimensionScores).toHaveLength(8);
   const serialized=JSON.stringify(body);
   expect(serialized).not.toContain('PRIVATE');

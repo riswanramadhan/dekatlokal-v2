@@ -1,0 +1,85 @@
+/* Font: judul jakarta, isi gantari — keduanya karya desainer Indonesia. */
+.root { --t-display: var(--f-jakarta); --t-body: var(--f-gantari); }
+.root { --pad: clamp(20px, 6cqi, 96px); font-size: 16px; line-height: 1.7; }
+.root h1, .root h2, .root h3 { margin: 0; font-weight: 500; }
+.root p { margin: 0; }
+.sectionLabel { font-family: var(--t-body), sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: var(--c-muted); }
+.sectionTitle { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-style: normal; font-weight: 500; font-size: clamp(34px, 5.4cqi, 64px); line-height: 1.02; }
+
+.top { display: grid; justify-items: center; gap: 10px; padding: 26px var(--pad) 18px; border-bottom: 1px solid var(--c-line); text-align: center; }
+.brand { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 24px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; }
+.nav { display: flex; gap: 22px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--c-muted); }
+.nav a { text-decoration: none; }
+.nav a:hover { color: var(--c-ink); }
+
+.hero { display: grid; gap: 44px; justify-items: center; padding: 64px var(--pad) 72px; text-align: center; }
+.heroText { display: grid; gap: 18px; justify-items: center; }
+.eyebrow { font-size: 12px; letter-spacing: .24em; text-transform: uppercase; color: var(--c-accent); font-weight: 600; }
+.title { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-style: normal; font-weight: 500; font-size: clamp(50px, 10cqi, 128px); line-height: .92; letter-spacing: -.01em; max-width: 12ch; }
+.lead { max-width: 38ch; font-size: clamp(17px, 2cqi, 20px); color: var(--c-muted); }
+.cta { margin-top: 10px; padding: 14px 30px; border: 1px solid var(--c-ink); font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; text-decoration: none; transition: background .25s ease, color .25s ease; }
+.cta:hover { background: var(--c-ink); color: var(--c-bg) !important; }
+.frame { margin: 0; width: min(100%, 520px); padding: 14px; border: 1px solid var(--c-line); }
+.frameInner { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--c-soft); }
+.heroImg { object-fit: cover; }
+
+.about { display: grid; gap: 22px; max-width: 1040px; margin: 0 auto; padding: 72px var(--pad); border-top: 1px solid var(--c-line); }
+.aboutText { font-size: clamp(18px, 2.2cqi, 22px); line-height: 1.75; color: var(--c-ink); }
+.aboutText::first-letter { float: left; margin: 6px 12px 0 0; font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 4.4em; line-height: .78; color: var(--c-accent); }
+
+.collection { padding: 80px var(--pad); background: var(--c-surface); border-block: 1px solid var(--c-line); }
+.sectionHead { display: grid; gap: 10px; justify-items: center; margin-bottom: 44px; text-align: center; }
+.items { list-style: none; margin: 0 auto; padding: 0; max-width: 1040px; }
+.items li { display: grid; grid-template-columns: 48px 1fr; gap: 6px 14px; padding: 28px 0; border-bottom: 1px solid var(--c-line); }
+.itemNo { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 34px; line-height: 1; color: var(--c-accent); }
+.itemBody { display: grid; gap: 6px; }
+.itemBody h3 { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 28px; line-height: 1.1; font-weight: 600; }
+.itemBody p { color: var(--c-muted); font-size: 15px; max-width: 52ch; }
+.itemBody a, .itemOrder { justify-self: start; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 5px; }
+.itemPrice { grid-column: 2; font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 24px; font-variant-numeric: lining-nums tabular-nums; }
+
+.values { display: grid; gap: 36px; max-width: 1100px; margin: 0 auto; padding: 80px var(--pad); text-align: center; }
+.values article { display: grid; gap: 10px; justify-items: center; }
+.roman { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 22px; color: var(--c-accent); letter-spacing: .1em; }
+.values h3 { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 26px; font-weight: 600; }
+.values p { color: var(--c-muted); max-width: 30ch; }
+
+.quotes { display: grid; gap: 56px; padding: 88px var(--pad); background: var(--c-soft); text-align: center; }
+.quotes figure { margin: 0 auto; display: grid; gap: 18px; max-width: 860px; }
+.quotes blockquote { margin: 0; font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-style: normal; font-size: clamp(26px, 4cqi, 46px); line-height: 1.2; }
+.quotes figcaption { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--c-muted); }
+
+.visit { display: grid; gap: 36px; justify-items: center; padding: 88px var(--pad); text-align: center; }
+.visitGrid { display: grid; gap: 32px; width: 100%; max-width: 1040px; }
+.visitGrid > div { display: grid; gap: 10px; justify-items: center; align-content: start; }
+.visitGrid p { max-width: 32ch; }
+.visitGrid a { text-underline-offset: 5px; }
+.hours { margin: 0; display: grid; gap: 4px; }
+.hours div { display: flex; justify-content: center; gap: 10px; }
+.hours dt { color: var(--c-muted); }
+.hours dd { margin: 0; }
+.socials { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 2px; font-size: 14px; }
+
+.faq { display: grid; gap: 28px; max-width: 860px; margin: 0 auto; padding: 0 var(--pad) 88px; }
+.faq .sectionTitle { text-align: center; }
+.faqList details { border-top: 1px solid var(--c-line); }
+.faqList details:last-child { border-bottom: 1px solid var(--c-line); }
+.faqList summary { display: flex; justify-content: space-between; gap: 18px; padding: 20px 0; font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 22px; font-weight: 600; }
+.faqList summary::after { content: "+"; font-family: var(--t-body), sans-serif; font-weight: 300; color: var(--c-accent); }
+.faqList details[open] summary::after { content: "−"; }
+.faqList p { padding-bottom: 22px; color: var(--c-muted); }
+
+.footer { display: grid; gap: 4px; justify-items: center; padding: 40px var(--pad) 6px; border-top: 1px solid var(--c-line); text-align: center; }
+.footBrand { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-style: normal; font-size: 30px; }
+
+@container (min-width: 760px) {
+  .hero { grid-template-columns: 1fr 1fr; justify-items: start; align-items: center; text-align: left; gap: 64px; padding-top: 88px; padding-bottom: 96px; }
+  .heroText { justify-items: start; }
+  .frame { justify-self: end; transform: translateY(24px); }
+  .about { grid-template-columns: 180px 1fr; }
+  .items li { grid-template-columns: 72px 1fr auto; align-items: baseline; padding: 32px 0; }
+  .items li:nth-child(even) { padding-left: 8%; }
+  .itemPrice { grid-column: auto; }
+  .values { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .visitGrid { grid-template-columns: repeat(3, 1fr); }
+}

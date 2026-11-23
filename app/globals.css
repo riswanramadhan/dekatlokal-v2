@@ -1,6 +1,19 @@
 @import "tailwindcss";
 
 :root {
+  /* Palet primary identik dengan dekatlokal.com (ekosistem yang sama). */
+  --primary: #0255F5;
+  --primary-foreground: #ffffff;
+  --primary-50: #EBF1FE;
+  --primary-100: #B7CFFC;
+  --primary-200: #83AEFA;
+  --primary-300: #4F8DF8;
+  --primary-400: #1B6CF6;
+  --primary-500: #0255F5;
+  --primary-600: #0244C4;
+  --primary-700: #013393;
+  --primary-800: #012262;
+  --primary-900: #001131;
   --brand-primary: #0255f5;
   --brand-primary-hover: #0147d6;
   --brand-primary-active: #013bb3;
@@ -56,6 +69,18 @@
 }
 
 @theme inline {
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
   --color-brand-primary: var(--brand-primary);
   --color-brand-primary-hover: var(--brand-primary-hover);
   --color-brand-primary-active: var(--brand-primary-active);

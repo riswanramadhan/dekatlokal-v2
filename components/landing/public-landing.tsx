@@ -1,8 +1,5 @@
-import { adminWhatsApp } from "@/lib/digital-checkup/contact";
 import Image from "next/image";
-import Link from "next/link";
 import {
-  ArrowUpRight,
   BarChart3,
   BookOpenCheck,
   CheckCircle2,
@@ -10,13 +7,18 @@ import {
   Target,
 } from "lucide-react";
 import { CourseExplorer, type LandingCourse } from "@/components/landing/course-explorer";
-import { HeroHeadline } from "@/components/landing/hero-headline";
 import { HeroDashboardPreview } from "@/components/landing/hero-dashboard-preview";
-import { LandingNavbar } from "@/components/landing/landing-navbar";
 import { LandingPricingSelector } from "@/components/landing/landing-pricing-selector";
 import { LandingEffects } from "@/components/landing/landing-effects";
 import { TestimonialsCarousel, type LandingStory } from "@/components/landing/testimonials-carousel";
 import { fallbackModuleVisual, moduleVisualBySlug } from "@/lib/digital-checkup/module-catalog";
+import EcosystemHeader from "@/components/ecosystem/ecosystem-header";
+import EcosystemFooter from "@/components/ecosystem/ecosystem-footer";
+import EcosystemWhatsAppFAB from "@/components/ecosystem/whatsapp-fab";
+import FinalCTA from "@/components/ecosystem/final-cta";
+import { EcosystemHero } from "@/components/ecosystem/ecosystem-hero";
+import { RotatingWord } from "@/components/ecosystem/rotating-word";
+import { AboutWithLogos } from "@/components/ecosystem/about-logos";
 
 type ModuleCardView = { slug: string; title: string; outcome: string; icon: string };
 const umkmLogos = [
@@ -81,9 +83,9 @@ export function PublicLanding({ modules, checkupHref }: { modules: ModuleCardVie
   const courses: LandingCourse[] = modules.map((module) => ({ slug: module.slug, title: module.title, outcome: module.outcome, ...(moduleVisualBySlug[module.slug] ?? fallbackModuleVisual) }));
 
   return (
-    <div className="dl-landing">
+    <div className="dl-landing public-page-shell public-page-transition">
       <a className="dl-skip-link" href="#konten-utama">Lewati ke konten utama</a>
-      <LandingNavbar checkupHref={checkupHref} />
+      <EcosystemHeader />
       <main>
         <Hero checkupHref={checkupHref} />
         <AccessLearningSection />
@@ -91,9 +93,17 @@ export function PublicLanding({ modules, checkupHref }: { modules: ModuleCardVie
         <CourseExplorer courses={courses} />
         <PricingSection checkupHref={checkupHref} />
         <FaqSection />
-        <FinalCta checkupHref={checkupHref} />
       </main>
-      <LandingFooter checkupHref={checkupHref} />
+      <FinalCTA
+        title="Kenali usahamu. Tentukan langkah berikutnya."
+        description="Mulai dari Digital Checkup gratis, lalu lanjut belajar atau bikin website sesuai kebutuhan."
+        primaryLabel="Mulai Checkup Gratis"
+        primaryHref={checkupHref}
+        secondaryLabel="Lihat Template Website"
+        secondaryHref="/templates"
+      />
+      <EcosystemFooter />
+      <EcosystemWhatsAppFAB />
       <LandingEffects />
     </div>
   );
@@ -101,39 +111,27 @@ export function PublicLanding({ modules, checkupHref }: { modules: ModuleCardVie
 
 function Hero({ checkupHref }: { checkupHref: string }) {
   return (
-    <section aria-labelledby="hero-title" className="dl-hero-section" id="beranda">
-      <div aria-hidden="true" className="dl-hero-grid" />
-      <div aria-hidden="true" className="dl-hero-orb dl-hero-orb-one" />
-      <div aria-hidden="true" className="dl-hero-orb dl-hero-orb-two" />
-      <div className="dl-hero-inner">
-        <div className="dl-hero-copy" data-reveal-item id="konten-utama" tabIndex={-1}>
-          <HeroHeadline />
-          <p className="dl-hero-description">Usaha mau maju, tapi bingung mulai dari mana? Cek kondisinya dulu, lalu temukan langkah yang bisa kamu coba hari ini.</p>
-          <div className="dl-hero-actions">
-            <Link className="dl-primary-button" href={checkupHref}>Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} /></Link>
-            <Link className="dl-secondary-button" href="#akses-belajar">Lihat cara kerjanya</Link>
-          </div>
-          <ul className="dl-hero-trust" aria-label="Informasi Digital Checkup">
-            {["Gratis", "Cuma 5–7 menit", "Hasil langsung"].map((item) => <li key={item}><CheckCircle2 aria-hidden="true" size={16} />{item}</li>)}
-          </ul>
-        </div>
-      </div>
-
-      <div className="dl-hero-product" data-reveal-item>
-        <HeroDashboardPreview />
-      </div>
-
-      <div aria-label="Usaha lokal bersama DekatLokal" className="dl-logo-strip" data-reveal-item tabIndex={0}>
-        <p className="dl-logo-strip-label">Bareng usaha lokal, tumbuh selangkah lagi</p>
-        <div className="dl-logo-mask">
-          <div className="dl-logo-track">
-            {[...umkmLogos, ...umkmLogos].map(([name, src], index) => (
-              <span aria-hidden={index >= umkmLogos.length} className="dl-logo-item" key={`${name}-${index}`}><Image alt={index < umkmLogos.length ? name : ""} height={52} loading={index < 4 ? "eager" : "lazy"} src={src} unoptimized width={128} /></span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+    <>
+    <EcosystemHero
+      id="hero-checkup"
+      kicker="Digital Checkup gratis untuk UMKM"
+      title={<>Cek kondisi usahamu, biar makin dekat dengan<span className="eco-highlight-line"><RotatingWord words={["pelanggan", "cuan", "pasar", "peluang", "teknologi"]} className="eco-highlight" /></span></>}
+      description="Usaha mau maju, tapi bingung mulai dari mana? Cek kondisinya dulu, lalu temukan langkah yang bisa kamu coba hari ini."
+      primary={{ label: "Mulai Checkup Gratis", href: checkupHref }}
+      secondary={{ label: "Lihat cara kerjanya", href: "#akses-belajar" }}
+      footnote={<ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2" aria-label="Informasi Digital Checkup">{["Gratis", "Cuma 5–7 menit", "Hasil langsung"].map((item) => <li key={item} className="inline-flex items-center gap-1.5"><CheckCircle2 aria-hidden="true" size={15} />{item}</li>)}</ul>}
+      visual={<div className="dl-hero-product eco-hero-product" id="konten-utama" tabIndex={-1}><HeroDashboardPreview /></div>}
+    />
+    <AboutWithLogos
+      eyebrow="Tentang Digital Checkup"
+      ghost="Checkup"
+      title="Kenali kondisi usahamu dulu, lalu ambil langkah"
+      accent="digital"
+      after=" yang paling dibutuhkan."
+      description="Digital Checkup memetakan 8 sisi digital usahamu dalam 5–7 menit, lalu memberi urutan prioritas dan kelas belajar yang sesuai. Bagian dari ekosistem DekatLokal: dari checkup, belajar, sampai website yang siap jualan."
+      logos={umkmLogos}
+    />
+    </>
   );
 }
 
@@ -254,30 +252,4 @@ function FaqSection() {
       </div>
     </section>
   );
-}
-
-function FinalCta({ checkupHref }: { checkupHref: string }) {
-  return (
-    <section aria-labelledby="start-title" className="dl-final-cta dl-viewport-section dl-cta-refined" id="mulai">
-      <div aria-hidden="true" className="dl-cta-grid" />
-      <div className="dl-final-inner">
-        <div className="dl-final-copy" data-reveal-item>
-          <p className="dl-section-kicker">Langkah kecil, mulai hari ini</p>
-          <h2 id="start-title">Kenali usahamu. Tentukan langkah berikutnya.</h2>
-          <p>Mulai dari checkup gratis. Lihat kondisi usahamu dan lanjut belajar sesuai kebutuhan.</p>
-          <div><Link className="dl-final-primary" href={checkupHref}>Mulai Checkup Gratis <ArrowUpRight aria-hidden="true" size={18} /></Link></div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function LandingFooter({ checkupHref }: { checkupHref: string }) {
-  return (
-    <footer className="dl-footer" data-testid="landing-footer"><div className="dl-footer-grid"><div className="dl-footer-about"><Image alt="DekatLokal" height={64} src="/brand/dekat-lokal.png" width={207} /><p>Teman belajar pemilik usaha. Cek kondisi jualanmu, temukan yang perlu dibenahi, lalu coba langkah kecil setiap hari.</p><a href={adminWhatsApp()}>Hubungi DekatLokal</a><span>Indonesia</span></div><FooterColumn title="Platform" links={[["Digital Checkup", checkupHref], ["Cara Kerja", "#akses-belajar"], ["Modul", "#course"], ["Harga", "#paket"]]} /><FooterColumn title="Ruang Tumbuh" links={[["Mulai Belajar", "/masuk"], ["Perkembangan Belajar", "/masuk"], ["Hasil Praktik", "/masuk"]]} /><FooterColumn title="Dukungan" links={[["Masuk", "/masuk"], ["Bantuan", adminWhatsApp()], ["Hubungi Kami", adminWhatsApp()]]} /></div><div aria-hidden="true" className="dl-footer-word">DekatLokal</div><div className="dl-footer-bottom"><span>&copy; 2026 DekatLokal. Hak cipta dilindungi.</span><div><a href="https://dekatlokal.com/privacy-policy" rel="noreferrer" target="_blank">Kebijakan Privasi</a><a href="https://dekatlokal.com/terms-of-service" rel="noreferrer" target="_blank">Syarat &amp; Ketentuan</a></div><span>UMKM bertumbuh, satu langkah lebih dekat.</span></div></footer>
-  );
-}
-
-function FooterColumn({ title, links }: { title: string; links: ReadonlyArray<readonly [string, string]> }) {
-  return <div className="dl-footer-column"><h2>{title}</h2>{links.map(([label, href]) => <Link href={href} key={label}>{label}</Link>)}</div>;
 }

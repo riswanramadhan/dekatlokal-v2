@@ -1,0 +1,86 @@
+/* Font: judul Gantari medium yang tenang, isi Plus Jakarta Sans — keduanya karya desainer Indonesia. */
+.root { --t-display: var(--f-gantari); --t-body: var(--f-jakarta); --pad: clamp(18px, 5.5cqi, 64px); }
+.root h1, .root h2, .root h3 { margin: 0; font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-weight: 600; letter-spacing: -.015em; }
+.root p { margin: 0; }
+.kicker { font-size: 12.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c-accent); }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px var(--pad); }
+.brand { font-family: var(--t-display), sans-serif; font-weight: 700; font-size: 19px; text-decoration: none; }
+.nav { display: none; gap: 24px; font-size: 14px; color: var(--c-muted); }
+.nav a { text-decoration: none; }
+
+.hero { display: grid; gap: 34px; padding: 18px var(--pad) 44px; }
+.heroText { display: grid; gap: 18px; align-content: center; }
+.title { font-size: clamp(36px, 7.6cqi, 76px); line-height: 1.04; font-weight: 600; max-width: 16ch; }
+.lead { font-size: 16px; color: var(--c-muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+.primary, .ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 12px 24px; border-radius: 16px; font-weight: 700; font-size: 15px; text-decoration: none; transition: transform .2s ease; }
+.primary { background: var(--c-accent); color: var(--c-accent-ink) !important; }
+.primary:hover { transform: translateY(-1px); }
+.ghost { background: var(--c-soft); }
+.heroMedia { position: relative; isolation: isolate; margin: 0; padding: 18px; border-radius: 40px; background: var(--c-soft); overflow: hidden; }
+.heroMotif { opacity: .12; }
+.arch { position: relative; aspect-ratio: 4 / 4.6; border-radius: 999px 999px 32px 32px; overflow: hidden; background: var(--c-surface); }
+.heroImg { object-fit: cover; }
+
+.steps { list-style: none; margin: 0 var(--pad); padding: 0; display: grid; gap: 10px; counter-reset: none; }
+.steps li { display: flex; gap: 14px; align-items: flex-start; padding: 18px; border-radius: 20px; background: var(--c-surface); box-shadow: inset 0 0 0 1px var(--c-line); }
+.stepNo { flex: 0 0 auto; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; background: var(--c-accent); color: var(--c-accent-ink); font-family: var(--t-display), sans-serif; font-weight: 800; }
+.steps strong { display: block; font-size: 16px; }
+.steps p { font-size: 14px; color: var(--c-muted); }
+
+.menu { padding: 48px var(--pad) 56px; }
+.head { display: grid; gap: 8px; margin-bottom: 22px; }
+.head h2 { font-size: clamp(28px, 5cqi, 48px); line-height: 1.08; }
+.menuList { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.menuItem { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px 16px; padding: 18px 18px; border-radius: 20px; background: var(--c-surface); box-shadow: inset 0 0 0 1px var(--c-line); }
+.menuText { display: grid; gap: 4px; grid-column: 1 / -1; }
+.menuText h3 { font-size: 19px; }
+.menuText p { font-size: 14.5px; color: var(--c-muted); }
+.price { font-weight: 800; font-size: 17px; font-variant-numeric: tabular-nums; }
+.pick { justify-self: end; display: inline-flex; align-items: center; min-height: 40px; padding: 8px 18px; border-radius: 12px; background: var(--c-soft); color: var(--c-ink) !important; font-weight: 700; font-size: 14px; text-decoration: none; }
+
+.care { display: grid; gap: 26px; margin: 0 var(--pad); padding: clamp(24px, 5cqi, 48px); border-radius: 32px; background: var(--c-soft); }
+.about { font-family: var(--t-display), sans-serif; font-size: clamp(20px, 3cqi, 30px); line-height: 1.38; font-weight: 500; }
+.benefits { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.benefits li { display: flex; gap: 12px; align-items: flex-start; }
+.tick { flex: 0 0 auto; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--c-accent); color: var(--c-accent-ink); }
+.benefits strong { display: block; }
+.benefits p { font-size: 14.5px; color: var(--c-muted); }
+
+.voices { display: grid; gap: 14px; padding: 56px var(--pad) 24px; }
+.voices figure { margin: 0; display: grid; gap: 14px; padding: 24px; border-radius: 24px; background: var(--c-surface); box-shadow: inset 0 0 0 1px var(--c-line); }
+.voices blockquote { margin: 0; font-size: 17px; line-height: 1.55; }
+.voices figcaption { display: grid; font-size: 14px; }
+.voices figcaption span { color: var(--c-muted); }
+
+.visit { display: grid; gap: 18px; padding: 40px var(--pad) 72px; }
+.visitCard { display: grid; gap: 16px; align-content: start; padding: clamp(24px, 5cqi, 40px); border-radius: 28px; background: var(--c-surface); box-shadow: inset 0 0 0 1px var(--c-line); }
+.visitCard h2, .faq h2 { font-size: clamp(26px, 4.2cqi, 40px); }
+.address { display: flex; gap: 10px; color: var(--c-muted); }
+.address svg { flex: 0 0 auto; margin-top: 3px; color: var(--c-accent); }
+.hours { margin: 0; display: grid; gap: 6px; }
+.hours div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border-radius: 12px; background: var(--c-soft); }
+.hours dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.socials { display: flex; flex-wrap: wrap; gap: 14px; padding: 0; margin: 0; list-style: none; font-size: 14px; }
+.faq { display: grid; gap: 12px; align-content: start; padding: clamp(8px, 2cqi, 16px); }
+.faqList details { padding: 4px 0; border-bottom: 1px solid var(--c-line); }
+.faqList summary { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; font-weight: 700; }
+.faqList summary::after { content: "+"; color: var(--c-accent); font-weight: 800; }
+.faqList details[open] summary::after { content: "–"; }
+.faqList p { padding: 0 0 14px; color: var(--c-muted); }
+
+.footer { display: grid; gap: 10px; justify-items: center; padding: 8px var(--pad) 90px; text-align: center; }
+.footer > :first-child { width: 100%; }
+.footBrand { font-family: var(--t-display), sans-serif; font-weight: 700; font-size: 20px; }
+
+@container (min-width: 760px) {
+  .nav { display: flex; }
+  .hero { grid-template-columns: 1.05fr .95fr; align-items: center; padding-top: 32px; }
+  .steps { grid-template-columns: repeat(3, 1fr); }
+  .menuItem { grid-template-columns: 1fr auto auto; }
+  .menuText { grid-column: auto; }
+  .care { grid-template-columns: 1.1fr 1fr; align-items: start; }
+  .voices { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .visit { grid-template-columns: 1fr 1fr; align-items: start; }
+}

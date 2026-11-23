@@ -64,7 +64,7 @@ export const caseSchema = z.object({ decision: z.enum(["Dinilai", "Tidak dapat m
   if (v.decision === "Dinilai" && (Object.keys(v.ranks).length !== 7 || new Set(MODULES.map((m) => v.ranks[m])).size !== 7 || MODULES.some((m) => !v.ranks[m]))) ctx.addIssue({ code: "custom", message: "Urutkan ketujuh modul dengan peringkat unik 1–7." });
   if (v.decision === "Tidak dapat menilai" && Object.keys(v.ranks).length) ctx.addIssue({ code: "custom", message: "Abstain tidak menggunakan peringkat." });
 });
-export const usabilitySchema = z.object({ assessmentId: z.string().uuid(), date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), tasks: z.record(z.string(), z.enum(["selesai", "dengan_bantuan", "gagal"])).refine((x) => Object.keys(x).length > 0), minutes: z.number().positive().max(1440), ease: z.number().int().min(1).max(5), note: text(2000) });
+export const usabilitySchema = z.object({ assessmentId: z.string().uuid(), date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), tasks: z.record(z.string(), z.enum(["selesai", "dengan_bantuan", "gagal"])).refine((x) => Object.keys(x).length > 0), minutes: z.number().positive().max(1440), ease: z.number().int().min(1).max(5), note: text(2000), sus: z.array(z.number().int().min(1).max(5)).length(10).optional() });
 export function blankExpert(): ExpertDraft {
   return { profile: { name: "", institution: "", jobTitle: "", experienceYears: null, expertise: "", consent: false, assessmentDate: new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Makassar" }) }, reviews: {}, decision: null, generalNote: "", pairs: [], relevance: {} };
 }

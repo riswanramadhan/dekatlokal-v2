@@ -1,0 +1,10 @@
+.page { display: grid; place-items: center; min-height: 100dvh; padding: 24px 16px; background: #f4f6f9; color: #1a2433; font-family: var(--font-poppins), system-ui, sans-serif; }
+.card { display: grid; gap: 14px; width: min(100%, 520px); padding: clamp(28px, 6vw, 48px); border-radius: 24px; background: #fff; border: 1px solid #e3e8ef; text-align: center; }
+.card h1 { margin: 0; font-size: clamp(24px, 5vw, 32px); font-weight: 600; letter-spacing: -.03em; line-height: 1.2; }
+.card p { margin: 0; color: #5a6778; font-size: 15px; line-height: 1.7; }
+.eyebrow { font-size: 12px !important; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #8692a3 !important; }
+.actions { display: grid; gap: 10px; justify-items: center; margin-top: 10px; }
+.primary { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px 22px; border-radius: 14px; background: #0255f5; color: #fff; font-weight: 600; font-size: 14px; text-decoration: none; }
+.primary:hover { background: #0347c9; }
+.link { color: #0255f5; font-size: 13px; }
+.primary:focus-visible, .link:focus-visible { outline: 3px solid #91b8ff; outline-offset: 3px; }
