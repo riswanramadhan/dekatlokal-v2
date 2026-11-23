@@ -1,7 +1,0 @@
-1:I[7121,[],"LoadingBoundaryProvider"]
-2:"$Sreact.fragment"
-3:I[7121,[],""]
-4:I[4581,[],""]
-:HL["/_next/static/css/59e0bae4024df543.css","style"]
-5:[]
-0:{"rsc":["$","$L1",null,{"loading":[["$","main","l",{"aria-busy":"true","aria-label":"Memuat informasi pemeliharaan Digital Checkup","className":"page_page__88Ygs","children":["$","div",null,{"className":"page_card__UgpaN page_loadingCard__tpMWR","children":[["$","div",null,{"aria-hidden":"true","className":"page_loadingVisualPanel__H7OAL","children":[["$","span",null,{"className":"page_loadingLogo__XU91Y"}],["$","span",null,{"className":"page_loadingVisual__JBM60"}]]}],["$","div",null,{"aria-hidden":"true","className":"page_loadingContent__P2Paj","children":[["$","span",null,{"className":"page_loadingKicker__FdiwU"}],["$","span",null,{"className":"page_loadingTitle__Pvjz6"}],["$","span",null,{"className":"page_loadingCopy__hCagC"}],["$","span",null,{"className":"page_loadingStatus__j_ZwQ"}],["$","div",null,{"className":"page_loadingActions__cmvM3","children":[["$","span",null,{"className":"page_loadingAction__lwoTA"}],["$","span",null,{"className":"page_loadingSecondaryAction__hhkUw"}]]}]]}]]}]}],[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/59e0bae4024df543.css","precedence":"next"}]],[]],"children":["$","$2","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","template":["$","$L4",null,{}]}]]}]}],"isPartial":false,"staleTime":300,"varyParams":"$W5","buildId":"4PYX0gA9FNOP_eIKH_mRo"}

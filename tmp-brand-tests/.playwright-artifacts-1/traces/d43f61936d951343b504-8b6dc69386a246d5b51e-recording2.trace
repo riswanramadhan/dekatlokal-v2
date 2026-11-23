@@ -1,2 +1,0 @@
-{"version":8,"type":"context-options","origin":"library","browserName":"","playwrightVersion":"1.61.1","options":{},"platform":"win32","wallTime":1788721884854,"monotonicTime":410880.148,"sdkLanguage":"javascript","contextId":"request-context@d121f40a90bf06c414a3e04559b9dcc3","title":"landing-brand.pw.ts:75 › PWA manifest, icons, and safe offline fallback"}
-{"type":"before","callId":"call@60","startTime":410887.394,"class":"APIRequestContext","method":"fetch","params":{"url":"/manifest.webmanifest","method":"GET","timeout":0},"stepId":"pw:api@28"}

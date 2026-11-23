@@ -30,6 +30,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 tmp-next-*.log
+# local scratch output (dev logs, pid files, screenshot runs)
+tmp-*
+test-results/
+playwright-report/
 
 # env files (can opt-in for committing if needed)
 .env*
