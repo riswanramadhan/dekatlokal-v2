@@ -3,7 +3,9 @@
 import { adminWhatsApp } from "@/lib/digital-checkup/contact";
 import { useId, useState } from "react";
 import Link from "next/link";
-import { Check, ArrowRight } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ArrowRight, Check, Info } from "lucide-react";
+import { SectionHeading } from "@/components/landing/section-heading";
 
 const pricingPlans = [
   {
@@ -79,41 +81,48 @@ function resolveHref(type: (typeof pricingPlans)[number]["hrefType"], checkupHre
 export function LandingPricingSelector({ checkupHref }: { checkupHref: string }) {
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(0);
   const detailId = useId();
+  const reduceMotion = useReducedMotion();
   const selectedPlan = pricingPlans[selectedPlanIndex];
+  const isFree = selectedPlan.hrefType === "checkup";
+  const href = resolveHref(selectedPlan.hrefType, checkupHref);
+  const isExternal = href.startsWith("http");
+
+  const cta = (
+    <>
+      <span>{isFree ? "Mulai Gratis" : "Tanya Paket Ini"}</span>
+      <ArrowRight aria-hidden="true" size={18} />
+    </>
+  );
 
   return (
     <>
-      <div className="dl-pricing-layout">
+      <div className="dl-pricing">
         <div className="dl-pricing-choice">
-          <div className="dl-pricing-copy" data-reveal-item>
-            <p className="dl-section-kicker">Pilih sesuai kebutuhan</p>
-            <h2 id="pricing-title">
-              Mulai gratis. Naik level saat <span className="dl-title-pill">sudah siap</span>.
-            </h2>
-            <p>
-              Bereskan fondasinya dulu. Kalau butuh pendampingan lebih jauh, pilih paket yang benar-benar cocok dengan tujuanmu.
-            </p>
-          </div>
+          <SectionHeading
+            description="Bereskan fondasinya dulu. Kalau butuh pendampingan lebih jauh, pilih paket yang benar-benar cocok dengan tujuanmu."
+            eyebrow="Pilih sesuai kebutuhan"
+            title={<>Mulai gratis. Naik level saat <span className="dl-mark-pill">sudah siap</span>.</>}
+            titleId="pricing-title"
+          />
 
-          <div aria-label="Pilih paket DekatLokal" className="dl-pricing-options" data-reveal-item>
+          <div aria-label="Pilih paket DekatLokal" className="dl-plan-list" role="group">
             {pricingPlans.map((plan, index) => {
               const isSelected = selectedPlanIndex === index;
-
               return (
                 <button
                   aria-controls={detailId}
                   aria-pressed={isSelected}
-                  className={`dl-pricing-option${isSelected ? " is-selected" : ""}`}
+                  className={`dl-plan-option${isSelected ? " is-selected" : ""}`}
                   key={plan.name}
                   onClick={() => setSelectedPlanIndex(index)}
                   type="button"
                 >
-                  <span aria-hidden="true" className="dl-pricing-radio" />
-                  <span className="dl-pricing-option-copy">
+                  <span aria-hidden="true" className="dl-plan-radio" />
+                  <span className="dl-plan-copy">
                     <strong>{plan.name}</strong>
                     <small>{plan.description}</small>
                   </span>
-                  <span className="dl-pricing-option-price">
+                  <span className="dl-plan-price">
                     {plan.originalPrice ? <del>{plan.originalPrice}</del> : null}
                     <strong>{plan.price}</strong>
                   </span>
@@ -123,57 +132,67 @@ export function LandingPricingSelector({ checkupHref }: { checkupHref: string })
           </div>
         </div>
 
-        <article
-          aria-live="polite"
-          className="dl-pricing-detail"
-          data-reveal-item
-          id={detailId}
-          key={selectedPlan.name}
-        >
-          <div className="dl-pricing-detail-head">
-            <div>
-              <span>Paket {String(selectedPlanIndex + 1).padStart(2, "0")}</span>
-              <h3>{selectedPlan.name}</h3>
-            </div>
-            {selectedPlan.featured ? <span className="dl-pricing-popular">Pilihan lanjutan</span> : null}
-          </div>
+        <div aria-live="polite" id={detailId}>
+          <AnimatePresence initial={false} mode="wait">
+            <motion.article
+              animate={{ opacity: 1, y: 0 }}
+              className="dl-plan-detail"
+              exit={{ opacity: 0, y: -8 }}
+              initial={{ opacity: 0, y: 12 }}
+              key={selectedPlan.name}
+              transition={{ duration: reduceMotion ? 0 : 0.28, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="dl-plan-detail-head">
+                <div>
+                  <span>Paket {String(selectedPlanIndex + 1).padStart(2, "0")}</span>
+                  <h3>{selectedPlan.name}</h3>
+                </div>
+                {selectedPlan.featured ? (
+                  <span className="chip chip-primary">Pilihan lanjutan</span>
+                ) : isFree ? (
+                  <span className="chip chip-mint">Gratis</span>
+                ) : (
+                  <span className="chip chip-amber">Segera tersedia</span>
+                )}
+              </div>
 
-          <div className="dl-pricing-detail-price">
-            {selectedPlan.originalPrice ? <del>{selectedPlan.originalPrice}</del> : null}
-            <strong>{selectedPlan.price}</strong>
-            <span>{selectedPlan.hrefType === "checkup" ? "tanpa biaya" : "sekali bayar"}</span>
-          </div>
-          {selectedPlan.saving ? <span className="dl-pricing-discount">{selectedPlan.saving}</span> : null}
+              <div className="dl-plan-detail-price">
+                <strong>{selectedPlan.price}</strong>
+                <span>{isFree ? "tanpa biaya" : "sekali bayar"}</span>
+                {selectedPlan.originalPrice ? <del>{selectedPlan.originalPrice}</del> : null}
+              </div>
+              {selectedPlan.saving ? <span className="chip chip-coral dl-plan-saving">{selectedPlan.saving}</span> : null}
 
-          <Link className="dl-pricing-detail-cta" href={resolveHref(selectedPlan.hrefType, checkupHref)}>
-            <span>{selectedPlan.hrefType === "checkup" ? "Mulai Gratis" : "Tanya Paket Ini"}</span>
-            <ArrowRight aria-hidden="true" size={18} />
-          </Link>
+              {isExternal ? (
+                <a className={`btn btn-lg dl-plan-cta ${isFree ? "btn-primary" : "btn-secondary"}`} href={href} rel="noreferrer" target="_blank">{cta}</a>
+              ) : (
+                <Link className={`btn btn-lg dl-plan-cta ${isFree ? "btn-primary" : "btn-secondary"}`} href={href}>{cta}</Link>
+              )}
 
-          <p className="dl-pricing-detail-description">{selectedPlan.description}</p>
+              <p className="dl-plan-detail-desc">{selectedPlan.description}</p>
 
-          <div className="dl-pricing-features">
-            <h4>Yang kamu dapatkan</h4>
-            <ul>
-              {selectedPlan.features.map((feature) => (
-                <li key={feature}>
-                  <span aria-hidden="true">
-                    <Check size={14} />
-                  </span>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
+              <div className="dl-plan-features">
+                <h4>Yang kamu dapatkan</h4>
+                <ul>
+                  {selectedPlan.features.map((feature) => (
+                    <li key={feature}>
+                      <span aria-hidden="true"><Check size={13} strokeWidth={3} /></span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-          <div className="dl-pricing-status">
-            <span aria-hidden="true" />
-            <p>
-              <strong>{selectedPlan.status}</strong>
-              {selectedPlan.statusDetail}
-            </p>
-          </div>
-        </article>
+              <div className={`note dl-plan-status${isFree ? " note-success" : " note-warning"}`}>
+                <Info aria-hidden="true" size={18} style={{ flex: "0 0 auto", marginTop: 2 }} />
+                <p>
+                  <strong>{selectedPlan.status}</strong>
+                  {selectedPlan.statusDetail}
+                </p>
+              </div>
+            </motion.article>
+          </AnimatePresence>
+        </div>
       </div>
 
       <p className="dl-pricing-note">

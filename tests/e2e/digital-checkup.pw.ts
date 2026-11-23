@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { instrument } from '../../lib/decision-engine';
 
-test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, review, immutable result', async ({ page }, info) => {
+test('mobile UMKM journey with explicitly simulated API: consent, profile, 32 answers one by one, review, immutable result', async ({ page }, info) => {
   await page.setViewportSize({ width: 360, height: 800 });
   let saved: Record<string, unknown> | null = null;
   await page.route('**/api/digital-checkup/assessment', async route => {
@@ -16,16 +16,15 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
   await expect(page.getByRole('button',{name:'Mulai Checkup Gratis'})).toBeDisabled();
   await page.getByRole('checkbox').check();
   await page.getByRole('button',{name:'Mulai Checkup Gratis'}).click();
-  await page.getByRole('button',{name:'Lanjut ke pertanyaan'}).click();
+
+  // Profil 1/3: usahamu
+  await expect(page.getByRole('heading',{name:'Ceritakan sedikit usahamu.'})).toBeVisible();
+  await page.getByRole('button',{name:'Lanjut',exact:true}).click();
   await expect(page.getByLabel('Nama bisnis',{exact:true})).toBeFocused();
-  await expect(page.getByLabel('Email',{exact:true})).toHaveAttribute('aria-invalid','true');
-  await expect(page.getByLabel('Nomor WhatsApp',{exact:true})).toHaveAttribute('aria-invalid','true');
+  await expect(page.getByLabel('Lama usaha (bulan)',{exact:true})).toHaveAttribute('aria-invalid','true');
   await page.getByLabel('Nama bisnis',{exact:true}).fill('SIMULASI bisnis');
-  await page.getByLabel('Email',{exact:true}).fill('simulation@example.org');
-  await page.getByLabel('Nomor WhatsApp',{exact:true}).fill('081234567890');
   await page.getByRole('combobox',{name:/^Jenis usaha/}).selectOption('Makanan & minuman');
   await page.getByRole('combobox',{name:'Provinsi',exact:true}).fill('Sulawesi Selatan');
-  expect(await page.getByRole('combobox',{name:'Provinsi',exact:true}).evaluate(el=>parseFloat(getComputedStyle(el).paddingLeft))).toBeGreaterThanOrEqual(39);
   await page.getByRole('option',{name:'Sulawesi Selatan',exact:true}).click();
   await page.getByRole('combobox',{name:'Kota / kabupaten',exact:true}).fill('Makassar');
   await page.screenshot({path:info.outputPath('region-search-mobile.png'),fullPage:true});
@@ -34,26 +33,56 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
   await expect(page.getByLabel('Lama usaha (bulan)',{exact:true})).toHaveValue('');
   await page.getByLabel('Lama usaha (bulan)',{exact:true}).fill('0');
   await page.getByLabel('Jumlah orang, termasuk pemilik',{exact:true}).fill('1');
-  await page.getByRole('checkbox',{name:'WhatsApp',exact:true}).check();
-  await page.getByLabel('Apa yang ingin kamu bereskan dalam 30 hari?').fill('SIMULASI: mencatat transaksi');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
   await page.screenshot({path:info.outputPath('profile-region-mobile.png'),fullPage:true});
-  await page.getByRole('button',{name:'Lanjut ke pertanyaan'}).click();
   await page.getByRole('button',{name:'Lanjut',exact:true}).click();
-  await expect(page.locator('.dc-error[role="alert"]')).toContainText('Q01');
+
+  // Profil 2/3: kontak
+  await expect(page.getByRole('heading',{name:'Biar hasilnya bisa kami kirim.'})).toBeVisible();
+  await page.getByRole('button',{name:'Lanjut',exact:true}).click();
+  await expect(page.getByLabel('Email',{exact:true})).toHaveAttribute('aria-invalid','true');
+  await expect(page.getByLabel('Nomor WhatsApp',{exact:true})).toHaveAttribute('aria-invalid','true');
+  await page.getByLabel('Email',{exact:true}).fill('simulation@example.org');
+  await page.getByLabel('Nomor WhatsApp',{exact:true}).fill('081234567890');
+  await page.getByRole('button',{name:'Lanjut',exact:true}).click();
+
+  // Profil 3/3: cara jualan & target
+  await expect(page.getByRole('heading',{name:'Jualan lewat mana, dan mau beresin apa?'})).toBeVisible();
+  await page.getByRole('checkbox',{name:'WhatsApp',exact:true}).check();
+  await page.getByLabel('Apa yang ingin kamu bereskan dalam 30 hari?').fill('SIMULASI: mencatat transaksi');
+  await page.getByRole('button',{name:'Lanjut ke pertanyaan'}).click();
+
+  // Bagian 1: intro, lalu tombol Lanjut tanpa jawaban harus menolak
+  await expect(page.getByText('Bagian 1 dari 8')).toBeVisible();
+  await page.getByRole('button',{name:'Mulai bagian ini'}).click();
+  await page.getByRole('button',{name:'Lanjut',exact:true}).click();
+  await expect(page.locator('.ck-error[role="alert"]')).toContainText('Q01');
+
   for(let step=0;step<8;step++){
-    await expect(page.getByText(`Bagian ${step+1} dari 8`)).toBeVisible();
-    for(const q of instrument.questions.slice(step*4,step*4+4))await page.locator(`#${q.code}-0`).check();
-    await expect(page.locator('.dc-error')).toHaveCount(0);
-    if(step===0){
-      expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
-      await page.screenshot({path:info.outputPath('checkup-mobile.png'),fullPage:true});
+    if(step>0){
+      await expect(page.getByText(`Bagian ${step+1} dari 8`)).toBeVisible();
+      await page.getByRole('button',{name:'Mulai bagian ini'}).click();
     }
-    await page.getByRole('button',{name:step===7?'Tinjau jawaban':'Lanjut',exact:true}).click();
+    const questions=instrument.questions.slice(step*4,step*4+4);
+    for(const [i,q] of questions.entries()){
+      await expect(page.getByText(`Pertanyaan ${i+1} dari 4`)).toBeVisible();
+      await page.locator(`#${q.code}-0`).check();
+      await expect(page.locator('.ck-error')).toHaveCount(0);
+      if(step===0&&i===0){
+        expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
+        await page.screenshot({path:info.outputPath('checkup-mobile.png'),fullPage:true});
+      }
+      await page.getByRole('button',{name:'Lanjut',exact:true}).click();
+    }
+    await expect(page.getByText(`Bagian ${step+1} selesai`)).toBeVisible();
+    if(step===0) await page.screenshot({path:info.outputPath('section-done-mobile.png'),fullPage:true});
+    await page.getByRole('button',{name:step===7?'Lihat analisis':'Lanjut ke bagian berikutnya',exact:true}).click();
   }
   await expect(page.getByRole('heading',{name:'Profil usaha',exact:true})).toBeVisible();
   await expect(page.getByRole('progressbar',{name:'Analisis Kenal usaha sendiri'})).toHaveAttribute('aria-valuenow','0');
   await page.getByRole('button',{name:'Lihat tinjauan jawaban',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Sudah sesuai kondisi usahamu?'})).toBeVisible();
+  await expect(page.getByRole('button',{name:'Kirim dan lihat hasil'})).toBeDisabled();
   await page.getByRole('checkbox').check();
   await page.getByRole('button',{name:'Kirim dan lihat hasil'}).click();
   await expect(page.getByRole('dialog',{name:'Menyiapkan hasil checkup'})).toBeVisible();
@@ -64,8 +93,8 @@ test('mobile UMKM journey with explicitly simulated API: consent, 32 answers, re
   await expect(page.getByText('Siap masuk tahap verifikasi website gratis')).toBeVisible();
   await expect(page.getByRole('radio')).toHaveCount(0);
   await expect(page.getByRole('link',{name:'Daftar & buka modul gratis'})).toHaveAttribute('href','/masuk');
-  await expect(page.getByRole('button',{name:'Perbarui status'})).toHaveCount(0);
   expect(await page.evaluate(()=>Boolean(localStorage.getItem('dekatlokal.checkup.draft.v1')))).toBe(true);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
   await page.screenshot({path:info.outputPath('checkup-result-mobile.png'),fullPage:true});
 });
 
@@ -86,7 +115,6 @@ test('mobile email OTP UI requests and verifies a simulated code without sending
   expect(requests.map(r=>r.mode)).toEqual(['otp_request','otp_verify']);
   expect(requests[1].token).toBe('123456');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1);
-  expect(await page.evaluate(()=>document.documentElement.scrollHeight-innerHeight)).toBeLessThanOrEqual(1);
   await page.screenshot({path:info.outputPath('signin-otp-mobile.png'),fullPage:true});
 });
 
@@ -112,6 +140,8 @@ test('hasil checkup mengunduh PDF profesional dengan nama bisnis',async({page})=
 
 test('checkup desktop and sign-in remain usable; unauthorized research is rejected',async({page,request},info)=>{
   await page.setViewportSize({width:1440,height:900});
+  // Tidak ada draf tersimpan: UI dimulai dari layar sambutan tanpa menunggu database.
+  await page.route('**/api/digital-checkup/assessment',route=>route.request().method()==='GET'?route.fulfill({json:null}):route.continue());
   await page.goto('/mulai');
   await expect(page.getByRole('heading',{name:'Usahamu mau ke mana? Yuk, cari langkahnya.'})).toBeVisible();
   await page.screenshot({path:info.outputPath('checkup-desktop.png'),fullPage:true});

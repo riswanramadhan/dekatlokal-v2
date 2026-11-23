@@ -5,6 +5,7 @@ import { beforeAll, afterAll, describe, it, expect } from "vitest";
 import { instrument, PAIRS, DIMENSIONS, MODULES, buildModel, sensitivity, topsis } from "@/lib/decision-engine";
 import { blankExpert, validateExpertFinal } from "@/lib/digital-checkup/validation";
 import { inputHash } from "@/lib/digital-checkup/canonical";
+import { verifyModelInput, verifyRun } from "@/lib/decision-engine/verify";
 
 const db = new PGlite();
 const admin=randomUUID(), users=[randomUUID(),randomUUID(),randomUUID()], outsider=randomUUID();
@@ -68,6 +69,11 @@ describe.sequential('real PostgreSQL migrations / transactions / RLS (isolated s
     expect(Number(await scalar('select count(*) as value from dc_dimension_results'))).toBe(8);
     expect(Number(await scalar('select count(*) as value from dc_intervention_results'))).toBe(7);
     expect(Number(await scalar('select jsonb_array_length(sensitivity) as value from dc_decision_runs'))).toBe(32);
+    const stored=(await db.query<Record<string,unknown>>('select * from dc_decision_runs where id=$1',[runId])).rows[0] as unknown as Parameters<typeof verifyRun>[0];
+    const verification=verifyRun(stored);
+    expect(verification.hashMatch).toBe(true);expect(verification.fields.every(f=>f.ok)).toBe(true);expect(verification.ok).toBe(true);
+    const storedModel=(await db.query<Record<string,unknown>>('select * from dc_decision_model_inputs where id=$1',[modelId])).rows[0] as unknown as Parameters<typeof verifyModelInput>[0];
+    expect(verifyModelInput(storedModel).ok).toBe(true);
     await expect(db.query("update dc_decision_runs set trace='{}' where id=$1",[runId])).rejects.toThrow(/Immutable/);
   });
   it('blinded case validates seven unique ranks and locks final',async()=>{

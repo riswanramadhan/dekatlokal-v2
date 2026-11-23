@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { currentActor, supabaseConfigured } from "@/lib/supabase/server";
 import { LearningDashboard } from "@/components/digital-checkup/learning-dashboard";
-import "@/app/digital-checkup.css";
+import "@/app/checkup.css";
+import "@/app/dashboard.css";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Dashboard Belajar Gratis", robots: { index: false, follow: false } };
 export default async function DashboardPage() {

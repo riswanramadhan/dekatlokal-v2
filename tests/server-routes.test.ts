@@ -69,6 +69,27 @@ it('exports canonical input and the complete production trace for notebook parit
   expect(body.records[0]).toMatchObject({umkmCode:'U001',canonicalInput,run:{trace:{w:model.w,R:model.R,S:trace.S,g:trace.g,H:trace.H,q:trace.q,C:trace.C,rank:trace.rank}}});
   expect(JSON.stringify(body)).not.toContain('UMKM-PRIVATE-CODE');
 });
+it('numbers businesses by first submission across the full list, even when a single run is exported',async()=>{
+  mocks.actor.mockResolvedValue({id:'admin',role:'admin'});
+  const experts=[panelExpert(),panelExpert(1),panelExpert(2)],model=buildModel(experts),trace=topsis(answers,model.w,model.R);
+  const canonicalInput={instrumentVersion:instrument.version,modelVersion:instrument.modelVersion,dimensionCodes:DIMENSIONS,moduleCodes:MODULES,experts,answers};
+  const session=(id:string,umkm:string,submitted:string|null,status='submitted')=>({id,umkm_id:umkm,instrument_id:'instrument',status,revision_number:1,submitted_at:submitted,payload:{answers,profile:{businessName:`Usaha ${umkm}`,sector:'Test',district:'Test'}}});
+  const rows:Record<string,unknown[]>={
+    dc_assessment_sessions:[session('a-later','biz-later','2026-09-20T00:00:00Z'),session('a-first','biz-first','2026-09-10T00:00:00Z'),session('a-draft','biz-draft',null,'draft')],
+    dc_umkm_profiles:[{id:'biz-first',code:'UMKM-A'},{id:'biz-later',code:'UMKM-B'},{id:'biz-draft',code:'UMKM-C'}],
+    dc_decision_runs:[{id:'run-later',assessment_id:'a-later',model_input_id:'model',status:trace.status,trace,canonical_input:canonicalInput,sensitivity:[],created_at:'2026-09-21T00:00:00Z',input_hash:'hash',build_id:'test'}],
+    dc_decision_model_inputs:[{id:'model',model_version_id:'version',expert_ids:['e1','e2','e3'],input_hash:'model-hash',trace:model,created_at:'2026-09-14T00:00:00Z'}],
+  };
+  mocks.client.mockReturnValue({from:(table:string)=>builder(rows[table]??[])});
+  const colab=await (await researchGet(new Request('http://localhost/api/digital-checkup/research?format=colab&run=run-later'))).json();
+  expect(colab.records).toHaveLength(1);expect(colab.records[0].umkmCode).toBe('U002');
+  const dashboard=await (await researchGet(new Request('http://localhost/api/digital-checkup/research'))).json();
+  const byId=Object.fromEntries(dashboard.assessments.map((a:{id:string;demoCode:string|null})=>[a.id,a.demoCode]));
+  expect(byId).toEqual({'a-first':'U001','a-later':'U002','a-draft':null});
+  expect(byId['a-later']).toBe(colab.records[0].umkmCode);
+  const readable=await (await researchGet(new Request('http://localhost/api/digital-checkup/research?format=umkm-answers'))).json();
+  expect(readable.businesses.find((b:{businessName:string})=>b.businessName==='Usaha biz-later').code).toBe('U002');
+});
 it('downloads readable expert assessments and UMKM answers without direct contact data',async()=>{
   mocks.actor.mockResolvedValue({id:'admin',role:'admin'});
   const reviews=Object.fromEntries(instrument.questions.map(question=>[question.code,{relevance:4,clarity:3,suggestion:''}]));
