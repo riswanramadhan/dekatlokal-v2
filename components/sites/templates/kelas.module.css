@@ -1,3 +1,5 @@
+/* Font: judul gantari, isi gantari — keduanya karya desainer Indonesia. */
+.root { --t-display: var(--f-gantari); --t-body: var(--f-gantari); }
 .root { --pad: clamp(16px, 4.5cqi, 56px); font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.65; }
 .root h1, .root h2, .root h3 { margin: 0; font-weight: 600; letter-spacing: -.025em; }
 .root p { margin: 0; }

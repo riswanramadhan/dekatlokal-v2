@@ -2,7 +2,7 @@ import { Check, Clock3, MapPin } from "lucide-react";
 import { formatPrice } from "@/lib/sites/schema";
 import { paletteStyle } from "@/lib/sites/palettes";
 import { TEMPLATE_FONTS } from "../fonts";
-import { anchor, ctaLabel, external, FaqList, HeroImage, HoursRows, initials, mapHref, orderProps, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
+import { anchor, ctaLabel, external, FaqList, HeroImage, HoursRows, initials, LocalBadge, mapHref, MotifBand, orderProps, ProductOrder, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
 import s from "./kelas.module.css";
 
 /** Kelas: Lexend yang mudah dibaca, struktur kartu yang jelas, FAQ menonjol untuk calon peserta. */
@@ -26,7 +26,8 @@ export function KelasTemplate({ content, mode }: TemplateProps) {
     <main>
       <section className={s.hero} {...anchor(mode, "beranda")}>
         <div className={s.heroText}>
-          <p className={s.pill}>{copy.categoryLabel}{content.city ? ` di ${content.city}` : ""}</p>
+          <p className={s.pill}>{copy.categoryLabel}</p>
+          <LocalBadge content={content} mode={mode} />
           <h1 className={s.title}>{content.businessName}</h1>
           {content.tagline ? <p className={s.lead}>{content.tagline}</p> : null}
           {checklist.length ? <ul className={s.checks}>{checklist.map((item) => <li key={item.title}><span aria-hidden="true"><Check size={14} strokeWidth={3} /></span>{item.title}</li>)}</ul> : null}
@@ -45,6 +46,8 @@ export function KelasTemplate({ content, mode }: TemplateProps) {
         </div>
       </section>
 
+      <MotifBand motif="mendung" />
+
       {content.products.length ? <section className={s.section} {...anchor(mode, "program")}>
         <div className={s.head}><p className={s.overline}>{copy.productsLabel}</p><h2>{copy.productsTitle}</h2></div>
         <ul className={s.cards}>
@@ -53,7 +56,7 @@ export function KelasTemplate({ content, mode }: TemplateProps) {
             {item.description ? <p>{item.description}</p> : null}
             <div className={s.cardFoot}>
               <span className={s.price}>{formatPrice(item.price)}</span>
-              <a className={s.cardCta} {...orderProps(content, item.name)} aria-label={`${join} ${item.name}`}>{join}</a>
+              <ProductOrder content={content} item={item} className={s.cardCta} label={`${join} ${item.name}`}>{join}</ProductOrder>
             </div>
           </li>)}
         </ul>
@@ -99,6 +102,7 @@ export function KelasTemplate({ content, mode }: TemplateProps) {
       </section>
     </main>
 
+    <MotifBand motif="mendung" />
     <footer className={s.footer}>
       <p>{content.businessName}{content.city ? ` · ${content.city}` : ""}</p>
       <SiteCredit mode={mode} className={s.credit} />

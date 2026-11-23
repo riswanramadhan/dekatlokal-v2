@@ -1,3 +1,4 @@
+import { MOTIFS } from "@/lib/sites/motifs";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -37,7 +38,7 @@ function TemplateCard({ template, category }: { template: TemplateInfo; category
       <Link href={`/templates/${template.code}/preview?kategori=${category}`} className={s.thumbLink} aria-label={`Lihat contoh template ${template.name}`} />
     </div>
     <div className={s.cardBody}>
-      <div className={s.cardTitle}><h3>{template.name}</h3><span>{template.fonts}</span></div>
+      <div className={s.cardTitle}><h3>{template.name}</h3><span>Motif {MOTIFS[template.motif].label} · {MOTIFS[template.motif].origin}</span></div>
       <p>{template.summary}</p>
       <p className={s.fit}>Cocok untuk {template.bestFor.map(categoryLabel).join(", ")}</p>
       <div className={s.cardActions}>

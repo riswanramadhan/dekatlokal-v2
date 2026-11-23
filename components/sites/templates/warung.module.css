@@ -1,10 +1,12 @@
+/* Font: judul gantari, isi jakarta — keduanya karya desainer Indonesia. */
+.root { --t-display: var(--f-gantari); --t-body: var(--f-jakarta); }
 .root { --pad: clamp(18px, 5.5cqi, 64px); }
-.root h1, .root h2, .root h3 { margin: 0; font-family: var(--t-display), Georgia, serif; font-variation-settings: "SOFT" 80; letter-spacing: -.015em; }
+.root h1, .root h2, .root h3 { margin: 0; font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; letter-spacing: -.015em; }
 .root p { margin: 0; }
 .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--c-accent); }
 
 .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px var(--pad); }
-.brand { font-family: var(--t-display), Georgia, serif; font-size: 21px; font-weight: 650; text-decoration: none; letter-spacing: -.01em; }
+.brand { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 21px; font-weight: 650; text-decoration: none; letter-spacing: -.01em; }
 .nav { display: none; gap: 26px; font-size: 14px; color: var(--c-muted); }
 .nav a { text-decoration: none; }
 .nav a:hover { color: var(--c-ink); }
@@ -27,10 +29,10 @@
 .perks article:last-child { border-bottom: 0; }
 .perks h2 { font-size: 22px; font-weight: 600; }
 .perks p { color: var(--c-muted); font-size: 15px; }
-.perkNo { font-family: var(--t-display), Georgia, serif; font-style: italic; color: var(--c-accent); font-size: 18px; }
+.perkNo { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-style: normal; color: var(--c-accent); font-size: 18px; }
 
 .story { display: grid; gap: 16px; max-width: 880px; margin: 0 auto; padding: 72px var(--pad); text-align: center; }
-.storyText { font-family: var(--t-display), Georgia, serif; font-variation-settings: "SOFT" 100; font-size: clamp(22px, 3.4cqi, 34px); line-height: 1.38; letter-spacing: -.01em; }
+.storyText { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: clamp(22px, 3.4cqi, 34px); line-height: 1.38; letter-spacing: -.01em; }
 
 .menu { background: var(--c-surface); padding: 72px var(--pad); border-block: 1px solid var(--c-line); }
 .menuHead { display: grid; gap: 10px; justify-items: center; text-align: center; margin-bottom: 36px; }
@@ -46,7 +48,7 @@
 
 .quotes { display: grid; gap: 36px; padding: 80px var(--pad); max-width: 1100px; margin: 0 auto; }
 .bigQuote { margin: 0; display: grid; gap: 18px; }
-.bigQuote p { font-family: var(--t-display), Georgia, serif; font-style: italic; font-size: clamp(26px, 4.4cqi, 44px); line-height: 1.22; letter-spacing: -.015em; }
+.bigQuote p { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-style: normal; font-size: clamp(26px, 4.4cqi, 44px); line-height: 1.22; letter-spacing: -.015em; }
 .bigQuote footer, .smallQuotes footer { font-size: 14px; font-weight: 600; }
 .bigQuote footer span { font-weight: 400; color: var(--c-muted); }
 .smallQuotes { display: grid; gap: 24px; }
@@ -71,12 +73,12 @@
 .faq h2 { font-size: clamp(30px, 4.4cqi, 44px); font-weight: 600; margin-bottom: 18px; }
 .faqList details { border-bottom: 1px solid var(--c-line); }
 .faqList summary { display: flex; justify-content: space-between; gap: 20px; padding: 20px 0; font-size: 18px; font-weight: 600; }
-.faqList summary::after { content: "+"; font-family: var(--t-display), Georgia, serif; font-size: 26px; line-height: 1; color: var(--c-accent); transition: transform .2s ease; }
+.faqList summary::after { content: "+"; font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 26px; line-height: 1; color: var(--c-accent); transition: transform .2s ease; }
 .faqList details[open] summary::after { transform: rotate(45deg); }
 .faqList p { padding: 0 0 22px; color: var(--c-muted); max-width: 62ch; }
 
 .footer { display: grid; gap: 6px; justify-items: center; text-align: center; padding: 40px var(--pad) 8px; border-top: 1px solid var(--c-line); font-size: 14px; color: var(--c-muted); }
-.footBrand { font-family: var(--t-display), Georgia, serif; font-size: 28px; font-weight: 600; color: var(--c-ink); }
+.footBrand { font-family: var(--t-display), ui-sans-serif, system-ui, sans-serif; font-size: 28px; font-weight: 600; color: var(--c-ink); }
 .sticky { background: #0e7a3f; }
 
 @container (min-width: 760px) {

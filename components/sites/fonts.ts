@@ -1,25 +1,25 @@
-// Font template website. Hanya diimpor oleh komponen template (galeri, /situs, builder), tidak di layout utama.
-// preload: false → browser hanya mengunduh file font yang benar-benar dipakai template yang tampil.
-// Opsi next/font wajib ditulis literal (tidak boleh spread), jadi sengaja diulang per font.
-import { Archivo, Bricolage_Grotesque, Cormorant_Garamond, DM_Sans, Figtree, Fraunces, Instrument_Sans, Instrument_Serif, Karla, Lexend, Manrope } from "next/font/google";
+// Font template website: dua keluarga sans buatan desainer Indonesia.
+// - Plus Jakarta Sans — Tokotype (Gumpita Rahayu), dibuat untuk identitas kota Jakarta.
+// - Gantari — Lafontype (Indonesia), geometris yang hangat.
+// Karakter tiap template dibedakan lewat peran (judul/isi), ketebalan, dan spasi huruf di CSS-nya,
+// bukan dengan menumpuk banyak keluarga font. preload: false → hanya diunduh saat template tampil.
+import { Gantari, Plus_Jakarta_Sans } from "next/font/google";
 
-const fraunces = Fraunces({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-display", axes: ["SOFT", "opsz"] });
-const figtree = Figtree({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-body" });
-const archivo = Archivo({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-display", axes: ["wdth"] });
-const manrope = Manrope({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-body" });
-const instrumentSerif = Instrument_Serif({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-display", weight: "400", style: ["normal", "italic"] });
-const instrumentSans = Instrument_Sans({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-body" });
-const bricolage = Bricolage_Grotesque({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-display", axes: ["opsz", "wdth"] });
-const dmSans = DM_Sans({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-body" });
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-display", style: ["normal", "italic"] });
-const karla = Karla({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-body" });
-const lexend = Lexend({ subsets: ["latin"], display: "swap", preload: false, variable: "--t-display" });
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-jakarta", style: ["normal", "italic"] });
+const gantari = Gantari({ subsets: ["latin"], display: "swap", preload: false, variable: "--f-gantari", style: ["normal", "italic"] });
+
+const BOTH = `${jakarta.variable} ${gantari.variable}`;
 
 export const TEMPLATE_FONTS = {
-  warung: `${fraunces.variable} ${figtree.variable}`,
-  etalase: `${archivo.variable} ${manrope.variable}`,
-  studio: `${instrumentSerif.variable} ${instrumentSans.variable}`,
-  pasar: `${bricolage.variable} ${dmSans.variable}`,
-  kriya: `${cormorant.variable} ${karla.variable}`,
-  kelas: lexend.variable,
+  warung: BOTH,
+  etalase: BOTH,
+  studio: BOTH,
+  pasar: BOTH,
+  kriya: BOTH,
+  kelas: BOTH,
+  senja: BOTH,
+  teduh: BOTH,
 } as const;
+
+/** Nama font untuk galeri (dipakai TEMPLATES.fonts). */
+export const FONT_NAMES = { jakarta: "Plus Jakarta Sans", gantari: "Gantari" } as const;

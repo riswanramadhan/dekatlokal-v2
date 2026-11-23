@@ -1,7 +1,7 @@
 import { formatPrice } from "@/lib/sites/schema";
 import { paletteStyle } from "@/lib/sites/palettes";
 import { TEMPLATE_FONTS } from "../fonts";
-import { anchor, ctaLabel, external, FaqList, HeroImage, HoursRows, mapHref, orderProps, pad, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
+import { anchor, ctaLabel, external, FaqList, HeroImage, HoursRows, LocalBadge, mapHref, MotifBand, orderProps, pad, ProductOrder, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
 import s from "./kriya.module.css";
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI"];
@@ -23,13 +23,16 @@ export function KriyaTemplate({ content, mode }: TemplateProps) {
     <main>
       <section className={s.hero} {...anchor(mode, "beranda")}>
         <div className={s.heroText}>
-          <p className={s.eyebrow}>{copy.categoryLabel}{content.city ? ` — ${content.city}` : ""}</p>
+          <p className={s.eyebrow}>{copy.categoryLabel}</p>
+          <LocalBadge content={content} mode={mode} />
           <h1 className={s.title}>{content.businessName}</h1>
           {content.tagline ? <p className={s.lead}>{content.tagline}</p> : null}
           <a className={s.cta} {...orderProps(content)}>{ctaLabel(content)}</a>
         </div>
         {content.heroImage ? <figure className={s.frame}><div className={s.frameInner}><HeroImage content={content} mode={mode} className={s.heroImg} sizes="(min-width: 900px) 40vw, 90vw" /></div></figure> : null}
       </section>
+
+      <MotifBand motif="truntum" />
 
       {content.about ? <section className={s.about} {...anchor(mode, "cerita")}>
         <h2 className={s.sectionLabel}>Cerita</h2>
@@ -44,7 +47,7 @@ export function KriyaTemplate({ content, mode }: TemplateProps) {
             <div className={s.itemBody}>
               <h3>{item.name}</h3>
               {item.description ? <p>{item.description}</p> : null}
-              <a {...orderProps(content, item.name)} aria-label={`Pesan ${item.name}`}>Pesan</a>
+              <ProductOrder content={content} item={item} className={s.itemOrder} label={`Pesan ${item.name}`}>Pesan</ProductOrder>
             </div>
             <span className={s.itemPrice}>{formatPrice(item.price)}</span>
           </li>)}
@@ -92,6 +95,7 @@ export function KriyaTemplate({ content, mode }: TemplateProps) {
       </section> : null}
     </main>
 
+    <MotifBand motif="truntum" />
     <footer className={s.footer}>
       <p className={s.footBrand}>{content.businessName}</p>
       <SiteCredit mode={mode} className={s.credit} />

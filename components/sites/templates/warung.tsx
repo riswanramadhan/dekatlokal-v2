@@ -2,7 +2,7 @@ import { Clock3, MapPin } from "lucide-react";
 import { formatPrice } from "@/lib/sites/schema";
 import { paletteStyle } from "@/lib/sites/palettes";
 import { TEMPLATE_FONTS } from "../fonts";
-import { anchor, ctaLabel, external, FaqList, HeroImage, HoursRows, mapHref, orderProps, pad, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
+import { anchor, ctaLabel, external, FaqList, HeroImage, HoursRows, LocalBadge, mapHref, MotifBand, orderProps, pad, ProductOrder, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
 import s from "./warung.module.css";
 
 /** Warung: hangat, serif lembut, papan menu dengan titik penuntun harga. */
@@ -23,7 +23,8 @@ export function WarungTemplate({ content, mode }: TemplateProps) {
     <main>
       <section className={s.hero} {...anchor(mode, "beranda")}>
         <div className={s.heroText}>
-          <p className={s.eyebrow}>{copy.categoryLabel}{content.city ? ` · ${content.city}` : ""}</p>
+          <p className={s.eyebrow}>{copy.categoryLabel}</p>
+          <LocalBadge content={content} mode={mode} />
           <h1 className={s.title}>{content.businessName}</h1>
           {content.tagline ? <p className={s.lead}>{content.tagline}</p> : null}
           <div className={s.actions}>
@@ -36,6 +37,8 @@ export function WarungTemplate({ content, mode }: TemplateProps) {
           <HeroImage content={content} mode={mode} className={s.heroImg} />
         </figure>
       </section>
+
+      <MotifBand motif="kawung" />
 
       {content.services.length ? <section className={s.perks} aria-label={copy.servicesLabel}>
         {content.services.map((item, index) => <article key={item.title}>
@@ -63,7 +66,7 @@ export function WarungTemplate({ content, mode }: TemplateProps) {
               <span className={s.price}>{formatPrice(item.price)}</span>
             </div>
             {item.description ? <p>{item.description}</p> : null}
-            <a className={s.itemOrder} {...orderProps(content, item.name)} aria-label={`Pesan ${item.name}`}>Pesan</a>
+            <ProductOrder content={content} item={item} className={s.itemOrder} label={`Pesan ${item.name}`}>Pesan</ProductOrder>
           </li>)}
         </ul>
       </section> : null}
@@ -101,6 +104,7 @@ export function WarungTemplate({ content, mode }: TemplateProps) {
       </section> : null}
     </main>
 
+    <MotifBand motif="kawung" />
     <footer className={s.footer}>
       <p className={s.footBrand}>{content.businessName}</p>
       <p>{[content.city, content.address && "Pesan lewat WhatsApp"].filter(Boolean).join(" · ")}</p>

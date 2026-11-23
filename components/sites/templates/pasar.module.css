@@ -1,5 +1,7 @@
+/* Font: judul gantari, isi jakarta — keduanya karya desainer Indonesia. */
+.root { --t-display: var(--f-gantari); --t-body: var(--f-jakarta); }
 .root { --pad: clamp(14px, 4cqi, 48px); }
-.root h1, .root h2, .root h3 { margin: 0; font-family: var(--t-display), "Arial Black", sans-serif; font-variation-settings: "opsz" 96; letter-spacing: -.03em; }
+.root h1, .root h2, .root h3 { margin: 0; font-family: var(--t-display), ui-sans-serif, sans-serif; letter-spacing: -.03em; }
 .root p { margin: 0; }
 
 .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px var(--pad); }
@@ -11,7 +13,7 @@
 .heroBlock { position: relative; display: grid; gap: 18px; align-content: end; min-height: 440px; padding: 30px 24px 28px; border-radius: 28px; background: var(--c-accent); color: var(--c-accent-ink); overflow: hidden; }
 .heroBlock::before { content: ""; position: absolute; right: -60px; top: -60px; width: 220px; height: 220px; border-radius: 50%; border: 36px solid color-mix(in srgb, var(--c-accent-ink) 12%, transparent); }
 .stamp { position: relative; justify-self: start; padding: 6px 12px; border: 2px solid currentColor; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; transform: rotate(-3deg); }
-.title { position: relative; font-weight: 800; font-variation-settings: "opsz" 96, "wdth" 85; font-size: clamp(46px, 15cqi, 120px); line-height: .88; overflow-wrap: break-word; }
+.title { position: relative; font-weight: 800; font-size: clamp(46px, 15cqi, 120px); line-height: .88; overflow-wrap: break-word; }
 .lead { position: relative; max-width: 34ch; font-size: clamp(17px, 2.2cqi, 22px); line-height: 1.45; font-weight: 500; }
 .actions { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 .primary, .primaryDark { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 12px 26px; border-radius: 16px; font-weight: 800; font-size: 16px; text-decoration: none; transition: transform .2s ease; }

@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { formatPrice } from "@/lib/sites/schema";
 import { paletteStyle } from "@/lib/sites/palettes";
 import { TEMPLATE_FONTS } from "../fonts";
-import { anchor, ctaLabel, external, FaqList, HeroImage, HoursRows, mapHref, orderProps, pad, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
+import { anchor, ctaLabel, external, FaqList, HeroImage, HoursRows, LocalBadge, mapHref, MotifBand, orderProps, pad, ProductOrder, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
 import s from "./studio.module.css";
 
 /** Studio: serif editorial + sans rapi, layanan bernomor dan tabel paket bergaris tipis. */
@@ -22,8 +22,9 @@ export function StudioTemplate({ content, mode }: TemplateProps) {
 
     <main>
       <section className={s.hero} {...anchor(mode, "beranda")}>
+        <LocalBadge content={content} mode={mode} />
         <h1 className={s.heading}>
-          <span className={s.kicker}>{content.businessName}{content.city ? ` — ${content.city}` : ""}</span>
+          <span className={s.kicker}>{content.businessName}</span>
           <span className={s.display}>{content.tagline || copy.categoryLabel}</span>
         </h1>
         <dl className={s.facts}>
@@ -33,6 +34,8 @@ export function StudioTemplate({ content, mode }: TemplateProps) {
           <div><dt>Respons</dt><dd>Lewat WhatsApp</dd></div>
         </dl>
       </section>
+
+      <MotifBand motif="parang" />
 
       {content.heroImage ? <figure className={s.banner}><HeroImage content={content} mode={mode} className={s.bannerImg} sizes="100vw" /></figure> : null}
 
@@ -57,7 +60,7 @@ export function StudioTemplate({ content, mode }: TemplateProps) {
           {content.products.map((item) => <li key={item.name}>
             <div className={s.tableName}><h3>{item.name}</h3>{item.description ? <p>{item.description}</p> : null}</div>
             <span className={s.tablePrice}>{formatPrice(item.price)}</span>
-            <a className={s.tableAction} {...orderProps(content, item.name)} aria-label={`Pilih ${item.name}`}>Pilih <ArrowRight size={15} aria-hidden="true" /></a>
+            <ProductOrder content={content} item={item} className={s.tableAction} label={`Pilih ${item.name}`}>Pilih <ArrowRight size={15} aria-hidden="true" /></ProductOrder>
           </li>)}
         </ul>
       </section> : null}
@@ -95,6 +98,7 @@ export function StudioTemplate({ content, mode }: TemplateProps) {
       </section>
     </main>
 
+    <MotifBand motif="parang" />
     <footer className={s.footer}>
       <span>© {content.businessName}</span>
       <SiteCredit mode={mode} className={s.credit} />

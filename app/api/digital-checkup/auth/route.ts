@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { authClient } from "@/lib/supabase/server";
 import { finishSignIn } from "@/lib/digital-checkup/account";
+import { googleAuthEnabled } from "@/lib/digital-checkup/auth-providers";
 import { safeNextPath } from "@/lib/digital-checkup/next-path";
 import { AUTH_CALLBACK } from "@/lib/digital-checkup/site";
 import { clearExpertEntry } from "@/lib/digital-checkup/expert-access";
@@ -15,6 +16,7 @@ export async function POST(request: Request) {
     const callback = next ? `${AUTH_CALLBACK}${AUTH_CALLBACK.includes("?") ? "&" : "?"}next=${encodeURIComponent(next)}` : AUTH_CALLBACK;
     if (input.mode === "logout") { await client.auth.signOut(); await clearExpertEntry(); return json({ next: "/masuk" }); }
     if (input.mode === "google") {
+      if ((await googleAuthEnabled()) === false) throw new Error("Masuk dengan Google sedang disiapkan. Untuk sekarang pakai kode lewat email, ya.");
       const { data, error } = await client.auth.signInWithOAuth({ provider: "google", options: { redirectTo: callback } });
       if (error || !data.url) throw new Error("Masuk Google belum dapat digunakan. Coba kode OTP lewat email."); return json({ next: data.url });
     }

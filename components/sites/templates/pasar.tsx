@@ -2,7 +2,7 @@ import { Clock3, MapPin, Plus } from "lucide-react";
 import { formatPrice } from "@/lib/sites/schema";
 import { paletteStyle } from "@/lib/sites/palettes";
 import { TEMPLATE_FONTS } from "../fonts";
-import { anchor, ctaLabel, external, FaqList, HeroImage, HoursRows, initials, mapHref, orderProps, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
+import { anchor, ctaLabel, external, FaqList, HeroImage, HoursRows, initials, LocalBadge, mapHref, MotifBand, orderProps, ProductOrder, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
 import s from "./pasar.module.css";
 
 /** Pasar: grotesk tebal bergaya poster, blok warna penuh, kartu produk dengan harga besar. */
@@ -18,7 +18,7 @@ export function PasarTemplate({ content, mode }: TemplateProps) {
     <main>
       <section className={s.hero} {...anchor(mode, "beranda")}>
         <div className={s.heroBlock}>
-          {content.city ? <p className={s.stamp}>dari {content.city}</p> : null}
+          <LocalBadge content={content} mode={mode} />
           <h1 className={s.title}>{content.businessName}</h1>
           {content.tagline ? <p className={s.lead}>{content.tagline}</p> : null}
           <div className={s.actions}>
@@ -28,6 +28,8 @@ export function PasarTemplate({ content, mode }: TemplateProps) {
         </div>
         {content.heroImage ? <figure className={s.heroPhoto}><HeroImage content={content} mode={mode} className={s.heroImg} /></figure> : null}
       </section>
+
+      <MotifBand motif="tumpal" />
 
       {content.services.length ? <ul className={s.chips} aria-label={copy.servicesLabel}>
         {content.services.map((item) => <li key={item.title} title={item.description || undefined}>{item.title}</li>)}
@@ -44,7 +46,7 @@ export function PasarTemplate({ content, mode }: TemplateProps) {
             {item.description ? <p>{item.description}</p> : null}
             <div className={s.cardFoot}>
               <span className={s.price}>{formatPrice(item.price)}</span>
-              <a className={s.add} {...orderProps(content, item.name)} aria-label={`Pesan ${item.name}`}><Plus size={18} aria-hidden="true" /><span>Pesan</span></a>
+              <ProductOrder content={content} item={item} className={s.add} label={`Pesan ${item.name}`}><Plus size={18} aria-hidden="true" /><span>Pesan</span></ProductOrder>
             </div>
           </li>)}
         </ul>
@@ -83,6 +85,7 @@ export function PasarTemplate({ content, mode }: TemplateProps) {
       </section>
     </main>
 
+    <MotifBand motif="tumpal" />
     <footer className={s.footer}>
       <p><strong>{content.businessName}</strong>{content.city ? ` · ${content.city}` : ""}</p>
       <SiteCredit mode={mode} className={s.credit} />

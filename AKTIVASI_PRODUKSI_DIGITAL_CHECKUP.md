@@ -52,6 +52,8 @@ Rujukan resmi: [OTP email](https://supabase.com/docs/guides/auth/auth-email-pass
 
 ## 3. Google
 
+> Diperbarui: ikuti bagian **"Aktifkan login Google (pembaruan November 2026)"** di akhir dokumen ini.
+
 1. Buat OAuth client **Web application** di Google Cloud. Lengkapi consent screen, domain terverifikasi, tautan privasi/syarat, dan status publik sesuai kebutuhan Google.
 2. Authorized JavaScript origin: `https://digitalcheckup.dekatlokal.com`.
 3. Authorized redirect URI: salin **Callback URL dari provider Google pada Supabase**, berbentuk `https://<project-ref>.supabase.co/auth/v1/callback`. Ini berbeda dari callback aplikasi.
@@ -124,3 +126,27 @@ Pemeriksaan read-only pada 12 September 2026: instrumen tersedia; model final be
 # Pembaruan terbaru
 
 Lihat [profil usaha dan panel tiga ahli](UPDATE_PROFIL_DAN_PANEL_AHLI.md) untuk nama panel, form kontak, dan perubahan login terbaru.
+
+## Aktifkan login Google (pembaruan November 2026 — menggantikan bagian 3 di atas)
+
+Kode sudah siap: tombol "Lanjut dengan Google" otomatis muncul begitu provider Google aktif di Supabase
+(dicek lewat `/auth/v1/settings`, cache 5 menit), dan pembatalan di layar Google kembali ke `/masuk` dengan pesan yang jelas.
+Yang perlu dilakukan pemilik akun (sekali saja):
+
+1. **Google Cloud Console** (console.cloud.google.com) → buat/pilih project "DekatLokal".
+   - *APIs & Services → OAuth consent screen*: tipe **External**, nama aplikasi "DekatLokal Digital Checkup",
+     email dukungan, logo, domain resmi `dekatlokal.com`, tautan kebijakan privasi `https://dekatlokal.com/privacy-policy`.
+     Scope cukup `email`, `profile`, `openid`. Setelah lengkap klik **Publish app** (kalau masih "Testing", hanya akun penguji yang bisa masuk).
+   - *Credentials → Create credentials → OAuth client ID → Web application*:
+     - Authorized JavaScript origins: `https://digitalcheckup.dekatlokal.com`
+     - Authorized redirect URIs: `https://<project-ref>.supabase.co/auth/v1/callback`
+       (`<project-ref>` = subdomain URL Supabase produksi).
+   - Salin **Client ID** dan **Client secret**.
+2. **Supabase** → project produksi → *Authentication → Sign In / Providers → Google*: aktifkan, tempel Client ID
+   dan Client secret, simpan. Client secret hanya diisi di dashboard Supabase, tidak di repo atau Vercel.
+3. **Supabase** → *Authentication → URL Configuration*:
+   - Site URL: `https://digitalcheckup.dekatlokal.com`
+   - Redirect URLs: tambahkan `https://digitalcheckup.dekatlokal.com/auth/callback**`
+     (tanda `**` perlu karena callback membawa `?next=…` untuk kembali ke halaman asal).
+4. Uji: buka `/masuk` → "Lanjut dengan Google" → pilih akun → harus mendarat di `/dashboard` (atau halaman `next`).
+   Akun baru otomatis berperan UMKM dan hasil Checkup tamu ikut tersambung.

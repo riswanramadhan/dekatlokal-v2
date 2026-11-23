@@ -2,7 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { formatPrice } from "@/lib/sites/schema";
 import { paletteStyle } from "@/lib/sites/palettes";
 import { TEMPLATE_FONTS } from "../fonts";
-import { anchor, ctaLabel, cx, external, FaqList, HeroImage, HoursRows, mapHref, orderProps, pad, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
+import { anchor, ctaLabel, cx, external, FaqList, HeroImage, HoursRows, LocalBadge, mapHref, MotifBand, orderProps, pad, ProductOrder, sectionCopy, SiteCredit, Socials, StickyOrder, TemplateRoot, type TemplateProps } from "../parts";
 import s from "./etalase.module.css";
 
 /** Etalase: grotesk lebar huruf kapital, foto penuh, katalog berkisi bergaya label harga butik. */
@@ -26,6 +26,7 @@ export function EtalaseTemplate({ content, mode }: TemplateProps) {
         <div className={s.heroMedia}><HeroImage content={content} mode={mode} className={s.heroImg} sizes="100vw" /></div>
         <div className={s.heroText}>
           <p className={s.kicker}>{copy.categoryLabel}</p>
+          <LocalBadge content={content} mode={mode} />
           <h1 className={s.title}>{content.businessName}</h1>
           {content.tagline ? <p className={s.lead}>{content.tagline}</p> : null}
           <div className={s.actions}>
@@ -34,6 +35,8 @@ export function EtalaseTemplate({ content, mode }: TemplateProps) {
           </div>
         </div>
       </section>
+
+      <MotifBand motif="songket" />
 
       {content.services.length ? <ul className={s.strip} aria-label={copy.servicesLabel}>
         {content.services.map((item) => <li key={item.title}><strong>{item.title}</strong>{item.description ? <span>{item.description}</span> : null}</li>)}
@@ -49,7 +52,7 @@ export function EtalaseTemplate({ content, mode }: TemplateProps) {
             <div className={s.cardTop}><span>No. {pad(index)}</span><span className={s.tag}>{formatPrice(item.price)}</span></div>
             <h3>{item.name}</h3>
             {item.description ? <p>{item.description}</p> : null}
-            <a className={s.cardOrder} {...orderProps(content, item.name)} aria-label={`Pesan ${item.name}`}>Pesan <ArrowUpRight size={16} aria-hidden="true" /></a>
+            <ProductOrder content={content} item={item} className={s.cardOrder} label={`Pesan ${item.name}`}>Pesan <ArrowUpRight size={16} aria-hidden="true" /></ProductOrder>
           </li>)}
         </ul>
       </section> : null}
@@ -93,6 +96,7 @@ export function EtalaseTemplate({ content, mode }: TemplateProps) {
       </section> : null}
     </main>
 
+    <MotifBand motif="songket" />
     <footer className={s.footer}>
       <p className={s.wordmark} aria-hidden="true">{content.businessName}</p>
       <SiteCredit mode={mode} className={s.credit} />
