@@ -5,6 +5,7 @@ import { instrument } from "@/lib/decision-engine";
 import type { PublicAssessment } from "@/lib/digital-checkup/service";
 import { coursePreview, resultInsight } from "@/lib/digital-checkup/result-insight";
 import { moduleVisualForCode } from "@/lib/digital-checkup/module-catalog";
+import { NextSteps } from "@/components/layanan/next-steps";
 
 const messages = {
   NO_IDENTIFIED_GAP: "Jawabanmu terlihat sudah sangat kuat di semua bagian. Pilih modul yang paling dekat dengan target 30 harimu atau cek ulang bersama pendamping.",
@@ -12,7 +13,8 @@ const messages = {
   ALTERNATIVES_NOT_DISTINGUISHABLE: "Kebutuhanmu cukup merata, jadi belum ada satu modul yang paling menonjol. Kamu tetap bisa memilih dari tujuh modul gratis.",
 };
 
-export function Results({ assessment }: { assessment: PublicAssessment }) {
+/** signedIn: default memakai status tertaut ke akun (hasil checkup milik akun yang masuk). */
+export function Results({ assessment, signedIn = assessment.linked }: { assessment: PublicAssessment; signedIn?: boolean }) {
   const scores = assessment.scores ?? Array(8).fill(0);
   const insight = resultInsight(scores, assessment.payload.profile);
   const trace = assessment.run?.trace;
@@ -50,6 +52,8 @@ export function Results({ assessment }: { assessment: PublicAssessment }) {
       })}</div>
       <details className="dc-review"><summary>Lihat urutan 7 modul</summary><ol>{trace.ranking.map((item) => <li key={item.code}>Prioritas {item.rank} · {coursePreview(item.code)?.title ?? instrument.modules.find((module) => module.code === item.code)?.name}</li>)}</ol></details>
     </>}
+
+    {assessment.status === "submitted" ? <NextSteps scores={scores} profile={assessment.payload.profile} signedIn={signedIn} /> : null}
 
     <section className={`dc-website-status is-${insight.website.state}`}>
       <span className="dc-website-mark"><BookOpen size={23} aria-hidden="true" /></span>
