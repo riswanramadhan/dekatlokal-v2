@@ -114,7 +114,7 @@ export function CheckupWizard({ configured }: { configured: boolean }) {
     setBusy(true);
     try { const revised = await api<PublicAssessment>("assessment", "POST", { profile, revision: true }); adopt(revised); setAnswers(revised.payload.answers); setConfirmed(false); change(0); } catch (e) { setError((e as Error).message); } finally { setBusy(false); }
   };
-  const finishAnalysis = useCallback(() => { setAnalyzing(false); setError(""); setStep(8); window.scrollTo({ top: 0, behavior: "smooth" }); requestAnimationFrame(() => heading.current?.focus()); }, []);
+  const finishAnalysis = useCallback(() => { setAnalyzing(false); setError(""); setStep(8); window.scrollTo({ top: 0, behavior: "smooth" }); requestAnimationFrame(() => heading.current?.focus()); }, [setError, setStep]);
   const download = async () => {
     if (!row || pdfBusy) return;
     setPdfBusy(true); setError("");
