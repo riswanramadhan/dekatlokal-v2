@@ -45,3 +45,6 @@ tmp-next-*.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Worktree agen lokal
+.claude/worktrees/

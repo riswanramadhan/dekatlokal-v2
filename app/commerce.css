@@ -1,0 +1,29 @@
+/* Komponen produk berbayar & admin pesanan (prefiks cm-). */
+.cm-order { display:grid; gap:8px; }
+.cm-order-note { margin:0; font-size:12px; color:#087a45; }
+.cm-order-error { margin:0; font-size:12px; color:#a52d3a; }
+.cm-admin { max-width:1100px; margin:0 auto; }
+.cm-admin-top { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; margin:8px 0 22px; }
+.cm-admin-top h1 { margin:4px 0 6px; font-size:30px; line-height:1.2; }
+.cm-filter { display:inline-flex; gap:4px; padding:4px; border-radius:14px; background:#e8f0fd; margin-bottom:14px; overflow-x:auto; max-width:100%; }
+.cm-filter button { border:0; background:transparent; padding:8px 14px; border-radius:10px; font:inherit; font-size:13px; color:#3d5576; cursor:pointer; white-space:nowrap; }
+.cm-filter button.is-active { background:#fff; color:#0255f5; font-weight:600; box-shadow:0 2px 8px -4px #0255f566; }
+.cm-summary { margin:0 0 12px; font-size:13px; color:#3d5576; }
+.cm-order-list { display:grid; gap:12px; }
+.cm-order-card { display:grid; gap:12px; padding:18px; border:1px solid #dce7f8; border-radius:18px; background:#fff; }
+.cm-order-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.cm-order-head h2 { margin:2px 0; font-size:17px; }
+.cm-order-head p { margin:0; font-size:12px; color:#5b708a; }
+.cm-code { font-family:ui-monospace,monospace; font-size:11px; color:#0255f5; background:#eaf2ff; padding:3px 8px; border-radius:8px; }
+.cm-order-meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin:0; }
+.cm-order-meta div { padding:10px 12px; border-radius:12px; background:#f6f9ff; }
+.cm-order-meta dt { font-size:11px; color:#73849b; }
+.cm-order-meta dd { margin:0; font-size:13px; font-weight:600; }
+.cm-order-actions { display:flex; flex-wrap:wrap; gap:8px; }
+@media (max-width:700px) {
+  .cm-admin-top { flex-direction:column; align-items:stretch; }
+  .cm-order-head { flex-direction:column; }
+  .cm-order-actions > * { flex:1 1 100%; }
+}
+.cm-admin-switch { position:sticky; top:0; z-index:20; display:flex; justify-content:flex-end; padding:10px max(18px,env(safe-area-inset-right)); background:#0255f5; }
+.cm-admin-switch a { color:#fff; font-size:13px; font-weight:600; text-decoration:none; }

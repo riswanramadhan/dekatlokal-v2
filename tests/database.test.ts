@@ -28,7 +28,7 @@ afterAll(async()=>{await db.close();});
 describe.sequential('real PostgreSQL migrations / transactions / RLS (isolated simulation)',()=>{
   it('seeds exact instrument counts and enables all 26 table policies',async()=>{
     for(const [table,count] of [['dc_dimensions',8],['dc_questions',32],['dc_question_options',160],['dc_intervention_modules',7]] as const)expect(Number(await scalar(`select count(*) as value from ${table}`))).toBe(count);
-    expect(Number(await scalar("select count(*) as value from pg_tables where schemaname='public' and tablename like 'dc_%' and rowsecurity"))).toBe(26);
+    expect(Number(await scalar("select count(*) as value from pg_tables where schemaname='public' and tablename like 'dc_%' and rowsecurity"))).toBe(28);
   });
   it('UMKM draft saves zeros, rejects null final, finalizes and retries idempotently',async()=>{
     business=await scalar("insert into dc_umkm_profiles(code,metadata,owner_id) values('SIMULASI-UMKM',$1,$2) returning id as value",[profile,outsider]);
