@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { api } from "@/components/digital-checkup/api";
 
-export function SignInForm({ initialNotice = "" }: { initialNotice?: string }) {
+export function SignInForm({ initialNotice = "", next = null }: { initialNotice?: string; next?: string | null }) {
   const [notice, setNotice] = useState(initialNotice);
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false), [cooldown, setCooldown] = useState(0);
@@ -15,7 +15,7 @@ export function SignInForm({ initialNotice = "" }: { initialNotice?: string }) {
   const login = async (mode: "password" | "google" | "otp_request" | "otp_verify", email?: string, password?: string) => {
     setBusy(true); setNotice("");
     try {
-      const result = await api<{ next?: string; message?: string }>("auth", "POST", { mode, email, password, token: mode === "otp_verify" ? token : undefined });
+      const result = await api<{ next?: string; message?: string }>("auth", "POST", { mode, email, password, token: mode === "otp_verify" ? token : undefined, next: next ?? undefined });
       if (result.next) window.location.assign(result.next);
       else { if (mode === "otp_request") { setSent(true); setCooldown(60); } setNotice(result.message ?? "Cek emailmu untuk melanjutkan."); }
     } catch (error) { setNotice((error as Error).message); } finally { setBusy(false); }

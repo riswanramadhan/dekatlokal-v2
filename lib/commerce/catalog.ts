@@ -49,7 +49,7 @@ export const PRODUCTS: Product[] = [
     price: 79_000,
     period: "once",
     days: null,
-    bullets: ["Laporan PDF detail: skor 8 dimensi, gap, dan urutan prioritas", "Rencana aksi 30 hari yang bisa langsung dikerjakan", "Konsultasi online 30 menit"],
+    bullets: ["Laporan PDF detail: skor 8 dimensi, gap, dan urutan prioritas modul", "Rencana aksi 30 hari per minggu yang bisa langsung dikerjakan", "Jadwal konsultasi online 30 menit sesuai waktu pilihanmu"],
   },
   {
     code: "gbp_optimization",

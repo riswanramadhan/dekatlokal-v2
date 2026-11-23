@@ -14,7 +14,8 @@ export async function GET() {
     const actor = await requireActor(["umkm"]);
     const [entitlements, orders] = await Promise.all([listEntitlements(actor.id), listOrders(actor.id)]);
     const access = Object.fromEntries(FEATURES.map((feature) => [feature, accessFrom(entitlements, feature)]));
-    return json({ products: PRODUCTS, trials: TRIAL_DAYS, access, entitlements, orders });
+    // Catatan admin (mis. detail transfer) hanya untuk tim, tidak dikirim ke pengguna.
+    return json({ products: PRODUCTS, trials: TRIAL_DAYS, access, entitlements, orders: orders.map((order) => ({ ...order, adminNote: "" })) });
   } catch (e) { return failure(e); }
 }
 

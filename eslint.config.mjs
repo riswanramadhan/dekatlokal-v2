@@ -13,6 +13,8 @@ const eslintConfig = defineConfig([
     "build/**",
     "source-ui/**",
     "referensi-ui-dekatlokal/**",
+    // Worktree agen lokal (salinan repo lengkap).
+    ".claude/**",
     "next-env.d.ts",
   ]),
 ]);

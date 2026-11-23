@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     const client = await authClient();
     const { error } = code ? await client.auth.exchangeCodeForSession(code) : await client.auth.verifyOtp({ token_hash: token!, type: type as "invite" | "magiclink" | "email" });
     if (!error) {
-      return NextResponse.redirect(new URL(await finishSignIn(), PRODUCTION_ORIGIN));
+      return NextResponse.redirect(new URL(await finishSignIn(url.searchParams.get("next")), PRODUCTION_ORIGIN));
     }
   }
   } catch { /* Invalid/expired links and temporary Auth outages return to sign-in safely. */ }

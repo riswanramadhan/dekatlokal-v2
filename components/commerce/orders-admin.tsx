@@ -52,7 +52,10 @@ export function OrdersAdmin({ name }: { name: string }) {
         <h1>Pesanan & langganan</h1>
         <p className="dc-note">Pembayaran manual: cocokkan kode pesanan di WhatsApp/transfer, lalu klik Aktifkan. Hak akses pengguna langsung berlaku.</p>
       </div>
-      <Link className="dc-secondary" href="/admin">Kembali ke dashboard riset</Link>
+      <div className="cm-admin-links">
+        <Link className="dc-secondary" href="/admin/permintaan">Permintaan layanan</Link>
+        <Link className="dc-secondary" href="/admin">Dashboard riset</Link>
+      </div>
     </div>
     <div className="cm-filter" role="tablist" aria-label="Filter status">
       {FILTERS.map(([value, label]) => <button key={value} role="tab" aria-selected={status === value} className={status === value ? "is-active" : ""} onClick={() => setStatus(value)} type="button">{label}</button>)}

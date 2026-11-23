@@ -12,7 +12,7 @@ export default async function AdminPage() {
   try {actor=await currentActor();} catch {return <AdminSignIn notice="Sesi belum dapat diperiksa. Silakan masuk kembali."/>;}
   if (!actor || !["admin", "researcher"].includes(actor.role)) return <AdminSignIn notice={actor?"Gunakan akun yang memiliki akses admin atau peneliti.":""}/>;
   return <>
-    {actor.role === "admin" ? <nav className="cm-admin-switch" aria-label="Menu admin"><a href="/admin/pesanan">Kelola pesanan & langganan →</a></nav> : null}
+    {actor.role === "admin" ? <nav className="cm-admin-switch" aria-label="Menu admin"><a href="/admin/pesanan">Pesanan & langganan</a><a href="/admin/permintaan">Permintaan layanan</a></nav> : null}
     <ResearchDashboard name={actor.name} />
   </>;
 }
