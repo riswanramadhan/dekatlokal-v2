@@ -46,9 +46,28 @@ export const ACCESS_METHODS = [
 
 const codes = <T extends readonly (readonly [string, string])[]>(items: T) => items.map(([code]) => code) as [T[number][0], ...T[number][0][]];
 
-// Formulir tidak pernah boleh menampung kata sandi. Tolak pola "password: …" / "sandi = …".
-const SECRET_PATTERN = /\b(pass(word)?|pwd|kata\s*sandi|sandi|pin|otp)\s*[:=]/i;
-export const looksLikeSecret = (value: string) => SECRET_PATTERN.test(value);
+// Formulir tidak pernah boleh menampung kata sandi atau kode. Tiga bentuk yang ditolak:
+// 1) kata kunci + ":" / "=" ("password: …", "sandi = …", "OTP : 123456");
+// 2) PIN/OTP/kode verifikasi + 4–8 digit tanpa tanda baca ("PIN 123456");
+// 3) kata sandi + spasi + satu kata yang mirip sandi: memuat angka/simbol, atau menjadi kata
+//    terakhir kalimat dan bukan kata biasa ("password mysecret"). Kalimat wajar seperti
+//    "tolong reset kata sandi admin" atau "pin lokasi salah" tetap boleh.
+const SECRET_ASSIGN = /\b(?:pass(?:word)?|passcode|pwd|kata\s*sandi|sandi|pin|otp)(?:-?nya)?\s*[:=]/i;
+const SECRET_CODE = /\b(?:pin|otp|kode\s+(?:otp|verifikasi|akses|pin))(?:-?nya)?\s+(?:(?:adalah|ialah|is)\s+)?\d{4,8}\b/i;
+const SECRET_WORD = /\b(?:password|passcode|pwd|kata\s*sandi|sandi)(?:-?nya)?\s+(?:(?:adalah|ialah|is|saya|admin|login|akun|email|wifi|wp|website|web)\s+)?([^\s,;!?]+)([^\n]*)/gi;
+const COMMON_WORDS = new Set(["admin", "akun", "atau", "bantu", "baru", "belum", "benar", "berubah", "bisa", "dari", "default", "diganti", "direset", "dulu", "email", "hilang", "jadi", "juga", "kami", "kamu", "kuat", "lagi", "lama", "lemah", "login", "lupa", "masuk", "mohon", "reset", "salah", "saya", "sementara", "sudah", "tidak", "tolong", "untuk", "website", "wordpress", "yang"]);
+
+export function looksLikeSecret(value: string) {
+  if (SECRET_ASSIGN.test(value) || SECRET_CODE.test(value)) return true;
+  for (const [, raw, rest] of value.matchAll(SECRET_WORD)) {
+    const word = raw.replace(/\.+$/, "");
+    if (word.length < 4 || COMMON_WORDS.has(word.toLowerCase())) continue;
+    if (/[\d@#$%^&*_+=~!]/.test(word)) return true;
+    const endsClause = raw.endsWith(".") || /^\s*(?:$|[,;!?])/.test(rest);
+    if (endsClause) return true;
+  }
+  return false;
+}
 const secretMessage = "Jangan tulis kata sandi atau kode di formulir. Admin akan memandu berbagi akses yang aman lewat WhatsApp.";
 const text = (max: number) => z.string().trim().max(max, `Maksimal ${max} karakter.`).refine((value) => !looksLikeSecret(value), secretMessage);
 const required = (max: number, message = "Bagian ini perlu diisi.") => text(max).refine((value) => value.length > 0, message);
