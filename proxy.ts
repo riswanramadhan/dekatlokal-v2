@@ -17,4 +17,4 @@ export async function proxy(request: NextRequest) {
   await client.auth.getUser();
   return response;
 }
-export const config = { matcher: ["/admin/:path*", "/ahli/:path*", "/dashboard/:path*", "/masuk", "/api/digital-checkup/:path*", "/auth/:path*"] };
+export const config = { matcher: ["/admin/:path*", "/ahli/:path*", "/dashboard/:path*", "/layanan-pro", "/masuk", "/api/digital-checkup/:path*", "/auth/:path*"] };
