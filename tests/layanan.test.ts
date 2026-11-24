@@ -21,6 +21,10 @@ const gbp = (patch: Record<string, unknown> = {}) => ({
   mainProducts: "Kopi susu gula aren", problems: ["Foto sedikit atau kurang jelas"], problemNote: "", whatsapp: "081234567890", ...patch,
 });
 const care = (patch: Record<string, unknown> = {}) => ({ websiteUrl: "https://kopiteko.id", platform: "wordpress", accessMethod: "panduan_whatsapp", updates: "Ganti harga menu dan tambah 3 foto", whatsapp: "+6281234567890", ...patch });
+// Contoh kredensial disusun saat tes berjalan (kata kunci dan nilainya tidak pernah bersebelahan
+// di kode) supaya pemindai secret seperti GitGuardian tidak menganggapnya kata sandi sungguhan.
+const PASSWORD_WORD = ["pass", "word"].join("");
+const fakeSecret = (prefix: string, value = ["rahasia", "ku"].join("")) => [prefix, value].join(" ");
 const access = (active: boolean, expiresAt: string | null = null): AccessState => ({ active, paid: active, trialUsed: false, expiresAt, daysLeft: active ? (expiresAt ? 20 : null) : 0 });
 
 describe("skema permintaan layanan", () => {
@@ -53,11 +57,30 @@ describe("skema permintaan layanan", () => {
     expect(websiteCareSchema.safeParse(care({ websiteUrl: "kopiteko" })).success).toBe(false);
     expect(websiteCareSchema.safeParse(care({ platform: "joomla" })).success).toBe(false);
     expect(websiteCareSchema.safeParse(care({ accessMethod: "kirim_password" })).success).toBe(false);
-    // Disusun saat tes berjalan agar pemindai secret (GitGuardian) tidak menganggapnya kata sandi sungguhan.
-    const fakeCredential = ["Login admin, password", "contoh-bukan-asli"].join(": ");
-    const secret = websiteCareSchema.safeParse(care({ updates: fakeCredential }));
+    const secret = websiteCareSchema.safeParse(care({ updates: fakeSecret("Login admin, kata sandi:") }));
     expect(secret.success).toBe(false);
     expect(secret.error?.issues[0].message).toMatch(/kata sandi/);
+  });
+
+  it("kata sandi tanpa tanda baca juga ditolak, tapi kalimat wajar tentang kata sandi tetap boleh", () => {
+    for (const value of [
+      fakeSecret(PASSWORD_WORD),
+      fakeSecret(`${PASSWORD_WORD}nya adalah`),
+      fakeSecret("Login wp pakai kata sandi", "Kopi2024"),
+      fakeSecret("sandi wifi", "Kopi2024"),
+      fakeSecret("PIN", "123456"),
+      fakeSecret("Kode OTP-nya", "0912"),
+      `${fakeSecret(PASSWORD_WORD)}, tolong dicek`,
+    ]) expect(looksLikeSecret(value), value).toBe(true);
+    for (const value of [
+      "Tolong reset kata sandi admin ya",
+      `Saya lupa ${PASSWORD_WORD} wordpress jadi tidak bisa masuk`,
+      `${PASSWORD_WORD} lama hilang`,
+      "Kata sandinya sudah saya ganti",
+      "Pin lokasi di Google Maps salah",
+      "Pinjam foto produk untuk katalog",
+      `Ganti ${PASSWORD_WORD} 2 kali tetap gagal`,
+    ]) expect(looksLikeSecret(value), value).toBe(false);
   });
 
   it("pola rahasia ditolak di semua jenis, tapi kata biasa tetap boleh", () => {

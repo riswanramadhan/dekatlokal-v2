@@ -150,3 +150,39 @@ Yang perlu dilakukan pemilik akun (sekali saja):
      (tanda `**` perlu karena callback membawa `?next=…` untuk kembali ke halaman asal).
 4. Uji: buka `/masuk` → "Lanjut dengan Google" → pilih akun → harus mendarat di `/dashboard` (atau halaman `next`).
    Akun baru otomatis berperan UMKM dan hasil Checkup tamu ikut tersambung.
+
+### Status konfigurasi (24 November 2026)
+
+Sudah dikerjakan bersama pemilik akun:
+
+| Tempat | Pengaturan | Nilai |
+| --- | --- | --- |
+| Google Cloud | Project | **DekatLokal Digital Checkup** (`dekatlokal-digital-checkup`), terpisah dari project Gemini |
+| Google Auth Platform → Branding | Nama aplikasi | DekatLokal Digital Checkup (tanpa logo, supaya tidak perlu verifikasi) |
+| | Beranda / privasi / syarat | `https://digitalcheckup.dekatlokal.com`, `https://dekatlokal.com/privacy-policy`, `https://dekatlokal.com/terms-of-service` |
+| | Authorized domains | `dekatlokal.com`, `jpiddlrzrbnkvftbsoob.supabase.co` |
+| Google Auth Platform → Audience | Status | External, **In production** (semua akun Google bisa masuk) |
+| Google Auth Platform → Clients | OAuth client | "Digital Checkup (Supabase Auth)", Web application; origin `https://digitalcheckup.dekatlokal.com`; redirect `https://jpiddlrzrbnkvftbsoob.supabase.co/auth/v1/callback` |
+| Supabase (project `jpiddlrzrbnkvftbsoob`) → Providers → Google | Aktif | Client ID + Client secret (secret hanya di dashboard Supabase) |
+| Supabase → URL Configuration | Site URL | `https://digitalcheckup.dekatlokal.com` (sebelumnya masih `http://localhost:3000`) |
+| | Redirect URLs | `https://digitalcheckup.dekatlokal.com/auth/callback**` |
+
+Diuji end-to-end di produksi: `/masuk` → "Lanjut dengan Google" → pilih akun → izinkan → kembali ke
+`/auth/callback` dan sesi terbentuk. Tujuan akhir mengikuti peran akun (`finishSignIn`): UMKM → `/dashboard`,
+ahli → `/ahli`, admin/peneliti → `/admin`. Akun penguji yang dipakai sudah berperan ahli, jadi mendarat di `/ahli`;
+uji alur UMKM dengan akun Google lain.
+
+Catatan penting:
+
+- **Project Supabase gratis bisa di-pause** setelah lama tidak aktif. Saat itu domain `*.supabase.co` tidak bisa
+  diakses sama sekali, sehingga login Google, OTP, dan penyimpanan data di produksi berhenti. Buka dashboard
+  Supabase → *Restore project*, atau naikkan ke paket berbayar agar tidak di-pause.
+- **Client secret Google hanya ditampilkan sekali.** Kalau hilang atau perlu diganti: Google Cloud → Clients →
+  "Digital Checkup (Supabase Auth)" → *Add secret* → tempel ke Supabase → simpan → nonaktifkan secret lama.
+  Bila Supabase membalas `missing OAuth secret`, artinya kolom secret di Supabase masih kosong.
+- Layar Google saat ini menulis "Lanjutkan ke jpiddlrzrbnkvftbsoob.supabase.co". Agar tertulis nama/domain
+  DekatLokal: (a) ajukan *brand verification* di Google Auth Platform → Verification Center (gratis untuk scope
+  email/profile), dan/atau (b) pasang custom domain Supabase (mis. `auth.dekatlokal.com`, add-on berbayar),
+  lalu ganti redirect URI di OAuth client ke domain tersebut.
+- Callback aplikasi dikunci ke domain produksi (`lib/digital-checkup/site.ts`), jadi uji login Google dilakukan
+  di `https://digitalcheckup.dekatlokal.com`, bukan di localhost atau preview Vercel.
